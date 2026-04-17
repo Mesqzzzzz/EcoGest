@@ -1,0 +1,712 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Plano da API - Grupo 31</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="332b02e3-66e9-804a-b821-fd54b8c53141" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1541188495357-ad2dc89487f4?ixlib=rb-4.0.3&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb" style="object-position:center 50%"/><h1 class="page-title" dir="auto">Plano da API - Grupo 31</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><p id="332b02e3-66e9-81d2-8674-d4977ae01578" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="332b02e3-66e9-8174-8ada-d7980d0df6b5"/></div><div style="display:contents" dir="auto"><p id="332b02e3-66e9-816d-ba69-c48696a68c17" class="">
+</p></div><div style="display:contents" dir="ltr"><div id="332b02e3-66e9-8158-9852-d61b8438e3f6" class="collection-content"><h4 class="collection-title">Use Cases</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><img src="https://www.notion.so/icons/font_gray.svg" style="width:14px;height:14px;display:block"/></span>Use Case Name</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Actor</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Short Summary</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Pre-conditions</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Flow</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/arrow-northeast_gray.svg" style="width:14px;height:14px;display:block"/></span>Associated Endpoints</th></tr></thead><tbody><tr id="332b02e3-66e9-807a-a0b3-f1038e6e195b"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Activities%20332b02e366e9807aa0b3f1038e6e195b.html">View Activities</a></td><td class="cell-CYjF">Public</td><td class="cell-wFCW">Allows users to browse available activities</td><td class="cell-s^N[">None</td><td class="cell-X[=?"><br/>1. User accesses the platform<br/>2. System retrieves active activities<br/>3. Activities list is displayed</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20332b02e366e980cfa9b6e9e68686e252.html">/activities </a></td></tr><tr id="332b02e3-66e9-8000-a067-cfe80fc1e36a"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Activity%20Details%20332b02e366e98000a067cfe80fc1e36a.html">View Activity Details</a></td><td class="cell-CYjF">Public</td><td class="cell-wFCW">Allows users to view detailed information about an activity</td><td class="cell-s^N[">Activity exists</td><td class="cell-X[=?"><br/>1. User selects an activity<br/>2. System retrieves activity details<br/>3. Details are displayed</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20332b02e366e980728560c23112c26e77.html">/activities/:id </a></td></tr><tr id="332b02e3-66e9-80e3-8b78-f6f1e1d79332"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Participate%20in%20Activity%20(Guest)%20332b02e366e980e38b78f6f1e1d79332.html">Participate in Activity (Guest)</a></td><td class="cell-CYjF">Public</td><td class="cell-wFCW">Allows a guest to participate in an activity using email</td><td class="cell-s^N[">Activity is active<br/>Email not already registered for the activity</td><td class="cell-X[=?">1. User selects an activity<br/>2. User enters email<br/>3. System validates uniqueness<br/>4. Participation is created</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participations%20332b02e366e980309802ce52e3f44878.html">/activities/:id/participations </a></td></tr><tr id="332b02e3-66e9-8054-8d01-d3547a667259"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Register%20User%20332b02e366e980548d01d3547a667259.html">Register User</a></td><td class="cell-CYjF">Public</td><td class="cell-wFCW">Allows a new user to create an account</td><td class="cell-s^N[">Email not already registered</td><td class="cell-X[=?"><br/>1. User fills registration form<br/>2. System validates data<br/>3. User account is created</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20332b02e366e9806f9cfae8328d83d6ff.html">/users</a></td></tr><tr id="332b02e3-66e9-8068-a0b6-df41d9baf062"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Login%20332b02e366e98068a0b6df41d9baf062.html">Login</a></td><td class="cell-CYjF">User</td><td class="cell-wFCW">Authenticates a user and provides access token</td><td class="cell-s^N[">Valid credentials</td><td class="cell-X[=?"><br/>1. User submits credentials<br/>2. System validates credentials<br/>3. JWT token is returned</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20login%20332b02e366e980318917cb646f50c6b0.html">/users/login </a></td></tr><tr id="332b02e3-66e9-8097-952d-c2b00cf2ebee"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Profile%20332b02e366e98097952dc2b00cf2ebee.html">Manage Profile</a></td><td class="cell-CYjF">User</td><td class="cell-wFCW">Allows users to view and update their profile</td><td class="cell-s^N[">Authenticated user</td><td class="cell-X[=?"><br/>1. User requests profile data<br/>2. User updates fields<br/>3. System saves changes</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20me%20332b02e366e980c29f07f1c1a1ba4f45.html">/users/me </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20me%20332b02e366e980f58b26c4709557e164.html">/users/me </a></td></tr><tr id="332b02e3-66e9-80c2-99ce-cefa90063a91"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Participate%20in%20Activity%20(Authenticated)%20332b02e366e980c299cecefa90063a91.html">Participate in Activity (Authenticated)</a></td><td class="cell-CYjF">User</td><td class="cell-wFCW">Allows a logged-in user to participate in an activity</td><td class="cell-s^N["><br/>User is active<br/>Activity is active</td><td class="cell-X[=?"><br/>1. User selects activity<br/>2. System verifies eligibility<br/>3. Participation is created</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participations%20332b02e366e980309802ce52e3f44878.html">/activities/:id/participations </a></td></tr><tr id="332b02e3-66e9-8002-80ab-d4fd776ffc71"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Cancel%20Participation%20332b02e366e9800280abd4fd776ffc71.html">Cancel Participation</a></td><td class="cell-CYjF">User</td><td class="cell-wFCW">Allows a user to cancel participation</td><td class="cell-s^N["> User is active<br/> Participation exists</td><td class="cell-X[=?"><br/>1. User selects participation<br/>2. System deletes participation</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participations%20id%20332b02e366e9804581bfdd114c8acbf3.html">/activities/:id/participations/:id </a></td></tr><tr id="332b02e3-66e9-8007-9bcd-e32ed4bfe9ba"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Create%20Proposal%20332b02e366e980079bcde32ed4bfe9ba.html">Create Proposal</a></td><td class="cell-CYjF">Council Member</td><td class="cell-wFCW">Allows council members to submit activity proposals</td><td class="cell-s^N[">Authenticated council member</td><td class="cell-X[=?"><br/>1. User fills proposal form<br/>2. System saves proposal with status = pending</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/proposals%20332b02e366e980718fa1fd1afdd670bd.html">/proposals </a></td></tr><tr id="332b02e3-66e9-8024-87c0-f3ec12c1c7c9"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Proposals%20332b02e366e9802487c0f3ec12c1c7c9.html">View Proposals</a></td><td class="cell-CYjF">Council Member / Coordinator</td><td class="cell-wFCW">Allows users to view proposals</td><td class="cell-s^N[">Authenticated</td><td class="cell-X[=?"><br/>1. User requests proposal list<br/>2. System filters based on role</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/proposals%20332b02e366e980dbb15bdd602338c468.html">/proposals </a></td></tr><tr id="332b02e3-66e9-8094-a6b6-e2488e3fde99"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Register%20Activity%20Execution%20332b02e366e98094a6b6e2488e3fde99.html">Register Activity Execution</a></td><td class="cell-CYjF">Council Member</td><td class="cell-wFCW">Records execution of an activity</td><td class="cell-s^N[">Approved activity exists</td><td class="cell-X[=?"><br/>1. User submits execution data<br/>2. System creates execution record</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20executions%20332b02e366e980e48d10c1625fc59ef1.html">/activities/:id/executions </a></td></tr><tr id="332b02e3-66e9-807f-9738-ca3c16d7caae"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Upload%20Execution%20Photos%20332b02e366e9807f9738ca3c16d7caae.html">Upload Execution Photos</a></td><td class="cell-CYjF">Council Member</td><td class="cell-wFCW">Uploads photos for an activity execution</td><td class="cell-s^N[">Execution exists</td><td class="cell-X[=?"><br/>1. User uploads images<br/>2. System stores images</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20photos%20332b02e366e98050a68cc2e864b298a1.html">/activities/:id/photos </a></td></tr><tr id="332b02e3-66e9-802d-88e3-d24579ffbb6b"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Create%20Meeting%20332b02e366e9802d88e3d24579ffbb6b.html">Create Meeting</a></td><td class="cell-CYjF">Secretary</td><td class="cell-wFCW">Creates a new meeting</td><td class="cell-s^N[">Authenticated secretary</td><td class="cell-X[=?"><br/>1. User submits meeting data<br/>2. System creates meeting</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20332b02e366e980c386cec64c81431b4e.html">/meetings</a></td></tr><tr id="332b02e3-66e9-80ad-8fb8-e766b06cdb5e"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Meetings%20332b02e366e980ad8fb8e766b06cdb5e.html">Manage Meetings</a></td><td class="cell-CYjF">Secretary</td><td class="cell-wFCW">Edit or delete meetings</td><td class="cell-s^N[">Meeting exists</td><td class="cell-X[=?"><br/>1. User updates or deletes meeting<br/>2. System applies changes (soft delete if removed)</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20332b02e366e980dc839df472c1014bb1.html">/meetings/:id </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20332b02e366e980cbafabd0d17660b64a.html">/meetings/:id </a></td></tr><tr id="332b02e3-66e9-80c4-a0e4-d0795e90bc18"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Send%20Convocations%20332b02e366e980c4a0e4d0795e90bc18.html">Send Convocations</a></td><td class="cell-CYjF">Secretary</td><td class="cell-wFCW">Sends meeting invitations via email</td><td class="cell-s^N[">Meeting exists</td><td class="cell-X[=?"><br/>1. User triggers convocations<br/>2. System sends emails</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20convocations%20332b02e366e980c08be3f7362d18c5a6.html">/meetings/:id/convocations </a></td></tr><tr id="332b02e3-66e9-8062-a407-d465810fa9a8"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Meeting%20Documents%20332b02e366e98062a407d465810fa9a8.html">Manage Meeting Documents</a></td><td class="cell-CYjF">Secretary</td><td class="cell-wFCW">Uploads and deletes meeting documents (minutes)</td><td class="cell-s^N[">Meeting exists</td><td class="cell-X[=?"><br/>1. Upload document<br/>2. List documents<br/>3. Delete document</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20documents%20332b02e366e9808581b6c88f6302b9fa.html">/meetings/:id/documents </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20documents%20332b02e366e98041b219d2b9448b87ec.html">/meetings/:id/documents </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/documents%20id%20332b02e366e980bb85e7ce9abfbeacce.html">/documents/:id </a></td></tr><tr id="332b02e3-66e9-80b7-b420-e06037c1a91b"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Users%20332b02e366e980b7b420e06037c1a91b.html">Manage Users</a></td><td class="cell-CYjF">Coordinator</td><td class="cell-wFCW">Manages user accounts</td><td class="cell-s^N[">Authenticated coordinator</td><td class="cell-X[=?">Create / update / activate / deactivate users</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20users%20id%20332b02e366e980f0a67ce4bee25a00df.html">/admin/users/:id </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20users%20332b02e366e980f48712c9b87a2f2a17.html">/admin/users </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20users%20332b02e366e98034a3c1ebb8d28e2867.html">/admin/users </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20users%20id%20status%20332b02e366e98059af28de1824c39d4f.html">/admin/users/:id/status </a></td></tr><tr id="332b02e3-66e9-8099-aa0f-d5af6f8b5233"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Activities%20332b02e366e98099aa0fd5af6f8b5233.html">Manage Activities</a></td><td class="cell-CYjF">Coordinator</td><td class="cell-wFCW">Manages activity lifecycle</td><td class="cell-s^N[">Authenticated coordinator</td><td class="cell-X[=?"><br/>1. Create or edit activity<br/>2. Change status (planned → active → completed)</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20activities%20332b02e366e9809cafc7fa3bf2e997c1.html">/admin/activities </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20activities%20332b02e366e980638126cdf1df220d9e.html">/admin/activities </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20activities%20id%20332b02e366e98097bda7e0f7dae8a430.html">/admin/activities/:id </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20activities%20id%20status%20332b02e366e98017a468ebabd9ef2e16.html">/admin/activities/:id/status </a></td></tr><tr id="332b02e3-66e9-801b-a547-f13c402c57de"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Approve%20Reject%20Proposal%20332b02e366e9801ba547f13c402c57de.html">Approve/Reject Proposal</a></td><td class="cell-CYjF">Coordinator</td><td class="cell-wFCW">Reviews and decides proposal status</td><td class="cell-s^N[">Proposal exists</td><td class="cell-X[=?"><br/>1. Coordinator reviews proposal<br/>2. Approves or rejects<br/>3. If approved → activity is created</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20proposals%20id%20status%20332b02e366e98050be22f527ac695c86.html">/admin/proposals/:id/status </a></td></tr><tr id="332b02e3-66e9-80aa-a9c7-e49d5ea1e58a"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Dashboard%20332b02e366e980aaa9c7e49d5ea1e58a.html">View Dashboard</a></td><td class="cell-CYjF">Coordinator</td><td class="cell-wFCW">Displays project metrics</td><td class="cell-s^N[">Authenticated coordinator</td><td class="cell-X[=?"><br/>1. Request dashboard<br/>2. System returns metrics</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20dashboard%20332b02e366e980589d39f2f645e00ee1.html">/admin/dashboard </a></td></tr><tr id="332b02e3-66e9-8083-ba79-c32b54c838f2"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Generate%20Report%20332b02e366e98083ba79c32b54c838f2.html">Generate Report</a></td><td class="cell-CYjF">Coordinator</td><td class="cell-wFCW">Generates project reports</td><td class="cell-s^N[">Data available</td><td class="cell-X[=?"><br/>1. Request report generation<br/>2. System processes data<br/>3. Report returned</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20report%20332b02e366e980cba487c105e1ef682c.html">/admin/report </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20report%20332b02e366e980f882dcde35638a159b.html">/admin/report </a></td></tr><tr id="332b02e3-66e9-808d-9843-f964598effe9"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Projects%20332b02e366e9808d9843f964598effe9.html">Manage Projects</a></td><td class="cell-CYjF">Admin</td><td class="cell-wFCW">Creates and manages projects</td><td class="cell-s^N[">Admin authenticated</td><td class="cell-X[=?"><br/>1. Create project<br/>2. Update project<br/>3. View projects</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20332b02e366e980c4b66edc01963ea276.html">/projects </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20332b02e366e980e69f0fd374181b2dec.html">/projects </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20id%20332b02e366e980878290c55e5b139ee6.html">/projects/:id </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20id%20332b02e366e9809c9c9df15edb0c28b5.html">/projects/:id </a></td></tr><tr id="332b02e3-66e9-80cf-8327-c9336c844438"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Project%20Lifecycle%20332b02e366e980cf8327c9336c844438.html">Manage Project Lifecycle</a></td><td class="cell-CYjF">Admin</td><td class="cell-wFCW">Controls project status</td><td class="cell-s^N[">Coordinator assigned</td><td class="cell-X[=?">Change project status</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20id%20status%20332b02e366e98047ac1ec0da2cac29d9.html">/projects/:id/status </a></td></tr><tr id="332b02e3-66e9-803b-b86e-f2a046b0d300"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Assign%20Coordinator%20332b02e366e9803bb86ef2a046b0d300.html">Assign Coordinator</a></td><td class="cell-CYjF">Admin</td><td class="cell-wFCW">Assigns a coordinator to a project</td><td class="cell-s^N[">Project exists</td><td class="cell-X[=?"><br/>1. Select coordinator<br/>2. Assign to project</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20id%20coordinator%20332b02e366e980ea85adf4cda3f6477d.html">/projects/:id/coordinator </a></td></tr><tr id="332b02e3-66e9-80a5-b1f1-e48322205b52"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Backup%20System%20332b02e366e980a5b1f1e48322205b52.html">Backup System</a></td><td class="cell-CYjF">Admin</td><td class="cell-wFCW">Creates system backups</td><td class="cell-s^N[">Admin authenticated</td><td class="cell-X[=?"><br/>1. Trigger backup<br/>2. System stores backup</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/system%20backups%20332b02e366e9807e89adcd8437d3bb03.html">/system/backups </a>, <a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/system%20backups%20332b02e366e98081825ed5517efbc0ad.html">/system/backups </a></td></tr><tr id="332b02e3-66e9-80ad-97d1-cddf9fb9dad8"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Restore%20System%20332b02e366e980ad97d1cddf9fb9dad8.html">Restore System</a></td><td class="cell-CYjF">Admin</td><td class="cell-wFCW">Restores system from backup</td><td class="cell-s^N[">Backup exists + confirmation</td><td class="cell-X[=?"><br/>1. Select backup<br/>2. Confirm restore<br/>3. System restores data</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/system%20backups%20id%20restore%20332b02e366e980bbaf28e417399237bd.html">/system/backups/:id/restore </a></td></tr><tr id="332b02e3-66e9-804c-82dd-c28aeab247a1"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Change%20User%20Account%20Status%20332b02e366e9804c82ddc28aeab247a1.html">Change User Account Status</a></td><td class="cell-CYjF">User</td><td class="cell-wFCW">Allows a user to activate or deactivate their own account</td><td class="cell-s^N[">User is authenticated</td><td class="cell-X[=?"><br/>1. User accesses account settings<br/>2. User selects to activate or deactivate the account<br/>3. System updates user status (active/inactive)<br/>4. System enforces business rules:<br/>    ◦ Inactive users cannot participate in activities<br/>    ◦ Inactive users cannot cancel participations</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20me%20status%20332b02e366e98088a1e7c62077ae0020.html">/users/me/status </a></td></tr><tr id="332b02e3-66e9-805f-a622-ca8de38dab63"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Proposal%20Details%20332b02e366e9805fa622ca8de38dab63.html">View Proposal Details</a></td><td class="cell-CYjF">Council Member / Coordinator</td><td class="cell-wFCW">Allows viewing detailed information of a specific proposal</td><td class="cell-s^N["><br/>User is authenticated<br/>Proposal exists<br/>User has permission (owner or coordinator)</td><td class="cell-X[=?"><br/>1. User selects a proposal<br/>2. System validates access permissions<br/>3. System retrieves proposal details<br/>4. Details are displayed</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/proposals%20id%20332b02e366e980a4809eead52c2ffdd4.html">/proposals/:id </a></td></tr><tr id="332b02e3-66e9-80a4-917d-d3fbb20d652f"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/List%20Activity%20Participants%20332b02e366e980a4917dd3fbb20d652f.html">List Activity Participants</a></td><td class="cell-CYjF">Coordinator / Council Member</td><td class="cell-wFCW">Retrieves the list of participants for a specific activity</td><td class="cell-s^N[">User is authenticated<br/>Activity exists</td><td class="cell-X[=?"><br/>1. User selects an activity<br/>2. System retrieves participants (users + guests)<br/>3. List is displayed</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participants%20332b02e366e980cca9beda258d48af8c.html">/activities/:id/participants </a></td></tr><tr id="332b02e3-66e9-80d2-9f32-e179c6ee9e29"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Add%20Participant%20to%20Activity%20(Admin%20Managed)%20332b02e366e980d29f32e179c6ee9e29.html">Add Participant to Activity (Admin/Managed)</a></td><td class="cell-CYjF">Coordinator</td><td class="cell-wFCW">Allows manually adding a participant to an activity</td><td class="cell-s^N[">User is authenticated <br/>Activity exists<br/>Email/user not already registered</td><td class="cell-X[=?"><br/>1. Coordinator selects activity<br/>2. Inputs participant data (user or email)<br/>3. System validates uniqueness<br/>4. Participation is created</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participants%20332b02e366e980439001d869c35a2279.html">/activities/:id/participants </a></td></tr><tr id="332b02e3-66e9-8068-b8bc-c5ba92576700"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/List%20Meetings%20332b02e366e98068b8bcc5ba92576700.html">List Meetings</a></td><td class="cell-CYjF">Secretary / Coordinator</td><td class="cell-wFCW">Retrieves all meetings</td><td class="cell-s^N["><br/>User is authenticated</td><td class="cell-X[=?"><br/>1. User requests meetings list<br/>2. System retrieves meetings (excluding soft-deleted)<br/>3. List is displayed</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20332b02e366e980e4aa85d4611fac0dca.html">/meetings </a></td></tr><tr id="332b02e3-66e9-804f-b08b-c7af2698ca88"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Meeting%20Details%20332b02e366e9804fb08bc7af2698ca88.html">View Meeting Details</a></td><td class="cell-CYjF">Secretary / Coordinator / Council Member</td><td class="cell-wFCW">Allows viewing detailed information about a meeting</td><td class="cell-s^N[">User is authenticated<br/>Meeting exists</td><td class="cell-X[=?"><br/>1. User selects a meeting<br/>2. System retrieves meeting data<br/>3. Details are displayed (agenda, date, related documents, etc.)</td><td class="cell-HTE{"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20332b02e366e980e5af71dacaa8783f98.html">/meetings/:id </a></td></tr></tbody></table><br/><br/></div></div><div style="display:contents" dir="auto"><hr id="332b02e3-66e9-8195-8bfa-fd52e680c0ed"/></div><div style="display:contents" dir="ltr"><div id="332b02e3-66e9-8112-9e3f-fe95bea23eec" class="collection-content"><h4 class="collection-title">REST API Plan</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><img src="https://www.notion.so/icons/font_gray.svg" style="width:14px;height:14px;display:block"/></span>Endpoint</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/arrow-circle-down_gray.svg" style="width:14px;height:14px;display:block"/></span>Method</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Resource</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Description</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/arrow-northeast_gray.svg" style="width:14px;height:14px;display:block"/></span>Use Cases</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/arrow-circle-down_gray.svg" style="width:14px;height:14px;display:block"/></span>Authentication</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>PATH Parameters</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>BODY Parameters</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>QUERY Parameters</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>SUCCESS response</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>ERROR responses</th><th><span class="icon property-icon"><img src="https://www.notion.so/icons/burst_gray.svg" style="width:14px;height:14px;display:block"/></span>Status</th></tr></thead><tbody><tr id="332b02e3-66e9-806f-9cfa-e8328d83d6ff"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20332b02e366e9806f9cfae8328d83d6ff.html">/users</a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Creates a new user account (registration).</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Register%20User%20332b02e366e980548d01d3547a667259.html">Register User</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-gray">None</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;John&quot;,<br/>&quot;email&quot;: &quot;<a href="mailto:john@email.com">john@email.com</a>&quot;,<br/>&quot;password&quot;: &quot;123456&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;User created successfully&quot;,<br/>&quot;data&quot;: {<br/>&quot;id&quot;: 1,<br/>&quot;name&quot;: &quot;John Doe&quot;,<br/>&quot;email&quot;: &quot;<a href="mailto:john@email.com">john@email.com</a>&quot;,<br/>&quot;role&quot;: &quot;user&quot;<br/>}<br/>}</td><td class="cell-iArO">400 - Invalid data<br/>409 - Email already exists</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8031-8917-cb646f50c6b0"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20login%20332b02e366e980318917cb646f50c6b0.html">/users/login </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Authenticates a user.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Login%20332b02e366e98068a0b6df41d9baf062.html">Login</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-gray">None</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;email&quot;: &quot;<a href="mailto:john@email.com">john@email.com</a>&quot;,<br/>&quot;password&quot;: &quot;123456&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;token&quot;: &quot;JWT_TOKEN&quot;,<br/>&quot;user&quot;: {<br/>&quot;id&quot;: 1,<br/>&quot;email&quot;: &quot;<a href="mailto:john@email.com">john@email.com</a>&quot;,<br/>&quot;role&quot;: &quot;user&quot;<br/>}<br/>}</td><td class="cell-iArO">401 - Invalid credentials</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80c2-9f07-f1c1a1ba4f45"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20me%20332b02e366e980c29f07f1c1a1ba4f45.html">/users/me </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Returns authenticated user profile.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Profile%20332b02e366e98097952dc2b00cf2ebee.html">Manage Profile</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 1,<br/>&quot;name&quot;: &quot;John Doe&quot;,<br/>&quot;email&quot;: &quot;<a href="mailto:john@email.com">john@email.com</a>&quot;,<br/>&quot;role&quot;: &quot;user&quot;,<br/>&quot;status&quot;: &quot;active&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80f5-8b26-c4709557e164"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20me%20332b02e366e980f58b26c4709557e164.html">/users/me </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Update user profile.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Profile%20332b02e366e98097952dc2b00cf2ebee.html">Manage Profile</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;John Updated&quot;,<br/>&quot;email&quot;: &quot;<a href="mailto:john_new@email.com">john_new@email.com</a>&quot;,<br/>&quot;password&quot;: &quot;newpassword&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Profile updated&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8088-a1e7-c62077ae0020"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/users%20me%20status%20332b02e366e98088a1e7c62077ae0020.html">/users/me/status </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Activate or deactivate own account (soft delete).</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Change%20User%20Account%20Status%20332b02e366e9804c82ddc28aeab247a1.html">Change User Account Status</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;status&quot;: &quot;inactive&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Status updated&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80cf-a9b6-e9e68686e252"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20332b02e366e980cfa9b6e9e68686e252.html">/activities </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Returns activities filtered by user context and permissions.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Activities%20332b02e366e9807aa0b3f1038e6e195b.html">View Activities</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-yellow">Opcional</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA[">{<br/>&quot;search&quot;: &quot;cleaning&quot;,<br/>&quot;area&quot;: &quot;environment&quot;,<br/>&quot;date_from&quot;: &quot;2026-01-01&quot;,<br/>&quot;date_to&quot;: &quot;2026-06-01&quot;,<br/>&quot;page&quot;: 1,<br/>&quot;limit&quot;: 10<br/>}</td><td class="cell-;=;M">{<br/>&quot;data&quot;: [<br/>{<br/>&quot;id&quot;: 10,<br/>&quot;name&quot;: &quot;Beach Cleaning&quot;,<br/>&quot;date&quot;: &quot;2026-04-10&quot;,<br/>&quot;location&quot;: &quot;Beach X&quot;,<br/>&quot;visibility&quot;: &quot;public&quot;,<br/>&quot;project&quot;: {<br/>&quot;id&quot;: 3,<br/>&quot;name&quot;: &quot;Eco 2026&quot;<br/>},<br/>&quot;participants_count&quot;: 23,<br/>&quot;is_full&quot;: false,<br/>&quot;user_participation&quot;: {<br/>&quot;is_participating&quot;: true,<br/>&quot;participation_id&quot;: 55<br/>}<br/>}<br/>]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8072-8560-c23112c26e77"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20332b02e366e980728560c23112c26e77.html">/activities/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Returns detailed activity.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Activity%20Details%20332b02e366e98000a067cfe80fc1e36a.html">View Activity Details</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-yellow">Opcional</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>  &quot;id&quot;: 1,<br/>  &quot;name&quot;: &quot;Beach Cleanup&quot;,<br/>  &quot;status&quot;: &quot;active&quot;,<br/>  &quot;area&quot;: &quot;Environment&quot;,<br/>  &quot;date&quot;: &quot;2026-04-01&quot;<br/>}</td><td class="cell-iArO">404 - Activity not found</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8030-9802-ce52e3f44878"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participations%20332b02e366e980309802ce52e3f44878.html">/activities/:id/participations </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Creates a participation in an activity.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Participate%20in%20Activity%20(Guest)%20332b02e366e980e38b78f6f1e1d79332.html">Participate in Activity (Guest)</a>, <a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Participate%20in%20Activity%20(Authenticated)%20332b02e366e980c299cecefa90063a91.html">Participate in Activity (Authenticated)</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-yellow">Opcional</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo">{<br/>&quot;email&quot;: &quot;<a href="mailto:guest@email.com">guest@email.com</a>&quot;,<br/>&quot;name&quot;: &quot;John&quot;<br/>}<br/>//guests only</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 55,<br/>&quot;message&quot;: &quot;Participation confirmed&quot;<br/>}</td><td class="cell-iArO">403 - Account is inactive<br/>404 - Activity not found<br/>409 - Already participating<br/>400 - Invalid data</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8045-81bf-dd114c8acbf3"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participations%20id%20332b02e366e9804581bfdd114c8acbf3.html">/activities/:id/participations/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-red">DELETE</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Cancel a participation.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Cancel%20Participation%20332b02e366e9800280abd4fd776ffc71.html">Cancel Participation</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-yellow">Opcional</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Participation cancelled&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8058-9d39-f2f645e00ee1"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20dashboard%20332b02e366e980589d39f2f645e00ee1.html">/admin/dashboard </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span><span class="selected-value select-value-color-red">COUNCIL-MEMBERS</span><span class="selected-value select-value-color-blue">MEETINGS</span><span class="selected-value select-value-color-green">PROJECTS</span><span class="selected-value select-value-color-gray">REPORTS</span><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Returns global metrics for coordinator.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Dashboard%20332b02e366e980aaa9c7e49d5ea1e58a.html">View Dashboard</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;activities&quot;: {<br/>&quot;total&quot;: 25,<br/>&quot;planned&quot;: 10,<br/>&quot;active&quot;: 10,<br/>&quot;completed&quot;: 5<br/>},<br/>&quot;participants&quot;: 320,<br/>&quot;photos&quot;: 120,<br/>&quot;last_month_activity&quot;: {<br/>&quot;count&quot;: 8,<br/>&quot;growth&quot;: &quot;+25%&quot;<br/>}<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80f4-8712-c9b87a2f2a17"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20users%20332b02e366e980f48712c9b87a2f2a17.html">/admin/users </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">List all users.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Users%20332b02e366e980b7b420e06037c1a91b.html">Manage Users</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA[">{<br/>&quot;role&quot;: &quot;user&quot;,<br/>&quot;status&quot;: &quot;active&quot;,<br/>&quot;search&quot;: &quot;john&quot;<br/>}</td><td class="cell-;=;M">{<br/>&quot;data&quot;: [<br/>{<br/>&quot;id&quot;: 1,<br/>&quot;name&quot;: &quot;John&quot;,<br/>&quot;email&quot;: &quot;<a href="mailto:john@email.com">john@email.com</a>&quot;,<br/>&quot;role&quot;: &quot;user&quot;,<br/>&quot;status&quot;: &quot;active&quot;<br/>}<br/>]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8034-a3c1-ebb8d28e2867"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20users%20332b02e366e98034a3c1ebb8d28e2867.html">/admin/users </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Create a user with a specific role.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Users%20332b02e366e980b7b420e06037c1a91b.html">Manage Users</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;Sofia&quot;,<br/>&quot;email&quot;: &quot;sofia<a href="mailto:maria@email.com">@email.com</a>&quot;,<br/>&quot;password&quot;: &quot;123456&quot;,<br/>&quot;role&quot;: &quot;secretary&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 80,<br/>&quot;name&quot;: &quot;Sofia&quot;,<br/>&quot;email&quot;: &quot;sofia<a href="mailto:john@email.com">@email.com</a>&quot;,<br/>&quot;status&quot;: &quot;active&quot;,<br/>&quot;role&quot;: &quot;scretary&quot;<br/>}</td><td class="cell-iArO">403 - Unauthorized<br/>400 - Invalid role</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80f0-a67c-e4bee25a00df"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20users%20id%20332b02e366e980f0a67ce4bee25a00df.html">/admin/users/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Edit user data (role, info, etc.)</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Users%20332b02e366e980b7b420e06037c1a91b.html">Manage Users</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → user_id</td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;Updated User&quot;,<br/>&quot;email&quot;: &quot;<a href="mailto:updated@email.com">updated@email.com</a>&quot;,<br/>&quot;role&quot;: &quot;secretary&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;User updated&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8059-af28-de1824c39d4f"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20users%20id%20status%20332b02e366e98059af28de1824c39d4f.html">/admin/users/:id/status </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Activate / deactivate user.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Users%20332b02e366e980b7b420e06037c1a91b.html">Manage Users</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → user_id</td><td class="cell-RImo">{<br/>&quot;status&quot;: &quot;inactive&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;User status updated&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-809c-afc7-fa3bf2e997c1"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20activities%20332b02e366e9809cafc7fa3bf2e997c1.html">/admin/activities </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Returns ALL activities (including planned and inactive states).</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Activities%20332b02e366e98099aa0fd5af6f8b5233.html">Manage Activities</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA[">{<br/>&quot;status&quot;: &quot;planned | active | completed&quot;<br/>}</td><td class="cell-;=;M">{<br/>&quot;data&quot;: [<br/>{<br/>&quot;id&quot;: 1,<br/>&quot;name&quot;: &quot;Beach Cleaning&quot;,<br/>&quot;status&quot;: &quot;planned&quot;,<br/>&quot;date&quot;: &quot;2026-04-10&quot;<br/>}<br/>]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8063-8126-cdf1df220d9e"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20activities%20332b02e366e980638126cdf1df220d9e.html">/admin/activities </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Create a new activity in <strong>PLANNED</strong> state.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Activities%20332b02e366e98099aa0fd5af6f8b5233.html">Manage Activities</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;Beach Cleaning&quot;,<br/>&quot;description&quot;: &quot;Environmental activity&quot;,<br/>&quot;date&quot;: &quot;2026-04-10&quot;,<br/>&quot;location&quot;: &quot;Beach X&quot;,<br/>&quot;project_id&quot;: 3<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 10,<br/>&quot;status&quot;: &quot;planned&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8097-bda7-e0f7dae8a430"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20activities%20id%20332b02e366e98097bda7e0f7dae8a430.html">/admin/activities/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Edit activity details.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Activities%20332b02e366e98099aa0fd5af6f8b5233.html">Manage Activities</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;Beach Cleaning&quot;,<br/>&quot;description&quot;: &quot;Environmental activity&quot;,<br/>&quot;date&quot;: &quot;2026-04-10&quot;,<br/>&quot;location&quot;: &quot;Beach X&quot;,<br/>&quot;project_id&quot;: 3<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Activity updated&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8017-a468-ebabd9ef2e16"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20activities%20id%20status%20332b02e366e98017a468ebabd9ef2e16.html">/admin/activities/:id/status </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Change activity lifecycle.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Activities%20332b02e366e98099aa0fd5af6f8b5233.html">Manage Activities</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo">{<br/>&quot;status&quot;: &quot;active&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Activity status updated&quot;,<br/>&quot;status&quot;: &quot;approved&quot;<br/>}</td><td class="cell-iArO">400 - Invalid status transition</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80cb-a487-c105e1ef682c"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20report%20332b02e366e980cba487c105e1ef682c.html">/admin/report </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-gray">REPORTS</span></td><td class="cell-riVn">Returns report data for final evaluation.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Generate%20Report%20332b02e366e98083ba79c32b54c838f2.html">Generate Report</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;total_activities&quot;: 25,<br/>&quot;completed_activities&quot;: 15,<br/>&quot;participants&quot;: 320,<br/>&quot;photos&quot;: 120,<br/>&quot;engagement_rate&quot;: &quot;75%&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80f8-82dc-de35638a159b"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20report%20332b02e366e980f882dcde35638a159b.html">/admin/report </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-gray">REPORTS</span></td><td class="cell-riVn">Generates final report.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Generate%20Report%20332b02e366e98083ba79c32b54c838f2.html">Generate Report</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;date_range&quot;: &quot;2026-01-01_to_2026-12-31&quot;,<br/>&quot;format&quot;: &quot;pdf&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Report generated successfully&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8071-8fa1-fd1afdd670bd"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/proposals%20332b02e366e980718fa1fd1afdd670bd.html">/proposals </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Creates a new activity proposal.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Create%20Proposal%20332b02e366e980079bcde32ed4bfe9ba.html">Create Proposal</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;Tree Planting&quot;,<br/>&quot;description&quot;: &quot;Environmental action&quot;,<br/>&quot;area&quot;: &quot;environment&quot;,<br/>&quot;start_date&quot;: &quot;2026-05-01&quot;,<br/>&quot;end_date&quot;: &quot;2026-05-01&quot;,<br/>&quot;resources&quot;: &quot;Gloves, trees&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 1,<br/>&quot;status&quot;: &quot;pending&quot;<br/>}</td><td class="cell-iArO">403 - Unauthorized<br/>400 - Invalid data</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80db-b15b-dd602338c468"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/proposals%20332b02e366e980dbb15bdd602338c468.html">/proposals </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">List proposals.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Proposals%20332b02e366e9802487c0f3ec12c1c7c9.html">View Proposals</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA[">{<br/>&quot;status&quot;: &quot;pending | approved | rejected&quot;,<br/>&quot;created_by&quot;: &quot;user_id&quot;<br/>}</td><td class="cell-;=;M">{<br/>  &quot;data&quot;: [<br/>    {<br/>      &quot;id&quot;: 1,<br/>      &quot;title&quot;: &quot;New Project Proposal&quot;,<br/>      &quot;status&quot;: &quot;pending&quot;<br/>    }<br/>  ]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80a4-809e-ead52c2ffdd4"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/proposals%20id%20332b02e366e980a4809eead52c2ffdd4.html">/proposals/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Get proposal details.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Proposal%20Details%20332b02e366e9805fa622ca8de38dab63.html">View Proposal Details</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 1,<br/>&quot;title&quot;: &quot;New Project Proposal&quot;,<br/>&quot;description&quot;: &quot;Detailed proposal content&quot;,<br/>&quot;status&quot;: &quot;pending&quot;,<br/>&quot;created_at&quot;: &quot;2026-03-20T12:00:00Z&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8050-be22-f527ac695c86"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/admin%20proposals%20id%20status%20332b02e366e98050be22f527ac695c86.html">/admin/proposals/:id/status </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Approve or reject a proposal.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Approve%20Reject%20Proposal%20332b02e366e9801ba547f13c402c57de.html">Approve/Reject Proposal</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo">{<br/>&quot;status&quot;: &quot;approved&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Proposal approved and activity created&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80e4-8d10-c1625fc59ef1"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20executions%20332b02e366e980e48d10c1625fc59ef1.html">/activities/:id/executions </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Registers execution of an activity.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Register%20Activity%20Execution%20332b02e366e98094a6b6e2488e3fde99.html">Register Activity Execution</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo">{<br/>&quot;date&quot;: &quot;2026-04-10&quot;,<br/>&quot;location&quot;: &quot;Beach X&quot;,<br/>&quot;notes&quot;: &quot;Great participation&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 10,<br/>&quot;message&quot;: &quot;Execution recorded&quot;<br/>}</td><td class="cell-iArO">403 - Unauthorized<br/>404 - Activity not found<br/>400 - Invalid data</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8050-a68c-c2e864b298a1"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20photos%20332b02e366e98050a68cc2e864b298a1.html">/activities/:id/photos </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span></td><td class="cell-riVn">Upload evidence (photos).</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Upload%20Execution%20Photos%20332b02e366e9807f9738ca3c16d7caae.html">Upload Execution Photos</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo">file: image.jpg</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Photo uploaded&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80cc-a9be-da258d48af8c"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participants%20332b02e366e980cca9beda258d48af8c.html">/activities/:id/participants </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">List participants of an activity.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/List%20Activity%20Participants%20332b02e366e980a4917dd3fbb20d652f.html">List Activity Participants</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>  &quot;data&quot;: [<br/>    {<br/>      &quot;id&quot;: 1,<br/>      &quot;name&quot;: &quot;John Doe&quot;,<br/>      &quot;joined_at&quot;: &quot;2026-03-01T10:00:00Z&quot;<br/>    }<br/>  ]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8043-9001-d869c35a2279"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/activities%20id%20participants%20332b02e366e980439001d869c35a2279.html">/activities/:id/participants </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-orange">ACTIVITIES</span><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Manually add participant.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Add%20Participant%20to%20Activity%20(Admin%20Managed)%20332b02e366e980d29f32e179c6ee9e29.html">Add Participant to Activity (Admin/Managed)</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → activity_id</td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;John&quot;,<br/>&quot;email&quot;: &quot;<a href="mailto:john@email.com">john@email.com</a>&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Participation registered&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80c3-86ce-c64c81431b4e"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20332b02e366e980c386cec64c81431b4e.html">/meetings</a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">Creates a new meeting.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Create%20Meeting%20332b02e366e9802d88e3d24579ffbb6b.html">Create Meeting</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{&quot;date&quot;: &quot;2026-04-15&quot;,&quot;description&quot;: &quot;Monthly Eco-Schools meeting&quot;,&quot;project_id&quot;: 3}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 1,<br/>&quot;date&quot;: &quot;2026-04-15&quot;<br/>}</td><td class="cell-iArO">400 - Invalid data<br/>403 - Unauthorized</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80e4-aa85-d4611fac0dca"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20332b02e366e980e4aa85d4611fac0dca.html">/meetings </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">List meetings.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/List%20Meetings%20332b02e366e98068b8bcc5ba92576700.html">List Meetings</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA[">{<br/>&quot;project_id&quot;: 3,<br/>&quot;date&quot;: &quot;YYYY-MM-DD”<br/>}</td><td class="cell-;=;M">{<br/>  &quot;data&quot;: [<br/>    {<br/>      &quot;id&quot;: 1,<br/>      &quot;title&quot;: &quot;Weekly Sync&quot;,<br/>      &quot;date&quot;: &quot;2026-04-02&quot;,<br/>      &quot;status&quot;: &quot;scheduled&quot;<br/>    }<br/>  ]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80e5-af71-dacaa8783f98"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20332b02e366e980e5af71dacaa8783f98.html">/meetings/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">Get meeting details.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/View%20Meeting%20Details%20332b02e366e9804fb08bc7af2698ca88.html">View Meeting Details</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → meeting_id</td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 1,<br/>&quot;title&quot;: &quot;Weekly Sync&quot;,<br/>&quot;date&quot;: &quot;2026-04-02&quot;,<br/>&quot;participants&quot;: 5,<br/>&quot;status&quot;: &quot;scheduled&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80dc-839d-f472c1014bb1"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20332b02e366e980dc839df472c1014bb1.html">/meetings/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">Edit meeting.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Meetings%20332b02e366e980ad8fb8e766b06cdb5e.html">Manage Meetings</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → meeting_id</td><td class="cell-RImo">{<br/>&quot;title&quot;: &quot;Updated Meeting&quot;,<br/>&quot;date&quot;: &quot;2026-04-06&quot;,<br/>&quot;description&quot;: &quot;Updated agenda&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>  &quot;title&quot;: &quot;Updated Meeting&quot;,<br/>  &quot;date&quot;: &quot;2026-04-06&quot;,<br/>  &quot;description&quot;: &quot;Updated agenda&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80cb-afab-d0d17660b64a"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20332b02e366e980cbafabd0d17660b64a.html">/meetings/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-red">DELETE</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">Delete meeting.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Meetings%20332b02e366e980ad8fb8e766b06cdb5e.html">Manage Meetings</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → meeting_id</td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Meeting deleted&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80c0-8be3-f7362d18c5a6"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20convocations%20332b02e366e980c08be3f7362d18c5a6.html">/meetings/:id/convocations </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">Send meeting convocations to members.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Send%20Convocations%20332b02e366e980c4a0e4d0795e90bc18.html">Send Convocations</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → meeting_id</td><td class="cell-RImo">{<br/>&quot;message&quot;: &quot;Reminder for upcoming meeting&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Convocations sent successfully&quot;<br/>}</td><td class="cell-iArO">400 - Meeting date missing<br/>404 - Meeting not found</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8041-b219-d2b9448b87ec"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20documents%20332b02e366e98041b219d2b9448b87ec.html">/meetings/:id/documents </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">Upload meeting document (minutes).</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Meeting%20Documents%20332b02e366e98062a407d465810fa9a8.html">Manage Meeting Documents</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → meeting_id</td><td class="cell-RImo">file: ata.pdf</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Document uploaded&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8085-81b6-c88f6302b9fa"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/meetings%20id%20documents%20332b02e366e9808581b6c88f6302b9fa.html">/meetings/:id/documents </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">List meeting documents.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Meeting%20Documents%20332b02e366e98062a407d465810fa9a8.html">Manage Meeting Documents</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → meeting_id</td><td class="cell-RImo"></td><td class="cell-tBA[">{<br/>&quot;type&quot;: &quot;minutes | report&quot;<br/>}</td><td class="cell-;=;M">{<br/>  &quot;data&quot;: [<br/>    {<br/>      &quot;id&quot;: 1,<br/>      &quot;name&quot;: &quot;agenda.pdf&quot;,<br/>      &quot;url&quot;: &quot;https://example.com/documents/agenda.pdf&quot;<br/>    }<br/>  ]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80bb-85e7-ce9abfbeacce"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/documents%20id%20332b02e366e980bb85e7ce9abfbeacce.html">/documents/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-red">DELETE</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-blue">MEETINGS</span></td><td class="cell-riVn">Remove document.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Meeting%20Documents%20332b02e366e98062a407d465810fa9a8.html">Manage Meeting Documents</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → document_id</td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Document removed&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80c4-b66e-dc01963ea276"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20332b02e366e980c4b66edc01963ea276.html">/projects </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-green">PROJECTS</span></td><td class="cell-riVn">Creates a new yearly project.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Projects%20332b02e366e9808d9843f964598effe9.html">Manage Projects</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;Eco Schools 2026&quot;,<br/>&quot;year&quot;: 2026,<br/>&quot;level&quot;: &quot;gold&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 1,<br/>&quot;status&quot;: &quot;planning&quot;<br/>}</td><td class="cell-iArO">409 - Project for this year already exists<br/>400 - Invalid data<br/>403 - Unauthorized</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80e6-9f0f-d374181b2dec"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20332b02e366e980e69f0fd374181b2dec.html">/projects </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-green">PROJECTS</span></td><td class="cell-riVn">List all projects.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Projects%20332b02e366e9808d9843f964598effe9.html">Manage Projects</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA[">{<br/>&quot;status&quot;: &quot;planning | active | finished&quot;,<br/>&quot;year&quot;: 2026<br/>}</td><td class="cell-;=;M">{<br/>&quot;data&quot;: [<br/>{<br/>&quot;id&quot;: 1,<br/>&quot;name&quot;: &quot;Project A&quot;,<br/>&quot;status&quot;: &quot;active&quot;<br/>}<br/>]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-809c-9c9d-f15edb0c28b5"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20id%20332b02e366e9809c9c9df15edb0c28b5.html">/projects/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-green">PROJECTS</span></td><td class="cell-riVn">Get project details.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Projects%20332b02e366e9808d9843f964598effe9.html">Manage Projects</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → project_id</td><td class="cell-RImo"></td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 1,<br/>&quot;name&quot;: &quot;Project A&quot;,<br/>&quot;description&quot;: &quot;Project description&quot;,<br/>&quot;status&quot;: &quot;active&quot;,<br/>&quot;created_at&quot;: &quot;2026-01-10T09:00:00Z&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8087-8290-c55e5b139ee6"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20id%20332b02e366e980878290c55e5b139ee6.html">/projects/:id </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-green">PROJECTS</span></td><td class="cell-riVn">Update project info.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Projects%20332b02e366e9808d9843f964598effe9.html">Manage Projects</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → project_id</td><td class="cell-RImo">{<br/>&quot;name&quot;: &quot;Updated Project&quot;,<br/>&quot;year&quot;: 2027<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;name&quot;: &quot;Updated Project&quot;,<br/>&quot;year&quot;: 2027<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8047-ac1e-c0da2cac29d9"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20id%20status%20332b02e366e98047ac1ec0da2cac29d9.html">/projects/:id/status </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-green">PROJECTS</span></td><td class="cell-riVn">Change project lifecycle state.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Manage%20Project%20Lifecycle%20332b02e366e980cf8327c9336c844438.html">Manage Project Lifecycle</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → project_id</td><td class="cell-RImo">{<br/>&quot;status&quot;: &quot;active&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>  &quot;status&quot;: &quot;active&quot;<br/>}</td><td class="cell-iArO">400 - Invalid transition<br/>400 - Coordinator not assigned</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80ea-85ad-f4cda3f6477d"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/projects%20id%20coordinator%20332b02e366e980ea85adf4cda3f6477d.html">/projects/:id/coordinator </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-yellow">PATCH</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-green">PROJECTS</span><span class="selected-value select-value-color-default">USERS</span></td><td class="cell-riVn">Assigns a coordinator to a project.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Assign%20Coordinator%20332b02e366e9803bb86ef2a046b0d300.html">Assign Coordinator</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → project_id</td><td class="cell-RImo">{<br/>&quot;user_id&quot;: 10<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;Coordinator assigned&quot;<br/>}</td><td class="cell-iArO">400 - Invalid user<br/>400 - User is not coordinator</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-807e-89ad-cd8437d3bb03"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/system%20backups%20332b02e366e9807e89adcd8437d3bb03.html">/system/backups </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-purple">SYSTEM</span></td><td class="cell-riVn">Creates a system backup (database snapshot).</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Backup%20System%20332b02e366e980a5b1f1e48322205b52.html">Backup System</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo">{<br/>&quot;description&quot;: &quot;Weekly backup&quot;<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;id&quot;: 1,<br/>&quot;created_at&quot;: &quot;2026-03-29T10:00:00Z&quot;<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-8081-825e-d5517efbc0ad"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/system%20backups%20332b02e366e98081825ed5517efbc0ad.html">/system/backups </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-green">GET</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-purple">SYSTEM</span></td><td class="cell-riVn">List available backups.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Backup%20System%20332b02e366e980a5b1f1e48322205b52.html">Backup System</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs"></td><td class="cell-RImo"></td><td class="cell-tBA[">{<br/>&quot;date&quot;: &quot;YYYY-MM-DD&quot;<br/>}</td><td class="cell-;=;M">{<br/>&quot;data&quot;: [<br/>{<br/>&quot;id&quot;: 1,<br/>&quot;created_at&quot;: &quot;2026-03-29T10:00:00Z&quot;<br/>}<br/>]<br/>}</td><td class="cell-iArO"></td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr><tr id="332b02e3-66e9-80bb-af28-e417399237bd"><td class="cell-title"><a href="Plano%20da%20API%20-%20Grupo%2031/REST%20API%20Plan/system%20backups%20id%20restore%20332b02e366e980bbaf28e417399237bd.html">/system/backups/:id/restore </a></td><td class="cell-TtVE"><span class="selected-value select-value-color-blue">POST</span></td><td class="cell-IB@K"><span class="selected-value select-value-color-purple">SYSTEM</span></td><td class="cell-riVn">Restores system state from a backup.</td><td class="cell-N]G^"><a href="Plano%20da%20API%20-%20Grupo%2031/Use%20Cases/Restore%20System%20332b02e366e980ad97d1cddf9fb9dad8.html">Restore System</a></td><td class="cell-FQ\E"><span class="selected-value select-value-color-green">Required</span></td><td class="cell-QOSs">id → backup_id</td><td class="cell-RImo">{<br/>&quot;confirm&quot;: true<br/>}</td><td class="cell-tBA["></td><td class="cell-;=;M">{<br/>&quot;message&quot;: &quot;System restored successfully&quot;<br/>}</td><td class="cell-iArO">400 - Confirmation required<br/>404 - Backup not found</td><td class="cell-:q=z"><span class="status-value"><div class="status-dot"></div>Not started</span></td></tr></tbody></table><br/><br/></div></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
