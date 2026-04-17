@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "ecogest-api-test",
+		"name": "EcoGest API",
+		"description": "EcoGest REST API Testing Collection - Grupo 31",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"user@ecogest.pt\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/users"
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"if (response.token) {",
+									"    pm.environment.set(\"jwt_token\", response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@ecogest.pt\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/users/login"
+					}
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/users/me"
+					}
+				}
+			]
+		},
+		{
+			"name": "Activities",
+			"item": [
+				{
+					"name": "List Activities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/activities?area=Environment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities"
+							],
+							"query": [
+								{
+									"key": "area",
+									"value": "Environment"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Activity Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/activities/1"
+					}
+				},
+				{
+					"name": "Guest Participation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Guest Visitor\",\n    \"email\": \"guest@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/activities/1/participations"
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Admin Dashboard Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/admin/dashboard"
+					}
+				},
+				{
+					"name": "Create User (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Coordinator Jane\",\n    \"email\": \"jane@ecogest.pt\",\n    \"password\": \"123456\",\n    \"role\": \"coordinator\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/admin/users"
+					}
+				},
+				{
+					"name": "Create Activity (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Beach Cleanup\",\n    \"description\": \"Volunteers needed for beach cleaning\",\n    \"start_date\": \"2026-05-20\",\n    \"location\": \"Matosinhos Beach\",\n    \"project_id\": 1,\n    \"area\": \"Environment\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/admin/activities"
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

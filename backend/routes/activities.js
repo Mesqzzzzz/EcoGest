@@ -1,31 +1,19 @@
-const container = document.getElementById("activities-container");
+const express = require('express');
+const router = express.Router();
+const activitiesController = require('../controllers/activities');
+const { authenticate, optionalAuth } = require('../middleware/auth');
+const { authorize } = require('../middleware/roles');
+const upload = require('../utils/upload');
 
-async function loadActivities() {
-  const res = await fetch("http://localhost:3000/api/activities");
-  const data = await res.json();
+router.get('/', optionalAuth, activitiesController.getActivities);
+router.get('/:id', activitiesController.getActivity);
+router.post('/:id/participations', optionalAuth, activitiesController.participate);
+router.delete('/:id/participations/:pid', authenticate, activitiesController.cancelParticipation);
 
-  renderActivities(data.data);
-}
+// Admin/Coordinator restricted
+router.get('/:id/participants', authenticate, authorize('admin', 'coordinator'), activitiesController.listParticipants);
+router.post('/:id/participants', authenticate, authorize('admin', 'coordinator'), activitiesController.addParticipant);
+router.post('/:id/executions', authenticate, authorize('admin', 'coordinator'), activitiesController.registerExecution);
+router.post('/:id/photos', authenticate, authorize('admin', 'coordinator'), upload.single('photo'), activitiesController.uploadPhoto);
 
-function renderActivities(activities) {
-  container.innerHTML = "";
-
-  activities.forEach(act => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-
-    card.innerHTML = `
-      <h3>${act.name}</h3>
-      <p>${act.date}</p>
-      <button onclick="viewDetails(${act.id})">Ver Detalhes</button>
-    `;
-
-    container.appendChild(card);
-  });
-}
-
-window.viewDetails = function(id) {
-  window.location.href = `activity-detail.html?id=${id}`;
-};
-
-loadActivities();
+module.exports = router;

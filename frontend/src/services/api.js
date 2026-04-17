@@ -1,302 +1,258 @@
-import * as data from './mockData';
-
-// API Mock Service Layer
-// In a real application, these would be fetch() or axios calls to a real backend.
-
-const delay = (ms = 300) => new Promise(res => setTimeout(res, ms));
+const BASE_URL = 'http://localhost:3000/api';
 
 class ApiService {
   constructor() {
-    this.users = [...data.mockUsers];
-    this.projects = [...data.mockProjects];
-    this.activities = [...data.mockActivities];
-    this.participations = [...data.mockParticipations];
-    this.proposals = [...data.mockProposals];
-    this.meetings = [...data.mockMeetings];
-    this.backups = [...data.mockBackups];
-    this.currentUser = null;
-    this._nextId = 100;
+    this.token = localStorage.getItem('ecogest_token');
+    this.currentUser = JSON.parse(localStorage.getItem('ecogest_user'));
   }
 
-  _nextID() { return ++this._nextId; }
+  async _request(endpoint, options = {}) {
+    const url = `${BASE_URL}${endpoint}`;
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(url, {
+      ...options,
+      headers,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || result.message || 'Request failed');
+    }
+
+    return result;
+  }
 
   // --- Auth ---
   async login(email, password) {
-    await delay();
-    const user = this.users.find(u => u.email === email && u.password === password);
-    if (!user) throw new Error("Credenciais inválidas");
-    if (user.status !== 'active') throw new Error("Conta inativa");
-    this.currentUser = user;
-    return { token: "MOCK_JWT", user };
+    const result = await this._request('/users/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+
+    this.token = result.token;
+    this.currentUser = result.user;
+    localStorage.setItem('ecogest_token', result.token);
+    localStorage.setItem('ecogest_user', JSON.stringify(result.user));
+
+    return result;
   }
 
   async logout() {
-    await delay(100);
+    this.token = null;
     this.currentUser = null;
+    localStorage.removeItem('ecogest_token');
+    localStorage.removeItem('ecogest_user');
   }
 
   async getMe() {
-    await delay();
-    if (!this.currentUser) throw new Error("Unauthorized");
-    return this.currentUser;
+    const user = await this._request('/users/me');
+    this.currentUser = user;
+    localStorage.setItem('ecogest_user', JSON.stringify(user));
+    return user;
   }
 
   async updateProfile(payload) {
-    await delay();
-    if (!this.currentUser) throw new Error("Unauthorized");
-    Object.assign(this.currentUser, payload);
-    return { message: "Profile updated" };
+    return await this._request('/users/me', {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
   }
 
-  // --- Activities (Public) ---
-  async getActivities({ status } = {}) {
-    await delay();
-    let acts = this.activities.map(act => ({
-      ...act,
-      participants_count: this.participations.filter(p => p.activity_id === act.id).length
-    }));
-    if (status) acts = acts.filter(a => a.status === status);
-    return acts;
+  // --- Activities (Public/Shared) ---
+  async getActivities(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const result = await this._request(`/activities?${query}`);
+    return result.data; // Backend uses { data: [...] }
   }
 
   async getActivity(id) {
-    await delay();
-    const act = this.activities.find(a => a.id === parseInt(id));
-    if (!act) throw new Error("Activity not found");
+    const result = await this._request(`/activities/${id}`);
+    // Map backend response if needed. Backend returns raw object.
     return {
-      ...act,
-      participants_count: this.participations.filter(p => p.activity_id === act.id).length
+      ...result,
+      id: result.activity_id // mapping for consistency
     };
   }
 
   async participateInActivity(id, payload) {
-    await delay();
-    const existing = this.participations.find(
-      p => p.activity_id === parseInt(id) && (p.email === payload.email || p.user_id === this.currentUser?.id)
-    );
-    if (existing) throw new Error("Já participas nesta atividade");
-    const newPart = { id: this._nextID(), activity_id: parseInt(id), joined_at: new Date().toISOString(), ...payload };
-    this.participations.push(newPart);
-    return { message: "Participation confirmed", id: newPart.id };
+    return await this._request(`/activities/${id}/participations`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   }
 
   async getParticipants(activityId) {
-    await delay();
-    return this.participations.filter(p => p.activity_id === parseInt(activityId));
+    const result = await this._request(`/activities/${activityId}/participants`);
+    return result.data;
   }
 
   async cancelParticipation(activityId, participationId) {
-    await delay();
-    const idx = this.participations.findIndex(p => p.id === parseInt(participationId) && p.activity_id === parseInt(activityId));
-    if (idx === -1) throw new Error("Participation not found");
-    this.participations.splice(idx, 1);
-    return { message: "Participation cancelled" };
+    return await this._request(`/activities/${activityId}/participations/${participationId}`, {
+      method: 'DELETE',
+    });
   }
 
-  // --- Admin Activities ---
-  async adminGetActivities({ status } = {}) {
-    await delay();
-    let acts = this.activities.map(act => ({
-      ...act,
-      participants_count: this.participations.filter(p => p.activity_id === act.id).length
-    }));
-    if (status) acts = acts.filter(a => a.status === status);
-    return acts;
+  // --- Admin/Coordinator Activities ---
+  async adminGetActivities(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const result = await this._request(`/admin/activities?${query}`);
+    return result.data.map(a => ({ ...a, id: a.activity_id }));
   }
 
   async createActivity(payload) {
-    await delay();
-    const newAct = { id: this._nextID(), ...payload, status: 'planned', participants_count: 0 };
-    this.activities.push(newAct);
-    return newAct;
+    return await this._request('/admin/activities', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   }
 
   async updateActivity(id, payload) {
-    await delay();
-    const idx = this.activities.findIndex(a => a.id === parseInt(id));
-    if (idx === -1) throw new Error("Not found");
-    this.activities[idx] = { ...this.activities[idx], ...payload };
-    return this.activities[idx];
+    return await this._request(`/admin/activities/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
   }
 
   async updateActivityStatus(id, status) {
-    await delay();
-    const idx = this.activities.findIndex(a => a.id === parseInt(id));
-    if (idx === -1) throw new Error("Not found");
-    this.activities[idx].status = status;
-    return { message: "Activity status updated", status };
+    return await this._request(`/admin/activities/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
   }
 
   // --- Proposals ---
-  async getProposals({ status } = {}) {
-    await delay();
-    let props = this.proposals;
-    if (status) props = props.filter(p => p.status === status);
-    return props;
+  async getProposals(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const result = await this._request(`/proposals?${query}`);
+    return result.data.map(p => ({ ...p, id: p.proposal_id }));
   }
 
   async createProposal(payload) {
-    await delay();
-    const newP = { id: this._nextID(), ...payload, status: 'pending', created_at: new Date().toISOString(), created_by: this.currentUser?.id };
-    this.proposals.push(newP);
-    return { id: newP.id, status: 'pending' };
+    return await this._request('/proposals', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   }
 
-  async updateProposalStatus(id, status) {
-    await delay();
-    const idx = this.proposals.findIndex(p => p.id === parseInt(id));
-    if (idx === -1) throw new Error("Not found");
-    this.proposals[idx].status = status;
-    if (status === 'approved') {
-      // Auto-create activity from approved proposal
-      const p = this.proposals[idx];
-      const newAct = {
-        id: this._nextID(), name: p.title, description: p.description,
-        date: p.start_date, location: "A definir", project_id: 1,
-        status: 'planned', area: p.area, visibility: 'public', participants_count: 0,
-      };
-      this.activities.push(newAct);
-    }
-    return { message: `Proposal ${status}` };
+  async updateProposalStatus(id, status, review_note = '') {
+    return await this._request(`/admin/proposals/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status, review_note }),
+    });
   }
 
   // --- Meetings ---
   async getMeetings() {
-    await delay();
-    return this.meetings;
+    const result = await this._request('/meetings');
+    return result.data.map(m => ({ ...m, id: m.meeting_id }));
   }
 
   async createMeeting(payload) {
-    await delay();
-    const newM = { id: this._nextID(), ...payload, status: 'scheduled' };
-    this.meetings.push(newM);
-    return newM;
+    return await this._request('/meetings', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   }
 
   async updateMeeting(id, payload) {
-    await delay();
-    const idx = this.meetings.findIndex(m => m.id === parseInt(id));
-    if (idx === -1) throw new Error("Not found");
-    this.meetings[idx] = { ...this.meetings[idx], ...payload };
-    return this.meetings[idx];
+    return await this._request(`/meetings/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
   }
 
   async deleteMeeting(id) {
-    await delay();
-    const idx = this.meetings.findIndex(m => m.id === parseInt(id));
-    if (idx === -1) throw new Error("Not found");
-    this.meetings.splice(idx, 1);
-    return { message: "Meeting deleted" };
+    return await this._request(`/meetings/${id}`, {
+      method: 'DELETE',
+    });
   }
 
   // --- Projects ---
-  async getProjects({ status } = {}) {
-    await delay();
-    let projs = this.projects;
-    if (status) projs = projs.filter(p => p.status === status);
-    return projs;
+  async getProjects(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const result = await this._request(`/projects?${query}`);
+    return result.data.map(p => ({ ...p, id: p.project_id }));
   }
 
   async createProject(payload) {
-    await delay();
-    const newP = { id: this._nextID(), ...payload, status: 'planning' };
-    this.projects.push(newP);
-    return { id: newP.id, status: 'planning' };
+    return await this._request('/projects', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   }
 
   async updateProjectStatus(id, status) {
-    await delay();
-    const idx = this.projects.findIndex(p => p.id === parseInt(id));
-    if (idx === -1) throw new Error("Not found");
-    this.projects[idx].status = status;
-    return { status };
+    return await this._request(`/projects/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
   }
 
   // --- Users Admin ---
-  async getUsers() {
-    await delay();
-    return this.users;
+  async getUsers(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const result = await this._request(`/admin/users?${query}`);
+    return result.data.map(u => ({ ...u, id: u.user_id }));
   }
 
   async createUser(payload) {
-    await delay();
-    const exists = this.users.find(u => u.email === payload.email);
-    if (exists) throw new Error("Email already in use");
-    const newU = { id: this._nextID(), ...payload, status: 'active', joined: new Date().toISOString().split('T')[0] };
-    this.users.push(newU);
-    return newU;
+    return await this._request('/admin/users', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   }
 
   async updateUser(id, payload) {
-    await delay();
-    const idx = this.users.findIndex(u => u.id === parseInt(id));
-    if (idx === -1) throw new Error("Not found");
-    this.users[idx] = { ...this.users[idx], ...payload };
-    return this.users[idx];
+    return await this._request(`/admin/users/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
   }
 
   async updateUserStatus(id, status) {
-    await delay();
-    const idx = this.users.findIndex(u => u.id === parseInt(id));
-    if (idx === -1) throw new Error("Not found");
-    this.users[idx].status = status;
-    return { message: "User status updated" };
+    return await this._request(`/admin/users/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
   }
 
   // --- Dashboard ---
   async getDashboardMetrics() {
-    await delay();
-    const thisMonth = new Date().getMonth();
-    return {
-      activities: {
-        total: this.activities.length,
-        planned: this.activities.filter(a => a.status === 'planned').length,
-        active: this.activities.filter(a => a.status === 'active').length,
-        completed: this.activities.filter(a => a.status === 'completed').length,
-      },
-      participants: this.participations.length,
-      meetings: this.meetings.length,
-      users: this.users.length,
-      proposals: {
-        total: this.proposals.length,
-        pending: this.proposals.filter(p => p.status === 'pending').length,
-        approved: this.proposals.filter(p => p.status === 'approved').length,
-        rejected: this.proposals.filter(p => p.status === 'rejected').length,
-      }
-    };
+    return await this._request('/admin/dashboard');
   }
 
   // --- Backups ---
   async getBackups() {
-    await delay();
-    return this.backups;
+    const result = await this._request('/admin/backups');
+    return result.data.map(b => ({ ...b, id: b.backup_id }));
   }
 
   async createBackup(description) {
-    await delay();
-    const newB = { id: this._nextID(), description, created_at: new Date().toISOString(), size: `${(Math.random() * 50 + 10).toFixed(1)} MB` };
-    this.backups.unshift(newB);
-    return newB;
+    return await this._request('/admin/backups', {
+      method: 'POST',
+      body: JSON.stringify({ description }),
+    });
   }
 
   async restoreBackup(id) {
-    await delay(1500);
-    const backup = this.backups.find(b => b.id === parseInt(id));
-    if (!backup) throw new Error("Backup not found");
-    return { message: "System restored successfully" };
+    return await this._request(`/admin/backups/${id}/restore`, {
+      method: 'POST',
+      body: JSON.stringify({ confirm: true }),
+    });
   }
 
   // --- Report ---
   async getReport() {
-    await delay();
-    return {
-      total_activities: this.activities.length,
-      completed_activities: this.activities.filter(a => a.status === 'completed').length,
-      participants: this.participations.length,
-      meetings: this.meetings.length,
-      engagement_rate: `${Math.round((this.activities.filter(a => a.status !== 'planned').length / this.activities.length) * 100)}%`,
-      projects: this.projects.length,
-    };
+    return await this._request('/admin/report');
   }
 }
 
