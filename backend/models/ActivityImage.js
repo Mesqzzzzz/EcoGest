@@ -1,11 +1,9 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const ActivityImage = sequelize.define('ActivityImage', {
-  id:          { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  activity_id: { type: DataTypes.INTEGER, allowNull: false },
-  image_url:   { type: DataTypes.STRING(500), allowNull: false },
-  uploaded_by: { type: DataTypes.INTEGER, allowNull: true },
-}, { tableName: 'Activity_Images', timestamps: true });
+const activityImageSchema = new mongoose.Schema({
+  activity:   { type: mongoose.Schema.Types.ObjectId, ref: 'Activity', required: true },
+  imageUrl:   { type: String, required: true },
+  uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+}, { timestamps: true });
 
-module.exports = ActivityImage;
+module.exports = mongoose.model('ActivityImage', activityImageSchema);

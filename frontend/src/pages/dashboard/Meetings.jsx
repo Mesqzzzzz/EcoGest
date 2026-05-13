@@ -12,7 +12,10 @@ export default function MeetingsPage() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ title: '', date: '', description: '' });
 
-  const load = () => api.getMeetings().then(d => { setMeetings(d); setLoading(false); });
+  const userRole = api.currentUser?.role;
+  const canManageMeetings = ['admin', 'secretary'].includes(userRole);
+
+  const load = () => api.getMeetings().then(d => { setMeetings(d); setLoading(false); }).catch(e => { console.error(e); setLoading(false); });
   useEffect(() => { load(); }, []);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -41,7 +44,7 @@ export default function MeetingsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Delete this meeting?')) return;
+    if (!window.confirm('Delete this meeting?')) return;
     await api.deleteMeeting(id);
     load();
   };
@@ -61,11 +64,11 @@ export default function MeetingsPage() {
       <PageHeader
         title="Meetings"
         subtitle="Schedule and manage team meetings"
-        action={<Btn onClick={openCreate}><Plus size={16} /> New Meeting</Btn>}
+        action={canManageMeetings ? <Btn onClick={openCreate}><Plus size={16} /> New Meeting</Btn> : null}
       />
 
       {loading ? <Spinner /> : (
-        <Table headers={['Title', 'Date', 'Participants', 'Status', 'Actions']}>
+        <Table headers={['Title', 'Date', 'Participants', 'Status', canManageMeetings ? 'Actions' : '']}>
           {meetings.map(m => (
             <tr key={m.id} className="hover:bg-slate-50 transition-colors">
               <td className="px-4 py-3">
@@ -76,13 +79,15 @@ export default function MeetingsPage() {
               <td className="px-4 py-3 text-slate-600">{m.participants ?? '—'}</td>
               <td className="px-4 py-3"><Badge status={m.status} /></td>
               <td className="px-4 py-3">
-                <div className="flex items-center gap-2">
-                  <Btn variant="ghost" size="sm" onClick={() => openEdit(m)}><Pencil size={14} /></Btn>
-                  <Btn variant="ghost" size="sm" onClick={() => setConvModal(m)}><Send size={14} /> Convoke</Btn>
-                  {m.status !== 'completed' && (
-                    <Btn variant="danger" size="sm" onClick={() => handleDelete(m.id)}><Trash2 size={14} /></Btn>
-                  )}
-                </div>
+                {canManageMeetings && (
+                  <div className="flex items-center gap-2">
+                    <Btn variant="ghost" size="sm" onClick={() => openEdit(m)}><Pencil size={14} /></Btn>
+                    <Btn variant="ghost" size="sm" onClick={() => setConvModal(m)}><Send size={14} /> Convoke</Btn>
+                    {m.status !== 'completed' && (
+                      <Btn variant="danger" size="sm" onClick={() => handleDelete(m.id)}><Trash2 size={14} /></Btn>
+                    )}
+                  </div>
+                )}
               </td>
             </tr>
           ))}

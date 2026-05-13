@@ -35,9 +35,8 @@ export default function ProjectsPage() {
     load();
   };
 
-  const coordinatorName = (id) => {
-    const u = api.users.find(u => u.id === id);
-    return u ? u.name : '—';
+  const coordinatorName = (project) => {
+    return project.coordinator?.name || '—';
   };
 
   return (
@@ -55,7 +54,7 @@ export default function ProjectsPage() {
               <td className="px-4 py-3 font-semibold text-slate-800">{p.name}</td>
               <td className="px-4 py-3 text-slate-600">{p.year}</td>
               <td className="px-4 py-3"><Badge status={p.level} /></td>
-              <td className="px-4 py-3 text-slate-600">{coordinatorName(p.coordinator_id)}</td>
+              <td className="px-4 py-3 text-slate-600">{coordinatorName(p)}</td>
               <td className="px-4 py-3"><Badge status={p.status} /></td>
               <td className="px-4 py-3">
                 {STATUS_TRANSITIONS[p.status]?.length > 0 && (

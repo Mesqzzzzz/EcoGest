@@ -6,16 +6,20 @@ import {
 } from 'lucide-react';
 import { api } from '../services/api';
 
-const navItems = [
-  { label: 'Overview',    path: '/dashboard',            icon: LayoutDashboard },
-  { label: 'Activities',  path: '/dashboard/activities', icon: CalendarDays },
-  { label: 'Proposals',   path: '/dashboard/proposals',  icon: FileText },
-  { label: 'Meetings',    path: '/dashboard/meetings',   icon: CalendarDays },
-  { label: 'Projects',    path: '/dashboard/projects',   icon: FolderKanban },
-  { label: 'Users',       path: '/dashboard/users',      icon: Users },
-  { label: 'Reports',     path: '/dashboard/reports',    icon: BarChart3 },
-  { label: 'Backups',     path: '/dashboard/backups',    icon: Database },
-];
+const getNavItems = (role) => {
+  const allItems = [
+    { label: 'Overview',    path: '/dashboard',            icon: LayoutDashboard, roles: ['all'] },
+    { label: 'Activities',  path: '/dashboard/activities', icon: CalendarDays, roles: ['all'] },
+    { label: 'Proposals',   path: '/dashboard/proposals',  icon: FileText, roles: ['admin', 'coordinator', 'council_member'] },
+    { label: 'Meetings',    path: '/dashboard/meetings',   icon: CalendarDays, roles: ['admin', 'coordinator', 'council_member', 'secretary'] },
+    { label: 'Projects',    path: '/dashboard/projects',   icon: FolderKanban, roles: ['admin', 'council_member', 'secretary'] },
+    { label: 'Users',       path: '/dashboard/users',      icon: Users, roles: ['admin'] },
+    { label: 'Reports',     path: '/dashboard/reports',    icon: BarChart3, roles: ['admin', 'coordinator'] },
+    { label: 'Backups',     path: '/dashboard/backups',    icon: Database, roles: ['admin'] },
+  ];
+
+  return allItems.filter(item => item.roles.includes('all') || item.roles.includes(role));
+};
 
 export default function DashboardLayout() {
   const navigate = useNavigate();
@@ -32,6 +36,8 @@ export default function DashboardLayout() {
   };
 
   const user = api.currentUser;
+  if (!user) return null;
+
   const roleColors = {
     admin: 'bg-red-100 text-red-700',
     coordinator: 'bg-blue-100 text-blue-700',
@@ -39,6 +45,8 @@ export default function DashboardLayout() {
     council_member: 'bg-amber-100 text-amber-700',
     user: 'bg-slate-100 text-slate-700',
   };
+
+  const navItems = getNavItems(user.role);
 
   return (
     <div className="min-h-screen bg-slate-100 flex">
@@ -71,21 +79,19 @@ export default function DashboardLayout() {
         </div>
 
         {/* User chip */}
-        {user && (
-          <div className="p-4 border-b border-slate-100">
-            <div className="flex items-center gap-3 px-3 py-2.5 bg-slate-50 rounded-xl">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                {user.name.charAt(0)}
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-slate-800 truncate">{user.name}</p>
-                <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${roleColors[user.role] || 'bg-slate-100 text-slate-600'}`}>
-                  {user.role.replace('_', ' ')}
-                </span>
-              </div>
+        <div className="p-4 border-b border-slate-100">
+          <div className="flex items-center gap-3 px-3 py-2.5 bg-slate-50 rounded-xl">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+              {(user.name || '?').charAt(0)}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-slate-800 truncate">{user.name}</p>
+              <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${roleColors[user.role] || 'bg-slate-100 text-slate-600'}`}>
+                {user.role.replace('_', ' ')}
+              </span>
             </div>
           </div>
-        )}
+        </div>
 
         {/* Nav */}
         <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
@@ -133,7 +139,7 @@ export default function DashboardLayout() {
             <Leaf size={18} className="text-emerald-600" /> EcoGest
           </div>
           <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold">
-            {user?.name.charAt(0)}
+            {(user.name || '?').charAt(0)}
           </div>
         </header>
 

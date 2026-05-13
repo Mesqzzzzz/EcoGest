@@ -1,17 +1,16 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const Activity = sequelize.define('Activity', {
-  activity_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  project_id:  { type: DataTypes.INTEGER, allowNull: false },
-  name:        { type: DataTypes.STRING(150), allowNull: false },
-  description: { type: DataTypes.TEXT },
-  location:    { type: DataTypes.STRING(200) },
-  start_date:  { type: DataTypes.DATEONLY },
-  end_date:    { type: DataTypes.DATEONLY },
-  status:      { type: DataTypes.ENUM('planned', 'active', 'completed'), defaultValue: 'planned' },
-  visibility:  { type: DataTypes.ENUM('public', 'private'), defaultValue: 'public' },
-  created_by:  { type: DataTypes.INTEGER, allowNull: false },
-}, { tableName: 'Activities', timestamps: true });
+const activitySchema = new mongoose.Schema({
+  project:     { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+  name:        { type: String, required: true, maxlength: 150 },
+  description: { type: String },
+  location:    { type: String, maxlength: 200 },
+  startDate:   { type: Date },
+  endDate:     { type: Date },
+  status:      { type: String, enum: ['planned', 'active', 'completed'], default: 'planned' },
+  visibility:  { type: String, enum: ['public', 'private'], default: 'public' },
+  areas:       [{ type: String }],
+  createdBy:   { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+}, { timestamps: true });
 
-module.exports = Activity;
+module.exports = mongoose.model('Activity', activitySchema);

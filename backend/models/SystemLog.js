@@ -1,13 +1,9 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const SystemLog = sequelize.define('SystemLog', {
-  system_log_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  level:         { type: DataTypes.ENUM('info', 'warn', 'error'), defaultValue: 'info' },
-  message:       { type: DataTypes.TEXT },
-  endpoint:      { type: DataTypes.STRING(255) },
-  method:        { type: DataTypes.STRING(10) },
-  status_code:   { type: DataTypes.INTEGER },
-}, { tableName: 'System_Logs', timestamps: true, updatedAt: false });
+const systemLogSchema = new mongoose.Schema({
+  level:    { type: String, enum: ['info', 'warn', 'error'], default: 'info' },
+  message:  { type: String, required: true },
+  metadata: { type: mongoose.Schema.Types.Mixed },
+}, { timestamps: true });
 
-module.exports = SystemLog;
+module.exports = mongoose.model('SystemLog', systemLogSchema);

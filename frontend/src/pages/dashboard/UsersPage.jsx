@@ -67,9 +67,9 @@ export default function UsersPage() {
               <td className="px-4 py-3">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                    {u.name.charAt(0)}
+                    {(u.name || '?').charAt(0)}
                   </div>
-                  <span className="font-semibold text-slate-800">{u.name}</span>
+                  <span className="font-semibold text-slate-800">{u.name || 'Unknown'}</span>
                 </div>
               </td>
               <td className="px-4 py-3 text-slate-500 text-sm">{u.email}</td>

@@ -4,11 +4,11 @@ import { Leaf, Lock, Mail, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { api } from '../services/api';
 
 const DEMO_ACCOUNTS = [
-  { label: 'Admin',        email: 'admin@ecogest.pt',       role: 'bg-red-100 text-red-700' },
-  { label: 'Coordinator',  email: 'coordenador@ecogest.pt', role: 'bg-blue-100 text-blue-700' },
-  { label: 'Council',      email: 'conselheiro@ecogest.pt', role: 'bg-amber-100 text-amber-700' },
-  { label: 'Secretary',    email: 'secretario@ecogest.pt',  role: 'bg-purple-100 text-purple-700' },
-  { label: 'User',         email: 'joao@ecogest.pt',        role: 'bg-slate-100 text-slate-700' },
+  { label: 'Admin',        email: 'admin@ecogest.pt',        role: 'bg-red-100 text-red-700' },
+  { label: 'Coordinator',  email: 'coordenador@ecogest.pt',  role: 'bg-blue-100 text-blue-700' },
+  { label: 'Council',      email: 'membro1@ecogest.pt',      role: 'bg-amber-100 text-amber-700' },
+  { label: 'Secretary',    email: 'secretaria@ecogest.pt',   role: 'bg-purple-100 text-purple-700' },
+  { label: 'User',         email: 'joao@exemplo.pt',         role: 'bg-slate-100 text-slate-700' },
 ];
 
 export default function Login() {

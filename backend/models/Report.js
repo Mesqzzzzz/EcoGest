@@ -1,11 +1,10 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const Report = sequelize.define('Report', {
-  report_id:  { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  project_id: { type: DataTypes.INTEGER, allowNull: false },
-  content:    { type: DataTypes.JSON },
-  generated_by: { type: DataTypes.INTEGER, allowNull: true },
-}, { tableName: 'Reports', timestamps: true });
+const reportSchema = new mongoose.Schema({
+  project:     { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+  generatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+  filePath:    { type: String },
+  notes:       { type: String },
+}, { timestamps: true });
 
-module.exports = Report;
+module.exports = mongoose.model('Report', reportSchema);

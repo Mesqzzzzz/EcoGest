@@ -1,10 +1,7 @@
-const jwt = require('jsonwebtoken');
+const jwt  = require('jsonwebtoken');
 const { User } = require('../models');
 
-/**
- * Verifies the JWT from Authorization header.
- * Sets req.user on success.
- */
+/** Verifica o JWT e coloca req.user */
 const authenticate = async (req, res, next) => {
   const header = req.headers.authorization;
   if (!header || !header.startsWith('Bearer '))
@@ -13,10 +10,8 @@ const authenticate = async (req, res, next) => {
   const token = header.split(' ')[1];
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(payload.user_id, {
-      attributes: { exclude: ['password'] },
-    });
-    if (!user)   return res.status(401).json({ error: 'User not found' });
+    const user = await User.findById(payload.id).select('-password');
+    if (!user)               return res.status(401).json({ error: 'User not found' });
     if (user.status === 'inactive')
       return res.status(403).json({ error: 'Account is inactive' });
     req.user = user;
@@ -26,18 +21,16 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-/**
- * Optional auth – attaches user if token exists but doesn't fail if missing.
- */
+/** Auth opcional — anexa utilizador se token existir, mas não falha se não houver */
 const optionalAuth = async (req, res, next) => {
   const header = req.headers.authorization;
   if (!header || !header.startsWith('Bearer ')) return next();
   const token = header.split(' ')[1];
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(payload.user_id, { attributes: { exclude: ['password'] } });
+    const user = await User.findById(payload.id).select('-password');
     if (user && user.status === 'active') req.user = user;
-  } catch { /* ignore */ }
+  } catch { /* ignorar */ }
   next();
 };
 

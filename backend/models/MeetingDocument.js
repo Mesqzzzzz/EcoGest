@@ -1,13 +1,11 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const MeetingDocument = sequelize.define('MeetingDocument', {
-  id:           { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  meeting_id:   { type: DataTypes.INTEGER, allowNull: false },
-  name:         { type: DataTypes.STRING(200), allowNull: false },
-  document_url: { type: DataTypes.STRING(500), allowNull: false },
-  type:         { type: DataTypes.ENUM('minutes', 'report', 'other'), defaultValue: 'other' },
-  uploaded_by:  { type: DataTypes.INTEGER, allowNull: true },
-}, { tableName: 'Meetings_Documents', timestamps: true });
+const meetingDocumentSchema = new mongoose.Schema({
+  meeting:     { type: mongoose.Schema.Types.ObjectId, ref: 'Meeting', required: true },
+  name:        { type: String, required: true },
+  documentUrl: { type: String },
+  type:        { type: String, enum: ['agenda', 'minutes', 'other'], default: 'other' },
+  uploadedBy:  { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+}, { timestamps: true });
 
-module.exports = MeetingDocument;
+module.exports = mongoose.model('MeetingDocument', meetingDocumentSchema);

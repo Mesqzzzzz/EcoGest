@@ -1,13 +1,11 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const Project = sequelize.define('Project', {
-  project_id:     { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  name:           { type: DataTypes.STRING(150), allowNull: false },
-  year:           { type: DataTypes.INTEGER, allowNull: false },
-  coordinator_id: { type: DataTypes.INTEGER, allowNull: true },
-  status:         { type: DataTypes.ENUM('planning', 'active', 'finished'), defaultValue: 'planning' },
-  level_id:       { type: DataTypes.ENUM('bronze', 'silver', 'gold'), allowNull: true },
-}, { tableName: 'Projects', timestamps: true });
+const projectSchema = new mongoose.Schema({
+  name:        { type: String, required: true, maxlength: 150 },
+  year:        { type: Number, required: true },
+  coordinator: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+  status:      { type: String, enum: ['planning', 'active', 'finished'], default: 'planning' },
+  level:       { type: String, enum: ['bronze', 'silver', 'gold'], default: null },
+}, { timestamps: true });
 
-module.exports = Project;
+module.exports = mongoose.model('Project', projectSchema);

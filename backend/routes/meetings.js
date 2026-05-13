@@ -5,8 +5,8 @@ const { authenticate } = require('../middleware/auth');
 const { authorize } = require('../middleware/roles');
 const upload = require('../utils/upload');
 
-router.get('/', authenticate, authorize('admin', 'coordinator', 'council_member', 'secretary'), meetingsController.getMeetings);
-router.get('/:id', authenticate, authorize('admin', 'coordinator', 'council_member', 'secretary'), meetingsController.getMeeting);
+router.get('/', authenticate, authorize('admin', 'coordinator', 'council_member', 'secretary', 'user'), meetingsController.getMeetings);
+router.get('/:id', authenticate, authorize('admin', 'coordinator', 'council_member', 'secretary', 'user'), meetingsController.getMeeting);
 router.post('/', authenticate, authorize('secretary', 'admin'), meetingsController.createMeeting);
 router.patch('/:id', authenticate, authorize('secretary', 'admin'), meetingsController.updateMeeting);
 router.delete('/:id', authenticate, authorize('secretary', 'admin'), meetingsController.deleteMeeting);

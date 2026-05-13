@@ -1,96 +1,98 @@
 const { Meeting, MeetingDocument } = require('../models');
 
-// GET /meetings
+// GET /api/meetings
 exports.getMeetings = async (req, res) => {
   try {
-    const { project_id, date } = req.query;
-    const where = { deleted_at: null };
-    if (project_id) where.project_id = project_id;
-    if (date) where.date = date;
-    const meetings = await Meeting.findAll({ where, order: [['date', 'ASC']] });
+    const filter = { deletedAt: null };
+    if (req.query.project_id) filter.project = req.query.project_id;
+    if (req.query.date) filter.date = new Date(req.query.date);
+    const meetings = await Meeting.find(filter).sort({ date: 1 });
     res.json({ data: meetings });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// GET /meetings/:id
+// GET /api/meetings/:id
 exports.getMeeting = async (req, res) => {
   try {
-    const m = await Meeting.findOne({ where: { meeting_id: req.params.id, deleted_at: null }, include: [{ model: MeetingDocument, as: 'documents' }] });
+    const m = await Meeting.findOne({ _id: req.params.id, deletedAt: null });
     if (!m) return res.status(404).json({ error: 'Meeting not found' });
-    res.json(m);
+    const documents = await MeetingDocument.find({ meeting: m._id });
+    res.json({ ...m.toObject(), documents });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// POST /meetings
+// POST /api/meetings
 exports.createMeeting = async (req, res) => {
   try {
     const { name, date, description, project_id } = req.body;
     if (!name || !date || !project_id)
       return res.status(400).json({ error: 'name, date and project_id required' });
-    const m = await Meeting.create({ name, date, description, project_id });
-    res.status(201).json({ id: m.meeting_id, date: m.date });
+    const m = await Meeting.create({ name, date: new Date(date), description, project: project_id });
+    res.status(201).json({ id: m._id, date: m.date });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// PATCH /meetings/:id
+// PATCH /api/meetings/:id
 exports.updateMeeting = async (req, res) => {
   try {
-    const m = await Meeting.findOne({ where: { meeting_id: req.params.id, deleted_at: null } });
+    const m = await Meeting.findOne({ _id: req.params.id, deletedAt: null });
     if (!m) return res.status(404).json({ error: 'Meeting not found' });
     const { name, date, description } = req.body;
-    await m.update({ name, date, description });
+    if (name) m.name = name;
+    if (date) m.date = new Date(date);
+    if (description) m.description = description;
+    await m.save();
     res.json(m);
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// DELETE /meetings/:id (soft delete)
+// DELETE /api/meetings/:id (soft delete)
 exports.deleteMeeting = async (req, res) => {
   try {
-    const m = await Meeting.findOne({ where: { meeting_id: req.params.id, deleted_at: null } });
+    const m = await Meeting.findOne({ _id: req.params.id, deletedAt: null });
     if (!m) return res.status(404).json({ error: 'Meeting not found' });
-    await m.update({ deleted_at: new Date() });
+    m.deletedAt = new Date();
+    await m.save();
     res.json({ message: 'Meeting deleted' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// POST /meetings/:id/convocations
+// POST /api/meetings/:id/convocations
 exports.sendConvocations = async (req, res) => {
   try {
-    const m = await Meeting.findOne({ where: { meeting_id: req.params.id, deleted_at: null } });
+    const m = await Meeting.findOne({ _id: req.params.id, deletedAt: null });
     if (!m) return res.status(404).json({ error: 'Meeting not found' });
     if (!m.date) return res.status(400).json({ error: 'Meeting date missing' });
-    // TODO: Integrate nodemailer here to send real emails
     res.json({ message: 'Convocations sent successfully' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// GET /meetings/:id/documents
+// GET /api/meetings/:id/documents
 exports.getDocuments = async (req, res) => {
   try {
-    const docs = await MeetingDocument.findAll({ where: { meeting_id: req.params.id } });
+    const docs = await MeetingDocument.find({ meeting: req.params.id });
     res.json({ data: docs });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// POST /meetings/:id/documents
+// POST /api/meetings/:id/documents
 exports.uploadDocument = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file provided' });
     const doc = await MeetingDocument.create({
-      meeting_id: req.params.id, name: req.file.originalname,
-      document_url: `/uploads/${req.file.filename}`,
-      type: req.body.type || 'other', uploaded_by: req.user?.user_id,
+      meeting: req.params.id, name: req.file.originalname,
+      documentUrl: `/uploads/${req.file.filename}`,
+      type: req.body.type || 'other', uploadedBy: req.user?._id || null,
     });
     res.status(201).json({ message: 'Document uploaded', document: doc });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// DELETE /documents/:id
+// DELETE /api/documents/:id
 exports.deleteDocument = async (req, res) => {
   try {
-    const doc = await MeetingDocument.findByPk(req.params.id);
+    const doc = await MeetingDocument.findByIdAndDelete(req.params.id);
     if (!doc) return res.status(404).json({ error: 'Document not found' });
-    await doc.destroy();
     res.json({ message: 'Document removed' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };

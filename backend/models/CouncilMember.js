@@ -1,10 +1,9 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const CouncilMember = sequelize.define('CouncilMember', {
-  member_id:  { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  user_id:    { type: DataTypes.INTEGER, allowNull: false },
-  project_id: { type: DataTypes.INTEGER, allowNull: false },
-}, { tableName: 'Council_Members', timestamps: true });
+const councilMemberSchema = new mongoose.Schema({
+  user:    { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+  role:    { type: String, default: 'member' },
+}, { timestamps: true });
 
-module.exports = CouncilMember;
+module.exports = mongoose.model('CouncilMember', councilMemberSchema);

@@ -8,8 +8,8 @@ const { authorize } = require('../middleware/roles');
 
 // Dashboard & Stats
 router.get('/dashboard', authenticate, authorize('admin', 'coordinator'), adminController.getDashboard);
-router.get('/report', authenticate, authorize('admin'), adminController.getReport);
-router.post('/report', authenticate, authorize('admin'), adminController.generateReport);
+router.get('/report', authenticate, authorize('admin', 'coordinator'), adminController.getReport);
+router.post('/report', authenticate, authorize('admin', 'coordinator'), adminController.generateReport);
 
 // User Management
 router.get('/users', authenticate, authorize('admin'), adminController.getUsers);

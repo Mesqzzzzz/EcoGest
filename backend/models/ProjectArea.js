@@ -1,10 +1,8 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const ProjectArea = sequelize.define('ProjectArea', {
-  id:         { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  project_id: { type: DataTypes.INTEGER, allowNull: false },
-  area:       { type: DataTypes.STRING(100), allowNull: false },
-}, { tableName: 'Project_Areas', timestamps: false });
+const projectAreaSchema = new mongoose.Schema({
+  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+  area:    { type: String, required: true },
+}, { timestamps: false });
 
-module.exports = ProjectArea;
+module.exports = mongoose.model('ProjectArea', projectAreaSchema);

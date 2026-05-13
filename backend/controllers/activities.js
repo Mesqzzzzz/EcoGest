@@ -1,149 +1,155 @@
-const { Op } = require('sequelize');
-const { Activity, ActivityArea, ActivityParticipant, ActivityImage, Project, User } = require('../models');
-const path   = require('path');
+const { Activity, ActivityParticipant, ActivityImage, Project } = require('../models');
 
-// GET /activities
+// GET /api/activities
 exports.getActivities = async (req, res) => {
   try {
     const { search, area, date_from, date_to, page = 1, limit = 20 } = req.query;
-    const where = {};
-    // Public listing: only show public+active unless authenticated
-    if (!req.user || req.user.role === 'user') where.visibility = 'public';
-    if (search) where.name = { [Op.like]: `%${search}%` };
-    if (date_from && date_to) where.start_date = { [Op.between]: [date_from, date_to] };
+    const filter = {};
 
-    const activities = await Activity.findAll({
-      where,
-      include: [
-        { model: Project, as: 'project', attributes: ['project_id', 'name'] },
-        { model: ActivityArea, as: 'areas' },
-        { model: ActivityParticipant, as: 'participations', attributes: ['id'] },
-      ],
-      order: [['start_date', 'ASC']],
-      limit: parseInt(limit),
-      offset: (page - 1) * parseInt(limit),
-    });
+    // Utilizadores não autenticados ou 'user' veem apenas atividades públicas
+    if (!req.user || req.user.role === 'user') filter.visibility = 'public';
+    if (search)  filter.name = new RegExp(search, 'i');
+    if (area)    filter.areas = area;
+    if (date_from && date_to)
+      filter.startDate = { $gte: new Date(date_from), $lte: new Date(date_to) };
 
-    const data = activities
-      .filter(a => !area || a.areas.some(ar => ar.area === area))
-      .map(a => ({
-        id: a.activity_id, name: a.name, start_date: a.start_date, end_date: a.end_date,
+    const activities = await Activity.find(filter)
+      .populate('project', 'name _id')
+      .sort({ startDate: 1 })
+      .skip((page - 1) * parseInt(limit))
+      .limit(parseInt(limit));
+
+    const participationMap = {};
+    if (req.user) {
+      const myParts = await ActivityParticipant.find({ user: req.user._id });
+      myParts.forEach(p => { participationMap[p.activity.toString()] = p._id; });
+    }
+
+    const data = await Promise.all(activities.map(async a => {
+      const actId = a._id.toString();
+      const count = await ActivityParticipant.countDocuments({ activity: a._id });
+      return {
+        id: a._id, name: a.name,
+        start_date: a.startDate, end_date: a.endDate,
         location: a.location, status: a.status, visibility: a.visibility,
-        project: a.project, areas: a.areas.map(ar => ar.area),
-        participants_count: a.participations.length,
-        user_participation: req.user
-          ? {
-              is_participating: a.participations.some(p => p.user_id === req.user.user_id),
-              participation_id: a.participations.find(p => p.user_id === req.user.user_id)?.id || null,
-            }
-          : null,
-      }));
+        project: a.project ? { project_id: a.project._id, name: a.project.name } : null,
+        areas: a.areas,
+        participants_count: count,
+        user_participation: req.user ? {
+          is_participating: !!participationMap[actId],
+          participation_id: participationMap[actId] || null,
+        } : null,
+      };
+    }));
+
     res.json({ data });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// GET /activities/:id
+// GET /api/activities/:id
 exports.getActivity = async (req, res) => {
   try {
-    const a = await Activity.findByPk(req.params.id, {
-      include: [
-        { model: Project, as: 'project' },
-        { model: ActivityArea, as: 'areas' },
-        { model: ActivityParticipant, as: 'participations' },
-        { model: ActivityImage, as: 'images' },
-      ],
-    });
+    const a = await Activity.findById(req.params.id)
+      .populate('project')
+      .populate('createdBy', 'name email');
     if (!a) return res.status(404).json({ error: 'Activity not found' });
-    res.json({ ...a.toJSON(), areas: a.areas.map(ar => ar.area), participants_count: a.participations.length });
+
+    const participantsCount = await ActivityParticipant.countDocuments({ activity: a._id });
+    const images = await ActivityImage.find({ activity: a._id });
+
+    res.json({
+      id: a._id, name: a.name, description: a.description,
+      location: a.location, start_date: a.startDate, end_date: a.endDate,
+      status: a.status, visibility: a.visibility, areas: a.areas,
+      project: a.project, createdBy: a.createdBy,
+      participants_count: participantsCount, images,
+    });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// POST /activities/:id/participations
+// POST /api/activities/:id/participations
 exports.participate = async (req, res) => {
   try {
-    const activity = await Activity.findByPk(req.params.id);
+    const activity = await Activity.findById(req.params.id);
     if (!activity) return res.status(404).json({ error: 'Activity not found' });
-    if (activity.status !== 'active') return res.status(400).json({ error: 'Activity is not accepting participants' });
+    if (activity.status !== 'active')
+      return res.status(400).json({ error: 'Activity is not accepting participants' });
 
     if (req.user) {
-      // Authenticated user
-      if (req.user.status === 'inactive') return res.status(403).json({ error: 'Account is inactive' });
-      const exists = await ActivityParticipant.findOne({ where: { activity_id: req.params.id, user_id: req.user.user_id } });
+      if (req.user.status === 'inactive')
+        return res.status(403).json({ error: 'Account is inactive' });
+      const exists = await ActivityParticipant.findOne({ activity: req.params.id, user: req.user._id });
       if (exists) return res.status(409).json({ error: 'Already participating' });
-      const p = await ActivityParticipant.create({ activity_id: req.params.id, user_id: req.user.user_id });
-      return res.status(201).json({ id: p.id, message: 'Participation confirmed' });
+      const p = await ActivityParticipant.create({ activity: req.params.id, user: req.user._id });
+      return res.status(201).json({ id: p._id, message: 'Participation confirmed' });
     } else {
-      // Guest
       const { name, email } = req.body;
-      if (!name || !email) return res.status(400).json({ error: 'name and email required for guest participation' });
-      const exists = await ActivityParticipant.findOne({ where: { activity_id: req.params.id, guest_email: email } });
+      if (!name || !email)
+        return res.status(400).json({ error: 'name and email required for guest participation' });
+      const exists = await ActivityParticipant.findOne({ activity: req.params.id, guestEmail: email });
       if (exists) return res.status(409).json({ error: 'Email already registered for this activity' });
-      const p = await ActivityParticipant.create({ activity_id: req.params.id, guest_name: name, guest_email: email });
-      return res.status(201).json({ id: p.id, message: 'Participation confirmed' });
+      const p = await ActivityParticipant.create({ activity: req.params.id, guestName: name, guestEmail: email });
+      return res.status(201).json({ id: p._id, message: 'Participation confirmed' });
     }
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// DELETE /activities/:id/participations/:pid
+// DELETE /api/activities/:id/participations/:pid
 exports.cancelParticipation = async (req, res) => {
   try {
     if (!req.user || req.user.status === 'inactive')
       return res.status(403).json({ error: 'Account is inactive' });
-    const p = await ActivityParticipant.findOne({
-      where: { id: req.params.pid, activity_id: req.params.id, user_id: req.user.user_id },
+    const p = await ActivityParticipant.findOneAndDelete({
+      _id: req.params.pid, activity: req.params.id, user: req.user._id,
     });
     if (!p) return res.status(404).json({ error: 'Participation not found' });
-    await p.destroy();
     res.json({ message: 'Participation cancelled' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// GET /activities/:id/participants (coordinator/council)
+// GET /api/activities/:id/participants
 exports.listParticipants = async (req, res) => {
   try {
-    const participants = await ActivityParticipant.findAll({
-      where: { activity_id: req.params.id },
-      include: [{ model: User, as: 'user', attributes: ['user_id', 'name', 'email'] }],
-    });
+    const participants = await ActivityParticipant.find({ activity: req.params.id })
+      .populate('user', 'name email _id');
     res.json({ data: participants });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// POST /activities/:id/participants (coordinator manually adds)
+// POST /api/activities/:id/participants
 exports.addParticipant = async (req, res) => {
   try {
     const { name, email, user_id } = req.body;
-    const activity = await Activity.findByPk(req.params.id);
+    const activity = await Activity.findById(req.params.id);
     if (!activity) return res.status(404).json({ error: 'Activity not found' });
     const p = await ActivityParticipant.create({
-      activity_id: req.params.id,
-      user_id: user_id || null,
-      guest_name: name, guest_email: email,
+      activity: req.params.id,
+      user: user_id || null,
+      guestName: name, guestEmail: email,
     });
-    res.status(201).json({ message: 'Participant registered', id: p.id });
+    res.status(201).json({ message: 'Participant registered', id: p._id });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// POST /activities/:id/executions
+// POST /api/activities/:id/executions
 exports.registerExecution = async (req, res) => {
   try {
-    const { date, location, notes } = req.body;
-    // Store execution as a SystemLog entry / or update the activity
-    const activity = await Activity.findByPk(req.params.id);
+    const activity = await Activity.findById(req.params.id);
     if (!activity) return res.status(404).json({ error: 'Activity not found' });
-    await activity.update({ status: 'completed' });
-    res.status(201).json({ message: 'Execution recorded', activity_id: activity.activity_id });
+    activity.status = 'completed';
+    await activity.save();
+    res.status(201).json({ message: 'Execution recorded', activity_id: activity._id });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
-// POST /activities/:id/photos
+// POST /api/activities/:id/photos
 exports.uploadPhoto = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file provided' });
     const image = await ActivityImage.create({
-      activity_id: req.params.id,
-      image_url: `/uploads/${req.file.filename}`,
-      uploaded_by: req.user?.user_id,
+      activity: req.params.id,
+      imageUrl: `/uploads/${req.file.filename}`,
+      uploadedBy: req.user?._id || null,
     });
     res.status(201).json({ message: 'Photo uploaded', image });
   } catch (e) { res.status(500).json({ error: e.message }); }

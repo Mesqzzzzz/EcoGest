@@ -1,13 +1,11 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-const Meeting = sequelize.define('Meeting', {
-  meeting_id:  { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  project_id:  { type: DataTypes.INTEGER, allowNull: false },
-  name:        { type: DataTypes.STRING(200), allowNull: false },
-  date:        { type: DataTypes.DATEONLY, allowNull: false },
-  description: { type: DataTypes.TEXT },
-  deleted_at:  { type: DataTypes.DATE, allowNull: true }, // soft delete
-}, { tableName: 'Meetings', timestamps: true });
+const meetingSchema = new mongoose.Schema({
+  name:        { type: String, required: true },
+  date:        { type: Date, required: true },
+  description: { type: String },
+  project:     { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+  deletedAt:   { type: Date, default: null },
+}, { timestamps: true });
 
-module.exports = Meeting;
+module.exports = mongoose.model('Meeting', meetingSchema);

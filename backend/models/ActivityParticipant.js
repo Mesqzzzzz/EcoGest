@@ -1,14 +1,10 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const mongoose = require('mongoose');
 
-// Participations – can be registered users OR guests (no user_id)
-const ActivityParticipant = sequelize.define('ActivityParticipant', {
-  id:            { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  activity_id:   { type: DataTypes.INTEGER, allowNull: false },
-  user_id:       { type: DataTypes.INTEGER, allowNull: true },   // null = guest
-  guest_name:    { type: DataTypes.STRING(100), allowNull: true },
-  guest_email:   { type: DataTypes.STRING(150), allowNull: true },
-  joined_at:     { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-}, { tableName: 'Activity_Participants', timestamps: false });
+const activityParticipantSchema = new mongoose.Schema({
+  activity:   { type: mongoose.Schema.Types.ObjectId, ref: 'Activity', required: true },
+  user:       { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+  guestName:  { type: String },
+  guestEmail: { type: String },
+}, { timestamps: true });
 
-module.exports = ActivityParticipant;
+module.exports = mongoose.model('ActivityParticipant', activityParticipantSchema);
