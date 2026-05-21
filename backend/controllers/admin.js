@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const { User, Activity, ActivityParticipant, Proposal, Meeting, Project } = require('../models');
+const { User, Activity, ActivityParticipant, Proposal, Meeting, Project, ActivityImage } = require('../models');
 
 // GET /api/admin/dashboard
 exports.getDashboard = async (req, res) => {
@@ -13,10 +13,52 @@ exports.getDashboard = async (req, res) => {
         ActivityParticipant.countDocuments(),
         Proposal.countDocuments({ status: 'pending' }),
       ]);
+
+    // Incentivos MoM - ultimos 6 meses
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
+    sixMonthsAgo.setDate(1);
+    sixMonthsAgo.setHours(0, 0, 0, 0);
+
+    const [completedActivitiesLast6Months, imagesLast6Months] = await Promise.all([
+      Activity.find({ status: 'completed', updatedAt: { $gte: sixMonthsAgo } }),
+      ActivityImage.find({ createdAt: { $gte: sixMonthsAgo } }),
+    ]);
+
+    const monthlyStats = [];
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const year = d.getFullYear();
+      const month = d.getMonth();
+      const label = d.toLocaleString('en-US', { month: 'short' });
+      const ptLabel = d.toLocaleString('pt-PT', { month: 'short' });
+
+      const actsCount = completedActivitiesLast6Months.filter(a => {
+        const u = new Date(a.updatedAt);
+        return u.getFullYear() === year && u.getMonth() === month;
+      }).length;
+
+      const photosCount = imagesLast6Months.filter(img => {
+        const c = new Date(img.createdAt);
+        return c.getFullYear() === year && c.getMonth() === month;
+      }).length;
+
+      monthlyStats.push({
+        label,
+        ptLabel,
+        year,
+        month: month + 1,
+        completedActivities: actsCount,
+        photosCollected: photosCount
+      });
+    }
+
     res.json({
       activities: { total: totalAct, planned: plannedAct, active: activeAct, completed: completedAct },
       participants,
       proposals: { pending: pendingProposals },
+      monthlyStats
     });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
@@ -39,6 +81,12 @@ exports.createUser = async (req, res) => {
     const { name, email, password, role } = req.body;
     const validRoles = ['admin', 'coordinator', 'secretary', 'council_member', 'user'];
     if (!validRoles.includes(role)) return res.status(400).json({ error: 'Invalid role' });
+    
+    // Boundary check: Only admin can assign coordinator or admin role
+    if (req.user.role !== 'admin' && (role === 'admin' || role === 'coordinator')) {
+      return res.status(403).json({ error: 'Apenas administradores podem atribuir a função de administrador ou coordenador.' });
+    }
+
     const exists = await User.findOne({ email: email?.toLowerCase() });
     if (exists) return res.status(409).json({ error: 'Email already in use' });
     const hashed = await bcrypt.hash(password, 10);
@@ -50,8 +98,20 @@ exports.createUser = async (req, res) => {
 // PATCH /api/admin/users/:id
 exports.updateUser = async (req, res) => {
   try {
+    const existingUser = await User.findById(req.params.id);
+    if (!existingUser) return res.status(404).json({ error: 'User not found' });
+
+    // Boundary check: Non-admins cannot touch admin/coordinator accounts or assign those roles
+    if (req.user.role !== 'admin') {
+      if (existingUser.role === 'admin' || existingUser.role === 'coordinator') {
+        return res.status(403).json({ error: 'Apenas administradores podem modificar utilizadores administradores ou coordenadores.' });
+      }
+      if (req.body.role && (req.body.role === 'admin' || req.body.role === 'coordinator')) {
+        return res.status(403).json({ error: 'Apenas administradores podem atribuir a função de administrador ou coordenador.' });
+      }
+    }
+
     const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!user) return res.status(404).json({ error: 'User not found' });
     res.json({ message: 'User updated' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
@@ -62,8 +122,16 @@ exports.updateUserStatus = async (req, res) => {
     const { status } = req.body;
     if (!['active', 'inactive'].includes(status))
       return res.status(400).json({ error: 'Invalid status' });
+
+    const existingUser = await User.findById(req.params.id);
+    if (!existingUser) return res.status(404).json({ error: 'User not found' });
+
+    // Boundary check: Non-admins cannot alter the status of admin/coordinator accounts
+    if (req.user.role !== 'admin' && (existingUser.role === 'admin' || existingUser.role === 'coordinator')) {
+      return res.status(403).json({ error: 'Apenas administradores podem alterar o estado de utilizadores administradores ou coordenadores.' });
+    }
+
     const user = await User.findByIdAndUpdate(req.params.id, { status }, { new: true });
-    if (!user) return res.status(404).json({ error: 'User not found' });
     res.json({ message: 'User status updated' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
@@ -86,11 +154,12 @@ exports.getActivities = async (req, res) => {
 // POST /api/admin/activities
 exports.createActivity = async (req, res) => {
   try {
-    const { name, description, start_date, end_date, location, project_id, area, visibility } = req.body;
+    const { name, description, start_date, end_date, location, project_id, area, visibility, resources } = req.body;
     const act = await Activity.create({
       name, description, location, project: project_id,
-      startDate: start_date, endDate: end_date,
+      startDate: start_date, endDate: end_date || start_date,
       areas: area ? [area] : [],
+      resources,
       visibility: visibility || 'public', createdBy: req.user._id,
     });
     res.status(201).json({ id: act._id, status: act.status });

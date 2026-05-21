@@ -154,10 +154,18 @@ export default function Login() {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <Link to="/" className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-800 transition-colors text-sm font-medium">
-              <ArrowLeft size={14} /> Back to Homepage
-            </Link>
+          <div className="mt-6 text-center space-y-3">
+            <p className="text-slate-600 text-sm">
+              New to EcoGest?{' '}
+              <Link to="/register" className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline">
+                Create an account
+              </Link>
+            </p>
+            <div>
+              <Link to="/" className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-800 transition-colors text-sm font-medium">
+                <ArrowLeft size={14} /> Back to Homepage
+              </Link>
+            </div>
           </div>
         </div>
       </div>

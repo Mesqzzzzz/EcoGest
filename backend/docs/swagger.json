@@ -1,0 +1,563 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "EcoGest API Documentation",
+    "description": "Especificação da API REST para a plataforma EcoGest de gestão do projeto Eco-Escolas. Grupo 31.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Servidor de Desenvolvimento Local"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Insira o token JWT retornado no Login no formato: `Bearer <token>`"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "role": { "type": "string", "enum": ["admin", "coordinator", "secretary", "council_member", "user"] },
+          "status": { "type": "string", "enum": ["active", "inactive"] }
+        }
+      },
+      "Activity": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "location": { "type": "string" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "endDate": { "type": "string", "format": "date-time" },
+          "status": { "type": "string", "enum": ["planned", "active", "completed"] },
+          "areas": { "type": "array", "items": { "type": "string" } },
+          "resources": { "type": "string" },
+          "executionLocation": { "type": "string" },
+          "executionNotes": { "type": "string" },
+          "visibility": { "type": "string", "enum": ["public", "private"] }
+        }
+      },
+      "Proposal": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "area": { "type": "string" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "endDate": { "type": "string", "format": "date-time" },
+          "resources": { "type": "string" },
+          "status": { "type": "string", "enum": ["pending", "approved", "rejected"] }
+        }
+      },
+      "Meeting": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "date": { "type": "string", "format": "date-time" },
+          "description": { "type": "string" }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "year": { "type": "integer" },
+          "status": { "type": "string", "enum": ["planning", "active", "finished"] },
+          "level": { "type": "string", "enum": ["bronze", "silver", "gold", null] }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/users/login": {
+      "post": {
+        "summary": "Iniciar Sessão (Login)",
+        "description": "Autentica um utilizador com email e palavra-passe, retornando o token JWT.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "example": "admin@escolas.com" },
+                  "password": { "type": "string", "example": "123456" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login efetuado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string" },
+                    "user": { "$ref": "#/components/schemas/User" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Credenciais incorretas" }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Registar Novo Utilizador (Register)",
+        "description": "Cria uma conta de utilizador básica por auto-registo público.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                  "name": { "type": "string", "example": "João Silva" },
+                  "email": { "type": "string", "example": "joaosilva@escola.com" },
+                  "password": { "type": "string", "example": "123456" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Utilizador registado com sucesso" },
+          "409": { "description": "Email já está a ser utilizado" }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Obter perfil atual",
+        "description": "Retorna o objeto do utilizador autenticado pelo token JWT.",
+        "responses": {
+          "200": {
+            "description": "Perfil retornado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar perfil atual",
+        "description": "Atualiza campos do perfil do utilizador ligado.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Perfil modificado com sucesso" }
+        }
+      }
+    },
+    "/activities": {
+      "get": {
+        "summary": "Listar atividades públicas",
+        "description": "Obtém atividades filtradas por estado (ex: planned, active, completed).",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de atividades",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Activity" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activities/{id}": {
+      "get": {
+        "summary": "Detalhes de uma atividade",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Activity" } }
+            }
+          }
+        }
+      }
+    },
+    "/activities/{id}/participations": {
+      "post": {
+        "summary": "Inscrever na atividade",
+        "description": "Inscreve o próprio utilizador ou um guest externo se fornecidos detalhes.",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "Visitante 1" },
+                  "email": { "type": "string", "example": "visitante@escola.com" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Inscrição confirmada" }
+        }
+      }
+    },
+    "/activities/{id}/executions": {
+      "post": {
+        "summary": "Registar Execução da Atividade (Conselho)",
+        "description": "Completa e arquiva os detalhes reais da atividade.",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["executionLocation", "executionNotes"],
+                "properties": {
+                  "executionLocation": { "type": "string", "example": "Jardim da Escola" },
+                  "executionNotes": { "type": "string", "example": "Foram plantadas 20 sementes com 15 participantes." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Execução registada e estado definido como concluído" }
+        }
+      }
+    },
+    "/proposals": {
+      "get": {
+        "summary": "Listar propostas",
+        "description": "Retorna as propostas do projeto atual.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Proposal" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar proposta de atividade (Membro do Conselho)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "description", "area", "startDate"],
+                "properties": {
+                  "title": { "type": "string", "example": "Campanha Resíduos Zero" },
+                  "description": { "type": "string", "example": "Colocação de novos ecopontos coloridos" },
+                  "area": { "type": "string", "example": "Waste" },
+                  "startDate": { "type": "string", "format": "date" },
+                  "resources": { "type": "string", "example": "Ecopontos, folhetos" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Proposta enviada" }
+        }
+      }
+    },
+    "/meetings": {
+      "get": {
+        "summary": "Listar Reuniões",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Meeting" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Reunião (Secretário/Admin)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "date", "project_id"],
+                "properties": {
+                  "name": { "type": "string", "example": "Reunião Geral Conselho de Eco-Escolas" },
+                  "date": { "type": "string", "format": "date-time" },
+                  "description": { "type": "string", "example": "Discussão e aprovação do Plano de Atividades" },
+                  "project_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Reunião criada" }
+        }
+      }
+    },
+    "/meetings/{id}/documents": {
+      "get": {
+        "summary": "Obter atas e fotografias anexadas à reunião",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Lista de atas e fotos anexadas" }
+        }
+      },
+      "post": {
+        "summary": "Anexar documento/ata/foto (Secretário/Admin)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["document", "type"],
+                "properties": {
+                  "document": { "type": "string", "format": "binary" },
+                  "type": { "type": "string", "enum": ["ata", "foto", "other"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Documento anexado" }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "summary": "Listar Projetos Anuais",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Project" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Projeto Anual (Exclusivo Admin)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "year"],
+                "properties": {
+                  "name": { "type": "string", "example": "Projeto Eco-Escolas 2026/2027" },
+                  "year": { "type": "integer", "example": 2027 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Projeto criado" }
+        }
+      }
+    },
+    "/projects/{id}/coordinator": {
+      "patch": {
+        "summary": "Atribuir Coordenador (Exclusivo Admin)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["user_id"],
+                "properties": {
+                  "user_id": { "type": "string", "example": "664c39..." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Coordenador atribuído com sucesso" }
+        }
+      }
+    },
+    "/audits/questions": {
+      "get": {
+        "summary": "Listar questões da Auditoria Ambiental",
+        "description": "Retorna o questionário de auditoria estruturado por categorias (Água, Energia, Resíduos).",
+        "responses": {
+          "200": { "description": "Lista de perguntas" }
+        }
+      }
+    },
+    "/audits/responses": {
+      "post": {
+        "summary": "Submeter respostas de auditoria",
+        "description": "Cria ou atualiza respostas a perguntas para o projeto anual ativo.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["projectId", "responses"],
+                "properties": {
+                  "projectId": { "type": "string" },
+                  "responses": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["questionId", "value"],
+                      "properties": {
+                        "questionId": { "type": "string" },
+                        "value": { "type": "string", "enum": ["Sim", "Parcialmente", "Não"] },
+                        "comments": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Respostas salvas" }
+        }
+      }
+    },
+    "/audits/report/{projectId}": {
+      "get": {
+        "summary": "Relatório de Auditoria",
+        "description": "Exibe o progresso de respostas e a média de pontuações de forma geral e por categoria.",
+        "parameters": [
+          { "name": "projectId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Relatório estatístico com pontuações" }
+        }
+      }
+    },
+    "/admin/dashboard": {
+      "get": {
+        "summary": "Painel de Administração e Incentivos MoM",
+        "description": "Exibe contagens agregadas globais de atividades (totais, ativas, completas), participações, propostas e o array MoM `monthlyStats` de comparação.",
+        "responses": {
+          "200": { "description": "Métricas agregadas" }
+        }
+      }
+    },
+    "/admin/backups": {
+      "get": {
+        "summary": "Listar backups (Exclusivo Admin)",
+        "responses": {
+          "200": { "description": "Lista de backups disponíveis" }
+        }
+      },
+      "post": {
+        "summary": "Criar Backup Manual (Exclusivo Admin)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["description"],
+                "properties": {
+                  "description": { "type": "string", "example": "Backup de Segurança semanal" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Backup executado" }
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import Home from './pages/Home';
 import ActivityDetails from './pages/ActivityDetails';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 import DashboardOverview from './pages/dashboard/Overview';
 import DashboardActivities from './pages/dashboard/Activities';
@@ -15,6 +16,7 @@ import DashboardProjects from './pages/dashboard/Projects';
 import DashboardUsers from './pages/dashboard/UsersPage';
 import DashboardReports from './pages/dashboard/Reports';
 import DashboardBackups from './pages/dashboard/Backups';
+import DashboardAudits from './pages/dashboard/Audits';
 
 export default function App() {
   return (
@@ -24,6 +26,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="activities/:id" element={<ActivityDetails />} />
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
 
         <Route path="/dashboard" element={<DashboardLayout />}>
@@ -35,6 +38,7 @@ export default function App() {
           <Route path="users" element={<DashboardUsers />} />
           <Route path="reports" element={<DashboardReports />} />
           <Route path="backups" element={<DashboardBackups />} />
+          <Route path="audits" element={<DashboardAudits />} />
         </Route>
       </Routes>
     </BrowserRouter>

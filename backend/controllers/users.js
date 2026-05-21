@@ -14,6 +14,9 @@ exports.register = async (req, res) => {
     if (!name || !email || !password)
       return res.status(400).json({ error: 'name, email and password are required' });
 
+    if (password.length < 6)
+      return res.status(400).json({ error: 'A palavra-passe deve conter pelo menos 6 caracteres.' });
+
     const exists = await User.findOne({ email: email.toLowerCase() });
     if (exists) return res.status(409).json({ error: 'Email already registered' });
 

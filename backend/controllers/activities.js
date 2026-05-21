@@ -136,7 +136,12 @@ exports.registerExecution = async (req, res) => {
   try {
     const activity = await Activity.findById(req.params.id);
     if (!activity) return res.status(404).json({ error: 'Activity not found' });
+    
+    const { executionLocation, executionNotes } = req.body;
     activity.status = 'completed';
+    if (executionLocation) activity.executionLocation = executionLocation;
+    if (executionNotes)    activity.executionNotes = executionNotes;
+    
     await activity.save();
     res.status(201).json({ message: 'Execution recorded', activity_id: activity._id });
   } catch (e) { res.status(500).json({ error: e.message }); }

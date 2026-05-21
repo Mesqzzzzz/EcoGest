@@ -2,23 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import {
   Leaf, LayoutDashboard, CalendarDays, FileText,
-  Users, FolderKanban, Database, BarChart3, LogOut, ArrowLeft, Menu, X
+  Users, FolderKanban, Database, BarChart3, LogOut, ArrowLeft, Menu, X, ClipboardCheck
 } from 'lucide-react';
 import { api } from '../services/api';
 
 const getNavItems = (role) => {
   const allItems = [
-    { label: 'Overview',    path: '/dashboard',            icon: LayoutDashboard, roles: ['all'] },
-    { label: 'Activities',  path: '/dashboard/activities', icon: CalendarDays, roles: ['all'] },
-    { label: 'Proposals',   path: '/dashboard/proposals',  icon: FileText, roles: ['admin', 'coordinator', 'council_member'] },
-    { label: 'Meetings',    path: '/dashboard/meetings',   icon: CalendarDays, roles: ['admin', 'coordinator', 'council_member', 'secretary'] },
-    { label: 'Projects',    path: '/dashboard/projects',   icon: FolderKanban, roles: ['admin', 'council_member', 'secretary'] },
-    { label: 'Users',       path: '/dashboard/users',      icon: Users, roles: ['admin'] },
-    { label: 'Reports',     path: '/dashboard/reports',    icon: BarChart3, roles: ['admin', 'coordinator'] },
+    { label: 'Overview',    path: '/dashboard',            icon: LayoutDashboard, roles: ['coordinator', 'council_member', 'secretary', 'user'] },
+    { label: 'Activities',  path: '/dashboard/activities', icon: CalendarDays, roles: ['coordinator', 'council_member', 'secretary', 'user'] },
+    { label: 'Proposals',   path: '/dashboard/proposals',  icon: FileText, roles: ['coordinator', 'council_member'] },
+    { label: 'Audits',      path: '/dashboard/audits',     icon: ClipboardCheck,  roles: ['coordinator', 'council_member', 'secretary'] },
+    { label: 'Meetings',    path: '/dashboard/meetings',   icon: CalendarDays, roles: ['coordinator', 'council_member', 'secretary'] },
+    { label: 'Projects',    path: '/dashboard/projects',   icon: FolderKanban, roles: ['admin', 'coordinator', 'council_member', 'secretary'] },
+    { label: 'Users',       path: '/dashboard/users',      icon: Users, roles: ['admin', 'coordinator'] },
+    { label: 'Reports',     path: '/dashboard/reports',    icon: BarChart3, roles: ['coordinator'] },
     { label: 'Backups',     path: '/dashboard/backups',    icon: Database, roles: ['admin'] },
   ];
 
-  return allItems.filter(item => item.roles.includes('all') || item.roles.includes(role));
+  return allItems.filter(item => item.roles.includes(role));
 };
 
 export default function DashboardLayout() {
@@ -27,8 +28,20 @@ export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!api.currentUser) navigate('/login');
-  }, [navigate]);
+    if (!api.currentUser) {
+      navigate('/login');
+      return;
+    }
+
+    // Redirect if they land exactly on /dashboard and don't have access to Overview
+    if (location.pathname === '/dashboard') {
+      const allowed = getNavItems(api.currentUser.role);
+      const hasOverview = allowed.some(item => item.path === '/dashboard');
+      if (!hasOverview && allowed.length > 0) {
+        navigate(allowed[0].path, { replace: true });
+      }
+    }
+  }, [navigate, location.pathname]);
 
   const handleLogout = async () => {
     await api.logout();
@@ -47,6 +60,15 @@ export default function DashboardLayout() {
   };
 
   const navItems = getNavItems(user.role);
+
+  // Guard current route to ensure authorization
+  const currentPath = location.pathname;
+  const isAuthorized = navItems.some(item => {
+    if (item.path === '/dashboard') {
+      return currentPath === '/dashboard';
+    }
+    return currentPath.startsWith(item.path);
+  });
 
   return (
     <div className="min-h-screen bg-slate-100 flex">
@@ -144,7 +166,22 @@ export default function DashboardLayout() {
         </header>
 
         <main className="flex-1 overflow-auto p-6 lg:p-8">
-          <Outlet />
+          {isAuthorized ? (
+            <Outlet />
+          ) : (
+            <div className="min-h-[60vh] flex flex-col items-center justify-center bg-white rounded-2xl border border-slate-200 p-8 text-center shadow-sm animate-fade-in">
+              <div className="bg-red-50 text-red-500 p-4 rounded-full mb-4">
+                <X size={40} />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800 mb-2">Acesso Restrito</h2>
+              <p className="text-slate-500 max-w-md mb-6">
+                A sua conta de {user.role.replace('_', ' ')} não tem permissão para aceder a esta secção.
+              </p>
+              <Link to={navItems[0]?.path || "/"} className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-slate-800 font-semibold transition-all">
+                Ir para {navItems[0]?.label || "Dashboard"}
+              </Link>
+            </div>
+          )}
         </main>
       </div>
     </div>

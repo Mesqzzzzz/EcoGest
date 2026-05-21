@@ -14,12 +14,22 @@ export default function UsersPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'user' });
   const [saving, setSaving] = useState(false);
 
+  const userRole = api.currentUser?.role;
+  const isAdmin = userRole === 'admin';
+
+  const allowedRolesForSelect = isAdmin 
+    ? ROLES 
+    : ROLES.filter(r => r !== 'admin' && r !== 'coordinator');
+
   const load = () => api.getUsers().then(d => { setUsers(d); setLoading(false); });
   useEffect(() => { load(); }, []);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
-  const openCreate = () => { setForm({ name: '', email: '', password: '', role: 'user' }); setCreateOpen(true); };
+  const openCreate = () => { 
+    setForm({ name: '', email: '', password: '', role: allowedRolesForSelect[0] || 'user' }); 
+    setCreateOpen(true); 
+  };
   const openEdit = (u) => { setForm({ name: u.name, email: u.email, password: '', role: u.role }); setEditUser(u); };
 
   const handleCreate = async (e) => {
@@ -30,13 +40,22 @@ export default function UsersPage() {
 
   const handleEdit = async (e) => {
     e.preventDefault(); setSaving(true);
-    await api.updateUser(editUser.id, { name: form.name, email: form.email, role: form.role });
-    setSaving(false); setEditUser(null); load();
+    try {
+      await api.updateUser(editUser.id, { name: form.name, email: form.email, role: form.role });
+      setEditUser(null);
+    } catch(err) {
+      alert(err.message);
+    }
+    setSaving(false); load();
   };
 
   const toggleStatus = async (u) => {
     const next = u.status === 'active' ? 'inactive' : 'active';
-    await api.updateUserStatus(u.id, next);
+    try {
+      await api.updateUserStatus(u.id, next);
+    } catch(err) {
+      alert(err.message);
+    }
     load();
   };
 
@@ -78,14 +97,20 @@ export default function UsersPage() {
               <td className="px-4 py-3"><Badge status={u.status} /></td>
               <td className="px-4 py-3">
                 <div className="flex items-center gap-2">
-                  <Btn variant="ghost" size="sm" onClick={() => openEdit(u)}><Pencil size={14} /></Btn>
-                  <Btn
-                    variant={u.status === 'active' ? 'danger' : 'success'}
-                    size="sm"
-                    onClick={() => toggleStatus(u)}
-                  >
-                    {u.status === 'active' ? <><UserX size={14} /> Deactivate</> : <><UserCheck size={14} /> Activate</>}
-                  </Btn>
+                  {(isAdmin || (u.role !== 'admin' && u.role !== 'coordinator')) ? (
+                    <>
+                      <Btn variant="ghost" size="sm" onClick={() => openEdit(u)}><Pencil size={14} /></Btn>
+                      <Btn
+                        variant={u.status === 'active' ? 'danger' : 'success'}
+                        size="sm"
+                        onClick={() => toggleStatus(u)}
+                      >
+                        {u.status === 'active' ? <><UserX size={14} /> Deactivate</> : <><UserCheck size={14} /> Activate</>}
+                      </Btn>
+                    </>
+                  ) : (
+                    <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-2 py-1 rounded">Protegido</span>
+                  )}
                 </div>
               </td>
             </tr>
@@ -101,7 +126,7 @@ export default function UsersPage() {
           <FormField label="Password"><Input required type="password" value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" /></FormField>
           <FormField label="Role">
             <Select value={form.role} onChange={e => set('role', e.target.value)}>
-              {ROLES.map(r => <option key={r} value={r}>{r.replace('_', ' ')}</option>)}
+              {allowedRolesForSelect.map(r => <option key={r} value={r}>{r.replace('_', ' ')}</option>)}
             </Select>
           </FormField>
           <div className="flex justify-end gap-3 pt-2">
@@ -118,7 +143,7 @@ export default function UsersPage() {
           <FormField label="Email"><Input required type="email" value={form.email} onChange={e => set('email', e.target.value)} /></FormField>
           <FormField label="Role">
             <Select value={form.role} onChange={e => set('role', e.target.value)}>
-              {ROLES.map(r => <option key={r} value={r}>{r.replace('_', ' ')}</option>)}
+              {allowedRolesForSelect.map(r => <option key={r} value={r}>{r.replace('_', ' ')}</option>)}
             </Select>
           </FormField>
           <div className="flex justify-end gap-3 pt-2">

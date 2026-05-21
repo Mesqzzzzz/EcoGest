@@ -10,10 +10,10 @@ router.get('/:id', activitiesController.getActivity);
 router.post('/:id/participations', optionalAuth, activitiesController.participate);
 router.delete('/:id/participations/:pid', authenticate, activitiesController.cancelParticipation);
 
-// Admin/Coordinator restricted for modifications, but all auth can view participants
+// Admin/Coordinator/Council Member restricted for modifications, but all auth can view participants
 router.get('/:id/participants', authenticate, activitiesController.listParticipants);
-router.post('/:id/participants', authenticate, authorize('admin', 'coordinator'), activitiesController.addParticipant);
-router.post('/:id/executions', authenticate, authorize('admin', 'coordinator'), activitiesController.registerExecution);
-router.post('/:id/photos', authenticate, authorize('admin', 'coordinator'), upload.single('photo'), activitiesController.uploadPhoto);
+router.post('/:id/participants', authenticate, authorize('coordinator', 'council_member'), activitiesController.addParticipant);
+router.post('/:id/executions', authenticate, authorize('coordinator', 'council_member'), activitiesController.registerExecution);
+router.post('/:id/photos', authenticate, authorize('coordinator', 'council_member'), upload.single('photo'), activitiesController.uploadPhoto);
 
 module.exports = router;

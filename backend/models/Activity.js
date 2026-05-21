@@ -10,6 +10,9 @@ const activitySchema = new mongoose.Schema({
   status:      { type: String, enum: ['planned', 'active', 'completed'], default: 'planned' },
   visibility:  { type: String, enum: ['public', 'private'], default: 'public' },
   areas:       [{ type: String }],
+  resources:   { type: String },
+  executionNotes: { type: String },
+  executionLocation: { type: String },
   createdBy:   { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 

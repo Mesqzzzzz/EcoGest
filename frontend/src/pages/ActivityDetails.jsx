@@ -92,7 +92,33 @@ export default function ActivityDetails() {
           {/* Details */}
           <div className="p-8 flex-grow">
             <h3 className="text-lg font-bold text-slate-800 mb-3">About this activity</h3>
-            <p className="text-slate-600 leading-relaxed mb-8">{activity.description}</p>
+            <p className="text-slate-600 leading-relaxed mb-6">{activity.description}</p>
+
+            {activity.resources && (
+              <div className="mb-6 p-4 rounded-2xl bg-amber-50/30 border border-amber-100/70">
+                <span className="text-xs font-bold text-amber-800 uppercase tracking-wider">Recursos do Projeto</span>
+                <p className="text-slate-700 text-sm font-medium mt-1">{activity.resources}</p>
+              </div>
+            )}
+
+            {activity.status === 'completed' && (
+              <div className="mb-6 p-4 rounded-2xl bg-emerald-50/40 border border-emerald-100">
+                <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1.5 mb-2">
+                  <CheckCircle size={14} className="text-emerald-600" />
+                  Registo de Execução
+                </span>
+                {activity.execution_location && (
+                  <p className="text-slate-700 text-sm">
+                    <strong>Local da Execução:</strong> {activity.execution_location}
+                  </p>
+                )}
+                {activity.execution_notes && (
+                  <p className="text-slate-700 text-sm mt-1 whitespace-pre-line">
+                    <strong>Notas de Execução:</strong> {activity.execution_notes}
+                  </p>
+                )}
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[

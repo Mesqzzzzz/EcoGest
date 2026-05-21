@@ -12,6 +12,8 @@ const Report             = require('./Report');
 const Backup             = require('./Backup');
 const AuthLog            = require('./AuthLog');
 const SystemLog          = require('./SystemLog');
+const AuditQuestion      = require('./AuditQuestion');
+const AuditResponse      = require('./AuditResponse');
 
 module.exports = {
   User, Project, ProjectArea,
@@ -19,4 +21,5 @@ module.exports = {
   CouncilMember, Proposal,
   Meeting, MeetingDocument,
   Report, Backup, AuthLog, SystemLog,
+  AuditQuestion, AuditResponse,
 };

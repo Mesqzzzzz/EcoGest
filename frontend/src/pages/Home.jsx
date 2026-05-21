@@ -93,7 +93,7 @@ export default function Home() {
 
   useEffect(() => {
     api.getActivities().then(data => {
-      setActivities(data.filter(a => a.status !== 'completed'));
+      setActivities(data.filter(a => a.status === 'active'));
       setLoading(false);
     });
   }, []);

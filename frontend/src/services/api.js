@@ -80,6 +80,10 @@ class ApiService {
       participants_count: a.participants_count ?? 0,
       user_participation: a.user_participation || null,
       project:          a.project,
+      images:           a.images ?? [],
+      resources:        a.resources ?? '',
+      execution_notes:  a.executionNotes ?? '',
+      execution_location: a.executionLocation ?? '',
     };
   }
 
@@ -133,6 +137,8 @@ class ApiService {
       level:          p.level,
       coordinator:    p.coordinator,
       coordinator_id: pickId(p.coordinator),
+      activitiesCount: p.activitiesCount ?? 0,
+      areasCount:     p.areasCount ?? 0,
     };
   }
 
@@ -140,6 +146,11 @@ class ApiService {
   async login(email, password) {
     const data = await this._post('/users/login', { email, password });
     this._setAuth(data.token, data.user);
+    return data;
+  }
+
+  async register(name, email, password) {
+    const data = await this._post('/users', { name, email, password });
     return data;
   }
 
@@ -196,6 +207,7 @@ class ApiService {
       location:    payload.location,
       project_id:  projectId,
       area:        payload.area,
+      resources:   payload.resources,
       visibility:  payload.visibility || 'public',
     });
   }
@@ -206,11 +218,40 @@ class ApiService {
       description: payload.description,
       location:    payload.location,
       status:      payload.status,
+      resources:   payload.resources,
     });
   }
 
   async updateActivityStatus(id, status) {
     return this._patch(`/admin/activities/${id}/status`, { status });
+  }
+
+  async registerExecution(id, payload) {
+    return this._post(`/activities/${id}/executions`, payload);
+  }
+
+  async addParticipant(id, payload) {
+    return this._post(`/activities/${id}/participants`, payload);
+  }
+
+  async uploadPhoto(id, file) {
+    const formData = new FormData();
+    formData.append('photo', file);
+    
+    const headers = {};
+    const token = this._getToken();
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/activities/${id}/photos`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    let data;
+    try { data = await res.json(); } catch { data = {}; }
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    return data;
   }
 
   // ── Proposals ────────────────────────────────────────────────────────────────
@@ -296,6 +337,7 @@ class ApiService {
       meetings:     (meetData.data ?? []).length,
       users:        0,
       proposals:    dash.proposals,
+      monthlyStats: dash.monthlyStats ?? [],
     };
   }
 
@@ -320,6 +362,56 @@ class ApiService {
   // ── Report ───────────────────────────────────────────────────────────────────
   async getReport() { return this._get('/admin/report'); }
   async generateReport(payload = {}) { return this._post('/admin/report', payload); }
+
+  // ── Meeting Documents & Photos ───────────────────────────────────────────────
+  async getMeetingDocuments(meetingId) {
+    const { data } = await this._get(`/meetings/${meetingId}/documents`);
+    return data ?? [];
+  }
+
+  async uploadMeetingDocument(meetingId, file, type = 'ata') {
+    const formData = new FormData();
+    formData.append('document', file);
+    formData.append('type', type);
+    
+    const headers = {};
+    const token = this._getToken();
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch(`${BASE_URL}/meetings/${meetingId}/documents`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    let data;
+    try { data = await res.json(); } catch { data = {}; }
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    return data;
+  }
+
+  async deleteMeetingDocument(docId) {
+    return this._delete(`/meetings/documents/${docId}`);
+  }
+
+  // ── Audits ───────────────────────────────────────────────────────────────────
+  async getAuditQuestions() {
+    const { data } = await this._get('/audits/questions');
+    return data ?? [];
+  }
+
+  async getAuditResponses(projectId) {
+    const { data } = await this._get(`/audits/responses/${projectId}`);
+    return data ?? [];
+  }
+
+  async submitAuditResponses(payload) {
+    return this._post('/audits/responses', payload);
+  }
+
+  async getAuditReport(projectId) {
+    return this._get(`/audits/report/${projectId}`);
+  }
 }
 
 export const api = new ApiService();

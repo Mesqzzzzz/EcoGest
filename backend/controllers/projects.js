@@ -1,4 +1,33 @@
-const { Project, User } = require('../models');
+const { Project, User, Activity } = require('../models');
+
+const calculateProjectLevel = async (project) => {
+  const activities = await Activity.find({ project: project._id });
+  const uniqueAreas = new Set();
+  activities.forEach(a => {
+    if (a.areas && Array.isArray(a.areas)) {
+      a.areas.forEach(ar => uniqueAreas.add(ar));
+    }
+  });
+
+  const totalAct = activities.length;
+  const totalAreas = uniqueAreas.size;
+
+  let computedLevel = null;
+  if (totalAct >= 8 && totalAreas >= 4) {
+    computedLevel = 'gold';
+  } else if (totalAct >= 4 && totalAreas >= 2) {
+    computedLevel = 'silver';
+  } else if (totalAct >= 1) {
+    computedLevel = 'bronze';
+  }
+
+  if (project.level !== computedLevel) {
+    project.level = computedLevel;
+    await project.save();
+  }
+
+  return { level: computedLevel, activitiesCount: totalAct, areasCount: totalAreas };
+};
 
 // GET /api/projects
 exports.getProjects = async (req, res) => {
@@ -10,10 +39,17 @@ exports.getProjects = async (req, res) => {
     const projects = await Project.find(filter)
       .populate('coordinator', 'name email _id');
 
-    res.json({ data: projects.map(p => ({
-      id: p._id, name: p.name, year: p.year, status: p.status, level: p.level,
-      coordinator: p.coordinator,
-    })) });
+    const data = await Promise.all(projects.map(async p => {
+      const stats = await calculateProjectLevel(p);
+      return {
+        id: p._id, name: p.name, year: p.year, status: p.status, 
+        level: stats.level, coordinator: p.coordinator,
+        activitiesCount: stats.activitiesCount,
+        areasCount: stats.areasCount,
+      };
+    }));
+
+    res.json({ data });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
@@ -23,7 +59,14 @@ exports.getProject = async (req, res) => {
     const p = await Project.findById(req.params.id)
       .populate('coordinator', 'name email _id');
     if (!p) return res.status(404).json({ error: 'Project not found' });
-    res.json({ id: p._id, name: p.name, year: p.year, status: p.status, level: p.level, coordinator: p.coordinator });
+    
+    const stats = await calculateProjectLevel(p);
+    res.json({ 
+      id: p._id, name: p.name, year: p.year, status: p.status, 
+      level: stats.level, coordinator: p.coordinator,
+      activitiesCount: stats.activitiesCount,
+      areasCount: stats.areasCount
+    });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 

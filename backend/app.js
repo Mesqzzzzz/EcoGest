@@ -18,6 +18,12 @@ app.use('/api/proposals',  require('./routes/proposals'));
 app.use('/api/meetings',   require('./routes/meetings'));
 app.use('/api/projects',   require('./routes/projects'));
 app.use('/api/admin',      require('./routes/admin'));
+app.use('/api/audits',     require('./routes/audits'));
+
+// ── Swagger Documentation ────────────────────────────────────────────
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./docs/swagger.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // ── Health check ─────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', db: 'mongodb' }));
