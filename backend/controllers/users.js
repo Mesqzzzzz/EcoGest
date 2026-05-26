@@ -1,11 +1,20 @@
+const crypto  = require('crypto');
 const bcrypt  = require('bcryptjs');
 const jwt     = require('jsonwebtoken');
-const { User, AuthLog } = require('../models');
+const { User, AuthLog, RefreshToken } = require('../models');
 
 const signToken = (user) =>
   jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+    expiresIn: process.env.JWT_EXPIRES_IN || '15m',
   });
+
+const generateRefreshToken = async (user) => {
+  const token = crypto.randomBytes(40).toString('hex');
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 7); // 7 dias
+  await RefreshToken.create({ token, user: user._id, expiresAt });
+  return token;
+};
 
 // POST /api/users — Registo
 exports.register = async (req, res) => {
@@ -34,6 +43,22 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Rate limit: limite de X tentativas de login por minuto por IP
+    const ipAddress = req.ip;
+    const oneMinuteAgo = new Date(Date.now() - 60000);
+    const loginAttempts = await AuthLog.countDocuments({
+      ipAddress,
+      createdAt: { $gte: oneMinuteAgo }
+    });
+
+    const LIMIT = parseInt(process.env.LOGIN_RATE_LIMIT) || 5;
+    if (loginAttempts >= LIMIT) {
+      return res.status(429).json({
+        error: 'Muitas tentativas de login. Por favor, aguarde 1 minuto antes de tentar novamente.'
+      });
+    }
+
     const user = await User.findOne({ email: email?.toLowerCase() });
 
     const ok = user && await bcrypt.compare(password, user.password);
@@ -50,8 +75,10 @@ exports.login = async (req, res) => {
     if (user.status === 'inactive') return res.status(403).json({ error: 'Account is inactive' });
 
     const token = signToken(user);
+    const refreshToken = await generateRefreshToken(user);
     return res.json({
       token,
+      refreshToken,
       user: { id: user._id, email: user.email, role: user.role, name: user.name },
     });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -84,5 +111,53 @@ exports.updateMyStatus = async (req, res) => {
       return res.status(400).json({ error: 'status must be active or inactive' });
     await User.findByIdAndUpdate(req.user._id, { status });
     res.json({ message: 'Status updated' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+};
+
+// POST /api/users/refresh
+exports.refresh = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      return res.status(400).json({ error: 'Refresh token is required' });
+    }
+
+    const storedToken = await RefreshToken.findOne({ token: refreshToken });
+    if (!storedToken) {
+      return res.status(401).json({ error: 'Invalid refresh token' });
+    }
+
+    if (new Date() > storedToken.expiresAt) {
+      await RefreshToken.deleteOne({ _id: storedToken._id });
+      return res.status(401).json({ error: 'Refresh token expired' });
+    }
+
+    const user = await User.findById(storedToken.user);
+    if (!user || user.status === 'inactive') {
+      return res.status(401).json({ error: 'User is inactive or not found' });
+    }
+
+    // Rotação do refresh token: apagar o antigo e emitir um novo
+    await RefreshToken.deleteOne({ _id: storedToken._id });
+    const newRefreshToken = await generateRefreshToken(user);
+
+    const token = signToken(user);
+
+    return res.json({
+      token,
+      refreshToken: newRefreshToken,
+      user: { id: user._id, email: user.email, role: user.role, name: user.name }
+    });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+};
+
+// POST /api/users/logout-session
+exports.logoutSession = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if (refreshToken) {
+      await RefreshToken.deleteOne({ token: refreshToken });
+    }
+    return res.json({ message: 'Session logged out successfully' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };

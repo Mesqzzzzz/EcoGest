@@ -14,12 +14,15 @@ class ApiService {
   }
 
   _getToken()  { return localStorage.getItem('ecogest_token'); }
-  _setAuth(token, user) {
+  _getRefreshToken() { return localStorage.getItem('ecogest_refresh_token'); }
+  _setAuth(token, refreshToken, user) {
     localStorage.setItem('ecogest_token', token);
+    if (refreshToken) localStorage.setItem('ecogest_refresh_token', refreshToken);
     localStorage.setItem('ecogest_user', JSON.stringify(user));
   }
   _clearAuth() {
     localStorage.removeItem('ecogest_token');
+    localStorage.removeItem('ecogest_refresh_token');
     localStorage.removeItem('ecogest_user');
   }
 
@@ -29,7 +32,7 @@ class ApiService {
     const token = this._getToken();
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const res = await fetch(`${BASE_URL}${path}`, {
+    let res = await fetch(`${BASE_URL}${path}`, {
       method,
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
@@ -37,7 +40,29 @@ class ApiService {
 
     let data;
     try { data = await res.json(); } catch { data = {}; }
-    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+    if (!res.ok) {
+      if (res.status === 401 && this._getRefreshToken() && path !== '/users/login' && path !== '/users/refresh') {
+        try {
+          await this.refreshSession();
+          const newToken = this._getToken();
+          headers['Authorization'] = `Bearer ${newToken}`;
+          res = await fetch(`${BASE_URL}${path}`, {
+            method,
+            headers,
+            body: body !== undefined ? JSON.stringify(body) : undefined,
+          });
+          try { data = await res.json(); } catch { data = {}; }
+          if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+          return data;
+        } catch (refreshErr) {
+          this._clearAuth();
+          window.location.href = '/login';
+          throw refreshErr;
+        }
+      }
+      throw new Error(data.error || `HTTP ${res.status}`);
+    }
     return data;
   }
 
@@ -145,7 +170,7 @@ class ApiService {
   // ── Auth ─────────────────────────────────────────────────────────────────────
   async login(email, password) {
     const data = await this._post('/users/login', { email, password });
-    this._setAuth(data.token, data.user);
+    this._setAuth(data.token, data.refreshToken, data.user);
     return data;
   }
 
@@ -154,7 +179,34 @@ class ApiService {
     return data;
   }
 
-  async logout() { this._clearAuth(); }
+  async refreshSession() {
+    const refreshToken = this._getRefreshToken();
+    if (!refreshToken) throw new Error('No refresh token available');
+    
+    const res = await fetch(`${BASE_URL}/users/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+    
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to refresh session');
+    }
+    
+    this._setAuth(data.token, data.refreshToken, data.user);
+    return data;
+  }
+
+  async logout() {
+    const refreshToken = this._getRefreshToken();
+    if (refreshToken) {
+      try {
+        await this._post('/users/logout-session', { refreshToken });
+      } catch { /* ignorar falhas no logout */ }
+    }
+    this._clearAuth();
+  }
 
   async getMe() { return this._get('/users/me'); }
 

@@ -14,6 +14,7 @@ const AuthLog            = require('./AuthLog');
 const SystemLog          = require('./SystemLog');
 const AuditQuestion      = require('./AuditQuestion');
 const AuditResponse      = require('./AuditResponse');
+const RefreshToken       = require('./RefreshToken');
 
 module.exports = {
   User, Project, ProjectArea,
@@ -21,5 +22,5 @@ module.exports = {
   CouncilMember, Proposal,
   Meeting, MeetingDocument,
   Report, Backup, AuthLog, SystemLog,
-  AuditQuestion, AuditResponse,
+  AuditQuestion, AuditResponse, RefreshToken
 };

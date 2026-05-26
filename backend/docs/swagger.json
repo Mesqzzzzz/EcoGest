@@ -117,13 +117,91 @@
                   "type": "object",
                   "properties": {
                     "token": { "type": "string" },
+                    "refreshToken": { "type": "string" },
                     "user": { "$ref": "#/components/schemas/User" }
                   }
                 }
               }
             }
           },
-          "401": { "description": "Credenciais incorretas" }
+          "401": { "description": "Credenciais incorretas" },
+          "429": { "description": "Muitas tentativas de login. Limite de tentativas excedido." }
+        }
+      }
+    },
+    "/users/refresh": {
+      "post": {
+        "summary": "Renovar Token de Acesso (Refresh Token)",
+        "description": "Utiliza um refresh token válido para obter um novo token de acesso e um novo refresh token (rotação).",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["refreshToken"],
+                "properties": {
+                  "refreshToken": { "type": "string", "example": "7c9f8d..." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token renovado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string" },
+                    "refreshToken": { "type": "string" },
+                    "user": { "$ref": "#/components/schemas/User" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Token de renovação em falta no pedido" },
+          "401": { "description": "Refresh token inválido, expirado ou utilizador inativo" }
+        }
+      }
+    },
+    "/users/logout-session": {
+      "post": {
+        "summary": "Terminar Sessão pelo Refresh Token (Logout)",
+        "description": "Revoga o refresh token fornecido, terminando de forma segura a sessão persistente associada.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["refreshToken"],
+                "properties": {
+                  "refreshToken": { "type": "string", "example": "7c9f8d..." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sessão terminada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Session logged out successfully" }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
