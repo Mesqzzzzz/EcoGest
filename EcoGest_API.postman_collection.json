@@ -1,227 +1,1599 @@
 {
-	"info": {
-		"_postman_id": "ecogest-api-test",
-		"name": "EcoGest API",
-		"description": "EcoGest REST API Testing Collection - Grupo 31",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Users",
-			"item": [
-				{
-					"name": "Register",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"user@ecogest.pt\",\n    \"password\": \"123456\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}/api/users"
-					}
-				},
-				{
-					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const response = pm.response.json();",
-									"if (response.token) {",
-									"    pm.environment.set(\"jwt_token\", response.token);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"user@ecogest.pt\",\n    \"password\": \"123456\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}/api/users/login"
-					}
-				},
-				{
-					"name": "Get Profile",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwt_token}}",
-								"type": "text"
-							}
-						],
-						"url": "{{base_url}}/api/users/me"
-					}
-				}
-			]
-		},
-		{
-			"name": "Activities",
-			"item": [
-				{
-					"name": "List Activities",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/activities?area=Environment",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"activities"
-							],
-							"query": [
-								{
-									"key": "area",
-									"value": "Environment"
-								}
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Activity Details",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{base_url}}/api/activities/1"
-					}
-				},
-				{
-					"name": "Guest Participation",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Guest Visitor\",\n    \"email\": \"guest@email.com\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}/api/activities/1/participations"
-					}
-				}
-			]
-		},
-		{
-			"name": "Admin",
-			"item": [
-				{
-					"name": "Admin Dashboard Stats",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwt_token}}",
-								"type": "text"
-							}
-						],
-						"url": "{{base_url}}/api/admin/dashboard"
-					}
-				},
-				{
-					"name": "Create User (Admin)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwt_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Coordinator Jane\",\n    \"email\": \"jane@ecogest.pt\",\n    \"password\": \"123456\",\n    \"role\": \"coordinator\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}/api/admin/users"
-					}
-				},
-				{
-					"name": "Create Activity (Admin)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwt_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Beach Cleanup\",\n    \"description\": \"Volunteers needed for beach cleaning\",\n    \"start_date\": \"2026-05-20\",\n    \"location\": \"Matosinhos Beach\",\n    \"project_id\": 1,\n    \"area\": \"Environment\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}/api/admin/activities"
-					}
-				}
-			]
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "base_url",
-			"value": "http://localhost:3000",
-			"type": "string"
-		},
-		{
-			"key": "jwt_token",
-			"value": "",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "d748f3b6-20bf-4f2e-a51c-0c1a96cf9559",
+    "name": "🌿 EcoGest API - Coleção de Testes",
+    "description": "Coleção de testes do Postman para todas as rotas da API REST da plataforma EcoGest (Gestão do Projeto Eco-Escolas). Inclui scripts de automação que extraem o token JWT de acesso e de renovação (Refresh Token) no Login/Refresh e os armazenam em variáveis da coleção para simplificar a autenticação nas restantes rotas.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [],
+  "item": [
+    {
+      "name": "🔑 1. Autenticação & Sessão",
+      "description": "Endpoints públicos e privados relacionados com a gestão de utilizadores ligados, sessão, e rotação silenciosa de Refresh Tokens.",
+      "item": [
+        {
+          "name": "Registar Novo Utilizador",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Utilizador Teste\",\n  \"email\": \"user@escola.com\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Permite o auto-registo de novos utilizadores na plataforma como membros regulares."
+          },
+          "response": []
+        },
+        {
+          "name": "Iniciar Sessão (Login)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 200) {",
+                  "    if (jsonData.token) {",
+                  "        pm.collectionVariables.set(\"authToken\", jsonData.token);",
+                  "        console.log(\"Access Token salvo com sucesso!\");",
+                  "    }",
+                  "    if (jsonData.refreshToken) {",
+                  "        pm.collectionVariables.set(\"refreshToken\", jsonData.refreshToken);",
+                  "        console.log(\"Refresh Token salvo com sucesso!\");",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@escolas.com\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "login"
+              ]
+            },
+            "description": "Autentica um utilizador com email e palavra-passe. O script de testes no Postman atualiza automaticamente as variáveis {{authToken}} e {{refreshToken}} da coleção."
+          },
+          "response": []
+        },
+        {
+          "name": "Renovar Token de Acesso (Refresh Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 200) {",
+                  "    if (jsonData.token) {",
+                  "        pm.collectionVariables.set(\"authToken\", jsonData.token);",
+                  "        console.log(\"Novo Access Token salvo com sucesso!\");",
+                  "    }",
+                  "    if (jsonData.refreshToken) {",
+                  "        pm.collectionVariables.set(\"refreshToken\", jsonData.refreshToken);",
+                  "        console.log(\"Novo Refresh Token rotacionado salvo com sucesso!\");",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "refresh"
+              ]
+            },
+            "description": "Utiliza o Refresh Token atual para obter um novo token de acesso e rotacionar o refresh token. Atualiza as variáveis da coleção instantaneamente."
+          },
+          "response": []
+        },
+        {
+          "name": "Terminar Sessão (Logout Session)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    pm.collectionVariables.set(\"authToken\", \"\");",
+                  "    pm.collectionVariables.set(\"refreshToken\", \"\");",
+                  "    console.log(\"Tokens limpos após Logout bem sucedido!\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/logout-session",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "logout-session"
+              ]
+            },
+            "description": "Revoga o Refresh Token no servidor e limpa as variáveis de autenticação locais no Postman."
+          },
+          "response": []
+        },
+        {
+          "name": "Obter Meu Perfil Atual",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            },
+            "description": "Retorna os detalhes do utilizador autenticado pelo Token JWT."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Meu Perfil",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Utilizador Teste Editado\",\n  \"password\": \"newpassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            },
+            "description": "Permite ao utilizador ligado atualizar o seu nome e password."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Meu Estado (Ativo/Inativo)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "status"
+              ]
+            },
+            "description": "Permite alterar o estado do utilizador logado."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📅 2. Projetos Anuais",
+      "description": "Gestão de Projetos anuais das Eco-Escolas, incluindo atribuição de coordenadores (Exclusivo Admin).",
+      "item": [
+        {
+          "name": "Listar Projetos Anuais",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            },
+            "description": "Retorna todos os projetos anuais estruturados no sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Obter Detalhes do Projeto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}"
+              ]
+            },
+            "description": "Obtém informação detalhada de um projeto específico a partir do seu ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Criar Projeto Anual (Exclusivo Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData._id) {",
+                  "    pm.collectionVariables.set(\"projectId\", jsonData._id);",
+                  "    console.log(\"projectId salvo: \", jsonData._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Projeto Eco-Escolas 2026/2027\",\n  \"year\": 2027\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            },
+            "description": "Cria um novo projeto anual para a escola. O ID do novo projeto é guardado na variável {{projectId}} da coleção."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Projeto Anual (Exclusivo Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Projeto Eco-Escolas 2026/2027 Atualizado\",\n  \"year\": 2027\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}"
+              ]
+            },
+            "description": "Modifica os dados de identificação do projeto anual."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Estado do Projeto (Exclusivo Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}",
+                "status"
+              ]
+            },
+            "description": "Muda o estado do projeto anual (ex: planning, active, finished)."
+          },
+          "response": []
+        },
+        {
+          "name": "Atribuir Coordenador do Projeto (Exclusivo Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{coordinatorId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}/coordinator",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}",
+                "coordinator"
+              ]
+            },
+            "description": "Associa um utilizador com o papel de 'coordenador' ao projeto anual ativo."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👥 3. Gestão de Utilizadores (Admin / Coordenador)",
+      "description": "Operações de administração reservadas para criar, modificar e gerir o estado de outros utilizadores na plataforma.",
+      "item": [
+        {
+          "name": "Listar Todos os Utilizadores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            },
+            "description": "Obtém uma listagem de todos os utilizadores da plataforma com o respetivo role."
+          },
+          "response": []
+        },
+        {
+          "name": "Criar Novo Utilizador Admin/Coordenador/Outros",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData.data && jsonData.data.id) {",
+                  "    pm.collectionVariables.set(\"tempUserId\", jsonData.data.id);",
+                  "    console.log(\"tempUserId salvo: \", jsonData.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Maria coordenadora\",\n  \"email\": \"maria@escola.com\",\n  \"password\": \"123456\",\n  \"role\": \"coordinator\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            },
+            "description": "Cria um novo utilizador diretamente pelo painel administrativo, podendo logo definir um papel específico. O ID é salvo na variável {{tempUserId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Utilizador Admin/Coordenador",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Maria Coordenadora Editada\",\n  \"role\": \"coordinator\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{tempUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{tempUserId}}"
+              ]
+            },
+            "description": "Edita os parâmetros do utilizador especificado pelo ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Estado do Utilizador Admin/Coordenador",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{tempUserId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{tempUserId}}",
+                "status"
+              ]
+            },
+            "description": "Ativa ou desativa a conta do utilizador fornecido."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🌱 4. Atividades Ambientais",
+      "description": "Visualização, planeamento, modificação de atividades, upload de fotografias de comprovação e registo de execuções reais.",
+      "item": [
+        {
+          "name": "Listar Atividades Públicas (Opcional Auth)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/activities?status=active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "activities"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            },
+            "description": "Recupera a lista de atividades ativas ou gerais abertas ao público."
+          },
+          "response": []
+        },
+        {
+          "name": "Obter Detalhes da Atividade",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/activities/{{activityId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "activities",
+                "{{activityId}}"
+              ]
+            },
+            "description": "Obtém detalhes visuais e técnicos de uma atividade."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Atividades Admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/activities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "activities"
+              ]
+            },
+            "description": "Lista todas as atividades para administração com campos estendidos de controlo interno."
+          },
+          "response": []
+        },
+        {
+          "name": "Criar Nova Atividade Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData._id) {",
+                  "    pm.collectionVariables.set(\"activityId\", jsonData._id);",
+                  "    console.log(\"activityId salvo: \", jsonData._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Limpeza da Praia de Vila do Conde\",\n  \"description\": \"Recolha de microplásticos e resíduos na praia.\",\n  \"location\": \"Praia da Lapa\",\n  \"startDate\": \"2026-06-10T09:00:00.000Z\",\n  \"endDate\": \"2026-06-10T13:00:00.000Z\",\n  \"status\": \"planned\",\n  \"areas\": [\"Resíduos\", \"Água\"],\n  \"resources\": \"Sacos de lixo, luvas, baldes\",\n  \"visibility\": \"public\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/activities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "activities"
+              ]
+            },
+            "description": "Publica uma nova atividade planeada. O ID é armazenado na variável {{activityId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Atividade Admin",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Limpeza da Praia de Vila do Conde - Com Almoço\",\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/activities/{{activityId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "activities",
+                "{{activityId}}"
+              ]
+            },
+            "description": "Atualiza os metadados da atividade criada anteriormente."
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Estado da Atividade Admin",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/activities/{{activityId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "activities",
+                "{{activityId}}",
+                "status"
+              ]
+            },
+            "description": "Permite ativar, planear ou concluir de forma ágil o estado de uma atividade."
+          },
+          "response": []
+        },
+        {
+          "name": "Registar Execução da Atividade",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"executionLocation\": \"Praia da Lapa - Zona Sul\",\n  \"executionNotes\": \"Foram recolhidos cerca de 45kg de lixo plástico com a colaboração ativa de 20 voluntários.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/activities/{{activityId}}/executions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "activities",
+                "{{activityId}}",
+                "executions"
+              ]
+            },
+            "description": "Guarda o relatório descritivo e real de execução da atividade, mudando o estado para 'completed' no sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload de Foto da Atividade (Multipart Form)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "photo",
+                  "description": "Ficheiro de imagem da atividade real (JPG/PNG)",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/activities/{{activityId}}/photos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "activities",
+                "{{activityId}}",
+                "photos"
+              ]
+            },
+            "description": "Envia uma fotografia para comprovação de presença/realização da atividade."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🙋 5. Inscrições & Participações",
+      "description": "Endpoints para gestão de inscritos e visitantes nas atividades ambientais da escola.",
+      "item": [
+        {
+          "name": "Inscrever-se em Atividade",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData.participationId) {",
+                  "    pm.collectionVariables.set(\"tempParticipationId\", jsonData.participationId);",
+                  "    console.log(\"tempParticipationId salva: \", jsonData.participationId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"José Antunes (Visitante)\",\n  \"email\": \"jose.visitante@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/activities/{{activityId}}/participations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "activities",
+                "{{activityId}}",
+                "participations"
+              ]
+            },
+            "description": "Efetua a inscrição de um utilizador ligado ou de um visitante externo não registado na atividade. O ID de participação é guardado em {{tempParticipationId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Cancelar Inscrição de Atividade",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/activities/{{activityId}}/participations/{{tempParticipationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "activities",
+                "{{activityId}}",
+                "participations",
+                "{{tempParticipationId}}"
+              ]
+            },
+            "description": "Cancela e remove a participação especificada."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Participantes da Atividade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/activities/{{activityId}}/participants",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "activities",
+                "{{activityId}}",
+                "participants"
+              ]
+            },
+            "description": "Retorna a listagem de todos os participantes/visitantes inscritos."
+          },
+          "response": []
+        },
+        {
+          "name": "Adicionar Participante Manualmente (Coordenador/Conselho)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{coordinatorId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/activities/{{activityId}}/participants",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "activities",
+                "{{activityId}}",
+                "participants"
+              ]
+            },
+            "description": "Associa de forma forçada um utilizador do conselho como participante da atividade."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "💡 6. Propostas Ambientais",
+      "description": "Gestão de ideias e propostas de atividades ambientais submetidas por membros do conselho.",
+      "item": [
+        {
+          "name": "Listar Propostas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/proposals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "proposals"
+              ]
+            },
+            "description": "Obtém todas as propostas submetidas no projeto anual."
+          },
+          "response": []
+        },
+        {
+          "name": "Obter Detalhes da Proposta",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/proposals/{{proposalId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "proposals",
+                "{{proposalId}}"
+              ]
+            },
+            "description": "Obtém detalhes estruturados da proposta de atividade."
+          },
+          "response": []
+        },
+        {
+          "name": "Criar Proposta de Atividade (Membro do Conselho)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData._id) {",
+                  "    pm.collectionVariables.set(\"proposalId\", jsonData._id);",
+                  "    console.log(\"proposalId salvo: \", jsonData._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Campanha Resíduos Zero no Refeitório\",\n  \"description\": \"Colocação de ecopontos com cartazes e pesagem semanal do desperdício alimentar.\",\n  \"area\": \"Resíduos\",\n  \"startDate\": \"2026-06-01\",\n  \"resources\": \"Balança digital, ecopontos coloridos, cartolinas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/proposals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "proposals"
+              ]
+            },
+            "description": "Permite a um membro do conselho sugerir uma nova iniciativa. O ID é salvo em {{proposalId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Aprovar / Rejeitar Proposta (Coordenador/Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/proposals/{{proposalId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "proposals",
+                "{{proposalId}}",
+                "status"
+              ]
+            },
+            "description": "Aprova ou rejeita uma proposta, de modo a integrá-la ou não no plano oficial."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📝 7. Reuniões de Conselho",
+      "description": "Gestão de convocatórias, atas, envio automático de alertas a membros e anexação de documentos comprovativos das reuniões do conselho.",
+      "item": [
+        {
+          "name": "Listar Reuniões",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/meetings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings"
+              ]
+            },
+            "description": "Retorna a listagem cronológica de reuniões agendadas ou realizadas."
+          },
+          "response": []
+        },
+        {
+          "name": "Obter Detalhes da Reunião",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/meetings/{{meetingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}"
+              ]
+            },
+            "description": "Obtém detalhes do agendamento de uma reunião por ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Criar Reunião (Secretário/Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData._id) {",
+                  "    pm.collectionVariables.set(\"meetingId\", jsonData._id);",
+                  "    console.log(\"meetingId salvo: \", jsonData._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"1ª Reunião de Conselho Eco-Escolas\",\n  \"date\": \"2026-06-15T14:30:00.000Z\",\n  \"description\": \"Aprovação do plano de ação anual e auditoria escolar.\",\n  \"project_id\": \"{{projectId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/meetings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings"
+              ]
+            },
+            "description": "Agenda uma nova reunião de conselho vinculada ao projeto anual. O ID é guardado na variável {{meetingId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Reunião (Secretário/Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"1ª Reunião de Conselho - Sala de Conferências\",\n  \"description\": \"Aprovação de planos ambientais urgente\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/meetings/{{meetingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}"
+              ]
+            },
+            "description": "Edita as notas ou horário da reunião planeada."
+          },
+          "response": []
+        },
+        {
+          "name": "Enviar Convocatórias Automáticas",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/meetings/{{meetingId}}/convocations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}",
+                "convocations"
+              ]
+            },
+            "description": "Despoleta o envio automático de e-mails/alertas para todos os membros do conselho convocando-os."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Documentos e Atas da Reunião",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/meetings/{{meetingId}}/documents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}",
+                "documents"
+              ]
+            },
+            "description": "Retorna atas, fotos ou ficheiros anexados a esta reunião específica."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload de Ata/Documento da Reunião (Multipart Form)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData._id) {",
+                  "    pm.collectionVariables.set(\"documentId\", jsonData._id);",
+                  "    console.log(\"documentId salvo: \", jsonData._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "document",
+                  "description": "Ficheiro PDF/Word da ata assinada ou fotografia",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "type",
+                  "value": "ata",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/meetings/{{meetingId}}/documents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}",
+                "documents"
+              ]
+            },
+            "description": "Permite fazer upload da ata formal assinada da reunião. O ID é salvo em {{documentId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Remover Documento/Ata de Reunião",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/meetings/documents/{{documentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings",
+                "documents",
+                "{{documentId}}"
+              ]
+            },
+            "description": "Exclui um anexo documental de reunião."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Reunião",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/meetings/{{meetingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meetings",
+                "{{meetingId}}"
+              ]
+            },
+            "description": "Elimina permanentemente a reunião especificada do calendário escolar."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📋 8. Auditorias Ambientais",
+      "description": "Formulários de diagnóstico ambiental por categoria (Água, Energia, Resíduos), envio de respostas e visualização de rácios e relatórios estatísticos.",
+      "item": [
+        {
+          "name": "Obter Questionário da Auditoria",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/audits/questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "audits",
+                "questions"
+              ]
+            },
+            "description": "Retorna o questionário estruturado com as perguntas ecológicas por área temática."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Respostas Submetidas do Projeto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/audits/responses/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "audits",
+                "responses",
+                "{{projectId}}"
+              ]
+            },
+            "description": "Obtém as respostas guardadas na auditoria para o projeto anual selecionado."
+          },
+          "response": []
+        },
+        {
+          "name": "Submeter Respostas da Auditoria (Coordenador/Conselho)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"responses\": [\n    {\n      \"questionId\": \"Q_AGUA_01\",\n      \"value\": \"Sim\",\n      \"comments\": \"Existem temporizadores instalados em todas as torneiras.\"\n    },\n    {\n      \"questionId\": \"Q_ENERGIA_01\",\n      \"value\": \"Parcialmente\",\n      \"comments\": \"Apenas metade das lâmpadas das salas são LEDatualmente.\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/audits/responses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "audits",
+                "responses"
+              ]
+            },
+            "description": "Submete ou atualiza o preenchimento de itens de auditoria ecológica para um projeto."
+          },
+          "response": []
+        },
+        {
+          "name": "Obter Relatório Estatístico da Auditoria",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/audits/report/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "audits",
+                "report",
+                "{{projectId}}"
+              ]
+            },
+            "description": "Retorna o progresso de respostas e a média de pontuações de forma global e por categoria para o projeto."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "💾 9. Métricas, Relatórios & Backups (Admin)",
+      "description": "Painel de administração geral, relatórios consolidados e cópias de segurança (backups) do MongoDB.",
+      "item": [
+        {
+          "name": "Obter Métricas do Painel (Dashboard)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard"
+              ]
+            },
+            "description": "Dashboard completo com agregadores de atividades, participações, propostas e percentagens MoM para o conselho."
+          },
+          "response": []
+        },
+        {
+          "name": "Consultar Relatório Consolidado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report"
+              ]
+            },
+            "description": "Retorna estatísticas detalhadas consolidadas prontas a exportar."
+          },
+          "response": []
+        },
+        {
+          "name": "Gerar / Regenerar Relatório",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report"
+              ]
+            },
+            "description": "Força a geração do relatório ecológico mais recente."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Backups (Exclusivo Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/backups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "backups"
+              ]
+            },
+            "description": "Exibe o nome, tamanho e data de criação de todas as cópias de segurança existentes no servidor."
+          },
+          "response": []
+        },
+        {
+          "name": "Criar Cópia de Segurança Manual (Backup)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201 && jsonData.backupId) {",
+                  "    pm.collectionVariables.set(\"tempBackupId\", jsonData.backupId);",
+                  "    console.log(\"tempBackupId salvo: \", jsonData.backupId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Backup de segurança efetuado via Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/backups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "backups"
+              ]
+            },
+            "description": "Cria um instantâneo manual dos dados do MongoDB e comprime num arquivo. O ID é salvo em {{tempBackupId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Restaurar Cópia de Segurança (Restore Backup)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/backups/{{tempBackupId}}/restore",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "backups",
+                "{{tempBackupId}}",
+                "restore"
+              ]
+            },
+            "description": "Apaga o estado atual da base de dados e repõe integralmente a informação guardada no backup especificado."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "projectId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "coordinatorId",
+      "value": "664c39e2467d3b2b1a89c9d5",
+      "type": "string"
+    },
+    {
+      "key": "tempUserId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "activityId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tempParticipationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "proposalId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "meetingId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "documentId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tempBackupId",
+      "value": "",
+      "type": "string"
+    }
+  ]
 }

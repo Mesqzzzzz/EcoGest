@@ -1,6 +1,6 @@
 # 🌿 EcoGest — Plataforma de Gestão Eco-Escolas
 
-O **EcoGest** é uma plataforma web premium, moderna e intuitiva concebida para gerir iniciativas e projetos no âmbito do programa internacional **Eco-Escolas**. A aplicação foi projetada para unificar propostas ambientais, reuniões, auditorias ecológicas, relatórios executivos e acompanhamento do nível dinâmico dos projetos anuais.
+O **EcoGest** é uma plataforma web concebida para gerir iniciativas e projetos no âmbito do programa internacional **Eco-Escolas**. A aplicação foi projetada para unificar propostas ambientais, reuniões, auditorias ecológicas, relatórios e acompanhamento do nível dinâmico dos projetos anuais.
 
 ---
 
@@ -51,9 +51,9 @@ O EcoGest adota as melhores práticas de segurança de APIs industriais:
 A API do EcoGest está documentada e exposta de forma nativa:
 
 *   **Swagger UI**: Com o servidor backend ativo, aceda a **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** para visualizar a especificação interativa das rotas, parâmetros e payloads.
-*   **Coleções Postman**: O repositório contém dois ficheiros de especificação Postman na raiz para testes rápidos de integração:
+*   **Coleção Postman**: O repositório contém o ficheiro de especificação na raiz para testes rápidos de integração:
     *   `EcoGest_API.postman_collection.json`
-    *   `EcoGest_API_Complete.postman_collection.json`
+
 
 ---
 
