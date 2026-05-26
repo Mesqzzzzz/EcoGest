@@ -53,7 +53,7 @@ export default function MeetingsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this meeting?')) return;
+    if (!window.confirm('Deseja mesmo remover esta reunião?')) return;
     await api.deleteMeeting(id);
     load();
   };
@@ -65,7 +65,7 @@ export default function MeetingsPage() {
     setSaving(false);
     setConvModal(null);
     setConvMsg('');
-    alert('Convocations sent successfully!');
+    alert('Convocatórias enviadas com sucesso!');
   };
 
   // Archive Actions
@@ -119,13 +119,13 @@ export default function MeetingsPage() {
   return (
     <div className="max-w-5xl">
       <PageHeader
-        title="Meetings"
-        subtitle="Schedule, manage convocations, and archive meeting photos and minutes (atas)"
-        action={canManageMeetings ? <Btn onClick={openCreate}><Plus size={16} /> New Meeting</Btn> : null}
+        title="Reuniões"
+        subtitle="Agende reuniões, envie convocatórias e arquive atas ou fotos de reuniões"
+        action={canManageMeetings ? <Btn onClick={openCreate}><Plus size={16} /> Nova Reunião</Btn> : null}
       />
 
       {loading ? <Spinner /> : (
-        <Table headers={['Title & Agenda', 'Date', 'Status', 'Actions']}>
+        <Table headers={['Título e Ordem de Trabalhos', 'Data', 'Estado', 'Ações']}>
           {meetings.map(m => (
             <tr key={m.id} className="hover:bg-slate-50 transition-colors">
               <td className="px-4 py-3">
@@ -144,7 +144,7 @@ export default function MeetingsPage() {
                   {canManageMeetings && (
                     <>
                       <Btn variant="ghost" size="sm" onClick={() => openEdit(m)}><Pencil size={14} /></Btn>
-                      <Btn variant="ghost" size="sm" onClick={() => setConvModal(m)}><Send size={14} /> Convoke</Btn>
+                      <Btn variant="ghost" size="sm" onClick={() => setConvModal(m)}><Send size={14} /> Convocar</Btn>
                       {m.status !== 'completed' && (
                         <Btn variant="danger" size="sm" onClick={() => handleDelete(m.id)}><Trash2 size={14} /></Btn>
                       )}
@@ -158,28 +158,28 @@ export default function MeetingsPage() {
       )}
 
       {/* Create / Edit Modal */}
-      <Modal open={!!modal} onClose={() => setModal(null)} title={modal === 'create' ? 'New Meeting' : `Edit: ${modal?.title}`}>
+      <Modal open={!!modal} onClose={() => setModal(null)} title={modal === 'create' ? 'Nova Reunião' : `Editar: ${modal?.title}`}>
         <form onSubmit={handleSave} className="space-y-4">
-          <FormField label="Title"><Input required value={form.title} onChange={e => set('title', e.target.value)} placeholder="Meeting title" /></FormField>
-          <FormField label="Date"><Input type="date" required value={form.date} onChange={e => set('date', e.target.value)} /></FormField>
-          <FormField label="Description / Agenda"><Textarea value={form.description} onChange={e => set('description', e.target.value)} placeholder="Agenda items…" rows={4} /></FormField>
+          <FormField label="Título"><Input required value={form.title} onChange={e => set('title', e.target.value)} placeholder="Título da reunião" /></FormField>
+          <FormField label="Data"><Input type="date" required value={form.date} onChange={e => set('date', e.target.value)} /></FormField>
+          <FormField label="Descrição / Ordem de Trabalhos"><Textarea value={form.description} onChange={e => set('description', e.target.value)} placeholder="Tópicos a discutir…" rows={4} /></FormField>
           <div className="flex justify-end gap-3 pt-2">
-            <Btn variant="secondary" onClick={() => setModal(null)}>Cancel</Btn>
-            <Btn type="submit" disabled={saving}>{saving ? 'Saving…' : (modal === 'create' ? 'Create Meeting' : 'Save Changes')}</Btn>
+            <Btn variant="secondary" onClick={() => setModal(null)}>Cancelar</Btn>
+            <Btn type="submit" disabled={saving}>{saving ? 'A guardar…' : (modal === 'create' ? 'Criar Reunião' : 'Guardar Alterações')}</Btn>
           </div>
         </form>
       </Modal>
 
       {/* Convocation Modal */}
-      <Modal open={!!convModal} onClose={() => setConvModal(null)} title={`Send Convocations — ${convModal?.title}`}>
+      <Modal open={!!convModal} onClose={() => setConvModal(null)} title={`Enviar Convocatórias — ${convModal?.title}`}>
         <form onSubmit={handleConvocation} className="space-y-4">
-          <p className="text-sm text-slate-500">An invitation email will be sent to all council members for the meeting on <strong>{convModal?.date}</strong>.</p>
-          <FormField label="Optional message">
-            <Textarea value={convMsg} onChange={e => setConvMsg(e.target.value)} placeholder="Add a personal note to the invitation…" rows={3} />
+          <p className="text-sm text-slate-500">Um email de convite será enviado a todos os membros do conselho para a reunião em <strong>{convModal?.date}</strong>.</p>
+          <FormField label="Mensagem opcional">
+            <Textarea value={convMsg} onChange={e => setConvMsg(e.target.value)} placeholder="Adicione uma nota pessoal ao convite…" rows={3} />
           </FormField>
           <div className="flex justify-end gap-3">
-            <Btn variant="secondary" onClick={() => setConvModal(null)}>Cancel</Btn>
-            <Btn type="submit" disabled={saving}><Send size={15} /> {saving ? 'Sending…' : 'Send Convocations'}</Btn>
+            <Btn variant="secondary" onClick={() => setConvModal(null)}>Cancelar</Btn>
+            <Btn type="submit" disabled={saving}><Send size={15} /> {saving ? 'A enviar…' : 'Enviar Convocatórias'}</Btn>
           </div>
         </form>
       </Modal>

@@ -17,7 +17,7 @@ export default function Navbar() {
         </Link>
         
         <nav className="flex items-center gap-6">
-          <Link to="/" className="text-slate-600 hover:text-emerald-600 font-medium transition-colors">Activities</Link>
+          <Link to="/" className="text-slate-600 hover:text-emerald-600 font-medium transition-colors">Atividades</Link>
           
           {user ? (
             <Link to="/dashboard" className="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full font-semibold hover:bg-emerald-200 transition">

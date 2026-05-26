@@ -67,9 +67,29 @@ export function Badge({ status }) {
     council_member: 'bg-amber-100 text-amber-700',
     user:           'bg-slate-100 text-slate-600',
   };
+  const labels = {
+    active:    'Ativa',
+    planned:   'Planeada',
+    completed: 'Concluída',
+    pending:   'Pendente',
+    approved:  'Aprovada',
+    rejected:  'Rejeitada',
+    scheduled: 'Agendada',
+    inactive:  'Inativa',
+    finished:  'Concluído',
+    planning:  'Planeamento',
+    gold:      'Ouro',
+    silver:    'Prata',
+    bronze:    'Bronze',
+    admin:          'Administrador',
+    coordinator:    'Coordenador',
+    secretary:      'Secretário/a',
+    council_member: 'Membro do Conselho',
+    user:           'Utilizador',
+  };
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide transition-all ${map[status] || 'bg-slate-100 text-slate-600'}`}>
-      {status?.replace('_', ' ')}
+      {labels[status] || status?.replace('_', ' ')}
     </span>
   );
 }
@@ -195,7 +215,7 @@ export function Table({ headers, children, empty }) {
             {children || (
               <tr>
                 <td colSpan={headers.length} className="px-4 py-12 text-center text-slate-400">
-                  {empty || 'No data found.'}
+                  {empty || 'Nenhum dado encontrado.'}
                 </td>
               </tr>
             )}
@@ -225,7 +245,7 @@ export function Spinner() {
         <div className="w-10 h-10 rounded-full border-2 border-slate-200" />
         <div className="w-10 h-10 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin absolute inset-0" />
       </div>
-      <p className="text-sm text-slate-400 font-medium">Loading…</p>
+      <p className="text-sm text-slate-400 font-medium">A carregar...</p>
     </div>
   );
 }

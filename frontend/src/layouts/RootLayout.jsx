@@ -10,7 +10,7 @@ export default function RootLayout() {
         <Outlet />
       </main>
       <footer className="bg-white border-t border-slate-200 py-6 mt-12 text-center text-slate-500 text-sm">
-        &copy; 2026 EcoGest. All rights reserved.
+        &copy; 2026 EcoGest. Todos os direitos reservados.
       </footer>
     </div>
   );

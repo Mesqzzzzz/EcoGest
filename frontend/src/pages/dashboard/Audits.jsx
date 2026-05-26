@@ -4,9 +4,9 @@ import { api } from '../../services/api';
 import { PageHeader, Btn, FormField, Textarea, Spinner, Badge } from '../../components/ui';
 
 const CATEGORIES = [
-  { id: 'Water', label: 'Água (Water)', icon: Droplets, color: 'text-blue-600 bg-blue-50 border-blue-100' },
-  { id: 'Energy', label: 'Energia (Energy)', icon: Zap, color: 'text-amber-600 bg-amber-50 border-amber-100' },
-  { id: 'Waste', label: 'Resíduos (Waste)', icon: Leaf, color: 'text-emerald-600 bg-emerald-50 border-emerald-100' }
+  { id: 'Water', label: 'Água', icon: Droplets, color: 'text-blue-600 bg-blue-50 border-blue-100' },
+  { id: 'Energy', label: 'Energia', icon: Zap, color: 'text-amber-600 bg-amber-50 border-amber-100' },
+  { id: 'Waste', label: 'Resíduos', icon: Leaf, color: 'text-emerald-600 bg-emerald-50 border-emerald-100' }
 ];
 
 export default function AuditsPage() {
@@ -264,9 +264,9 @@ export default function AuditsPage() {
                 {/* Option Buttons */}
                 <div className="flex flex-wrap gap-2.5">
                   {[
-                    { label: 'Sim (Yes)', value: 'Sim', color: 'border-emerald-200 text-emerald-800 bg-emerald-50 hover:bg-emerald-100', activeColor: 'bg-emerald-600 border-emerald-600 text-white shadow-emerald-100' },
-                    { label: 'Parcialmente (Partially)', value: 'Parcialmente', color: 'border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100', activeColor: 'bg-amber-500 border-amber-500 text-white shadow-amber-100' },
-                    { label: 'Não (No)', value: 'Não', color: 'border-red-200 text-red-800 bg-red-50 hover:bg-red-100', activeColor: 'bg-red-600 border-red-600 text-white shadow-red-100' }
+                    { label: 'Sim', value: 'Sim', color: 'border-emerald-200 text-emerald-800 bg-emerald-50 hover:bg-emerald-100', activeColor: 'bg-emerald-600 border-emerald-600 text-white shadow-emerald-100' },
+                    { label: 'Parcialmente', value: 'Parcialmente', color: 'border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100', activeColor: 'bg-amber-500 border-amber-500 text-white shadow-amber-100' },
+                    { label: 'Não', value: 'Não', color: 'border-red-200 text-red-800 bg-red-50 hover:bg-red-100', activeColor: 'bg-red-600 border-red-600 text-white shadow-red-100' }
                   ].map(opt => {
                     const isSelected = selectedVal === opt.value;
                     return (

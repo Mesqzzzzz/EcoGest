@@ -6,6 +6,22 @@ import { PageHeader, Badge, Btn, Modal, FormField, Input, Textarea, Select, Tabl
 const AREAS = ['Environment', 'Biodiversity', 'Energy', 'Waste', 'Water', 'Food', 'Transport'];
 const STATUSES = ['planned', 'active', 'completed'];
 
+const AREA_LABELS = {
+  Environment: 'Ambiente',
+  Biodiversity: 'Biodiversidade',
+  Energy: 'Energia',
+  Waste: 'Resíduos',
+  Water: 'Água',
+  Food: 'Alimentação',
+  Transport: 'Transporte',
+};
+
+const STATUS_LABELS = {
+  planned: 'Planeada',
+  active: 'Ativa',
+  completed: 'Concluída'
+};
+
 function ActivityForm({ initial, onSave, onClose }) {
   const [form, setForm] = useState(initial || { name: '', description: '', date: '', location: '', area: 'Environment', status: 'planned', resources: '' });
   const [saving, setSaving] = useState(false);
@@ -21,28 +37,28 @@ function ActivityForm({ initial, onSave, onClose }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <FormField label="Name"><Input required value={form.name} onChange={e => set('name', e.target.value)} /></FormField>
-      <FormField label="Description"><Textarea value={form.description} onChange={e => set('description', e.target.value)} /></FormField>
+      <FormField label="Nome"><Input required value={form.name} onChange={e => set('name', e.target.value)} /></FormField>
+      <FormField label="Descrição"><Textarea value={form.description} onChange={e => set('description', e.target.value)} /></FormField>
       <div className="grid grid-cols-2 gap-4">
-        <FormField label="Date"><Input type="date" required value={form.date} onChange={e => set('date', e.target.value)} /></FormField>
-        <FormField label="Area">
+        <FormField label="Data"><Input type="date" required value={form.date} onChange={e => set('date', e.target.value)} /></FormField>
+        <FormField label="Área">
           <Select value={form.area} onChange={e => set('area', e.target.value)}>
-            {AREAS.map(a => <option key={a}>{a}</option>)}
+            {AREAS.map(a => <option key={a} value={a}>{AREA_LABELS[a] || a}</option>)}
           </Select>
         </FormField>
       </div>
-      <FormField label="Location"><Input value={form.location} onChange={e => set('location', e.target.value)} /></FormField>
-      <FormField label="Resources (Recursos)"><Input value={form.resources} onChange={e => set('resources', e.target.value)} placeholder="E.g. Recycled paper, organic seeds..." /></FormField>
+      <FormField label="Local"><Input value={form.location} onChange={e => set('location', e.target.value)} /></FormField>
+      <FormField label="Recursos"><Input value={form.resources} onChange={e => set('resources', e.target.value)} placeholder="Ex: Papel reciclado, sementes biológicas..." /></FormField>
       {initial && (
-        <FormField label="Status">
+        <FormField label="Estado">
           <Select value={form.status} onChange={e => set('status', e.target.value)}>
-            {STATUSES.map(s => <option key={s}>{s}</option>)}
+            {STATUSES.map(s => <option key={s} value={s}>{STATUS_LABELS[s] || s}</option>)}
           </Select>
         </FormField>
       )}
       <div className="flex justify-end gap-3 pt-2">
-        <Btn variant="secondary" onClick={onClose}>Cancel</Btn>
-        <Btn type="submit" disabled={saving}>{saving ? 'Saving…' : (initial ? 'Save Changes' : 'Create Activity')}</Btn>
+        <Btn variant="secondary" onClick={onClose}>Cancelar</Btn>
+        <Btn type="submit" disabled={saving}>{saving ? 'A guardar…' : (initial ? 'Guardar Alterações' : 'Criar Atividade')}</Btn>
       </div>
     </form>
   );
@@ -225,9 +241,9 @@ export default function ActivitiesPage() {
   return (
     <div className="max-w-6xl">
       <PageHeader
-        title="Activities"
-        subtitle={canManageActivities ? "Manage all environmental activities" : "Explore and manage your environmental initiatives"}
-        action={canManageActivities ? <Btn onClick={() => setModal('create')}><Plus size={16} /> New Activity</Btn> : null}
+        title="Atividades"
+        subtitle={canManageActivities ? "Gerir todas as atividades ambientais" : "Explore e gira as suas iniciativas ambientais"}
+        action={canManageActivities ? <Btn onClick={() => setModal('create')}><Plus size={16} /> Nova Atividade</Btn> : null}
       />
 
       {!canManageActivities && (
@@ -236,13 +252,13 @@ export default function ActivitiesPage() {
             onClick={() => setViewMode('my')}
             className={`pb-3 px-2 border-b-2 text-sm font-semibold transition-colors mr-8 ${viewMode === 'my' ? 'border-emerald-500 text-emerald-700' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
           >
-            My Activities
+            As Minhas Atividades
           </button>
           <button
             onClick={() => setViewMode('all')}
             className={`pb-3 px-2 border-b-2 text-sm font-semibold transition-colors ${viewMode === 'all' ? 'border-emerald-500 text-emerald-700' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
           >
-            Available to Join
+            Disponíveis para Inscrição
           </button>
         </div>
       )}
@@ -255,7 +271,7 @@ export default function ActivitiesPage() {
             onClick={() => setFilterStatus(s)}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors border ${filterStatus === s ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}`}
           >
-            {s ? s.charAt(0).toUpperCase() + s.slice(1) : 'All'}
+            {s ? (STATUS_LABELS[s] || s) : 'Todas'}
           </button>
         ))}
       </div>
@@ -264,21 +280,21 @@ export default function ActivitiesPage() {
         <>
           {!canManageActivities && viewMode === 'my' && filtered.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 shadow-sm animate-fade-in">
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">You are not participating in any activities yet.</h3>
-              <p className="text-slate-500 mb-6">Discover available environmental activities and join!</p>
-              <Btn onClick={() => setViewMode('all')} size="lg">Explore Activities</Btn>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">Ainda não está a participar em nenhuma atividade.</h3>
+              <p className="text-slate-500 mb-6">Descubra atividades ambientais disponíveis e inscreva-se!</p>
+              <Btn onClick={() => setViewMode('all')} size="lg">Explorar Atividades</Btn>
             </div>
           ) : !canManageActivities && viewMode === 'all' && filtered.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 shadow-sm animate-fade-in">
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">No activities available</h3>
-              <p className="text-slate-500">There are currently no open activities for you to join.</p>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">Nenhuma atividade disponível</h3>
+              <p className="text-slate-500">De momento, não existem atividades abertas para inscrição.</p>
             </div>
           ) : (
-            <Table headers={['Activity', 'Area', 'Date', 'Location', 'Participants', 'Status', canManageActivities ? 'Actions' : 'Action']}>
+            <Table headers={['Atividade', 'Área', 'Data', 'Local', 'Participantes', 'Estado', canManageActivities ? 'Ações' : 'Ação']}>
               {filtered.map(act => (
                 <tr key={act.id} className="hover:bg-slate-50 transition-colors">
                   <td className="px-4 py-3 font-semibold text-slate-800">{act.name}</td>
-                  <td className="px-4 py-3 text-slate-500">{act.area}</td>
+                  <td className="px-4 py-3 text-slate-500">{AREA_LABELS[act.area] || act.area}</td>
                   <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{act.date}</td>
                   <td className="px-4 py-3 text-slate-500">{act.location}</td>
                   <td className="px-4 py-3">
@@ -291,7 +307,7 @@ export default function ActivitiesPage() {
                     {canManageActivities ? (
                       <div className="flex items-center gap-2">
                         <Btn variant="ghost" size="sm" onClick={() => setModal(act)}>
-                          <Pencil size={14} /> Edit
+                          <Pencil size={14} /> Editar
                         </Btn>
                         {canExecuteActivities && (
                           <Btn variant="success" size="sm" onClick={() => openExecution(act)}>
@@ -302,13 +318,13 @@ export default function ActivitiesPage() {
                     ) : (
                       act.user_participation?.is_participating ? (
                         act.status === 'completed' ? (
-                          <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-2.5 py-1.5 rounded-lg">Done</span>
+                          <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-2.5 py-1.5 rounded-lg">Concluída</span>
                         ) : (
-                          <Btn variant="danger" size="sm" onClick={() => handleLeaveClick(act)}>Leave</Btn>
+                          <Btn variant="danger" size="sm" onClick={() => handleLeaveClick(act)}>Sair</Btn>
                         )
                       ) : (
                         <Btn variant="primary" size="sm" onClick={() => handleJoin(act)} disabled={act.status !== 'active'}>
-                          {act.status === 'active' ? 'Join' : 'Closed'}
+                          {act.status === 'active' ? 'Participar' : 'Fechada'}
                         </Btn>
                       )
                     )}
@@ -324,7 +340,7 @@ export default function ActivitiesPage() {
       <Modal
         open={!!modal}
         onClose={() => setModal(null)}
-        title={modal === 'create' ? 'Create Activity' : `Edit: ${modal?.name}`}
+        title={modal === 'create' ? 'Criar Atividade' : `Editar: ${modal?.name}`}
       >
         {modal === 'create'
           ? <ActivityForm onSave={handleCreate} onClose={() => setModal(null)} />
@@ -333,9 +349,9 @@ export default function ActivitiesPage() {
       </Modal>
 
       {/* Participants Modal */}
-      <Modal open={!!participantsModal} onClose={() => setParticipantsModal(null)} title={`Participants – ${participantsModal?.name}`}>
+      <Modal open={!!participantsModal} onClose={() => setParticipantsModal(null)} title={`Participantes – ${participantsModal?.name}`}>
         <div className="divide-y divide-slate-100">
-          {participants.length === 0 && <p className="py-8 text-center text-slate-400 text-sm">No participants yet.</p>}
+          {participants.length === 0 && <p className="py-8 text-center text-slate-400 text-sm">Ainda sem participantes.</p>}
           {participants.map(p => (
             <div key={p.id} className="py-3 flex justify-between items-center">
               <div>
@@ -349,12 +365,12 @@ export default function ActivitiesPage() {
       </Modal>
 
       {/* Confirm Leave Modal */}
-      <Modal open={!!confirmLeave} onClose={() => setConfirmLeave(null)} title="Cancel Participation">
+      <Modal open={!!confirmLeave} onClose={() => setConfirmLeave(null)} title="Cancelar Inscrição">
         <div className="space-y-4 pt-2">
-          <p className="text-slate-600">Are you sure you want to cancel your participation in <strong>{confirmLeave?.name}</strong>?</p>
+          <p className="text-slate-600">Tem a certeza de que deseja cancelar a sua participação em <strong>{confirmLeave?.name}</strong>?</p>
           <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-            <Btn variant="secondary" onClick={() => setConfirmLeave(null)}>Cancel</Btn>
-            <Btn variant="danger" onClick={handleConfirmLeave}>Yes, Leave Activity</Btn>
+            <Btn variant="secondary" onClick={() => setConfirmLeave(null)}>Cancelar</Btn>
+            <Btn variant="danger" onClick={handleConfirmLeave}>Sim, Sair da Atividade</Btn>
           </div>
         </div>
       </Modal>

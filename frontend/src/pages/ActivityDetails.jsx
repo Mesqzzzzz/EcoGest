@@ -40,7 +40,7 @@ export default function ActivityDetails() {
       await api.participateInActivity(id, { name, email });
       setSuccess(true);
     } catch (err) {
-      setError(err.message || 'Failed to participate');
+      setError(err.message || 'Erro ao registar participação');
     }
     setSubmitting(false);
   };
@@ -63,7 +63,7 @@ export default function ActivityDetails() {
         className="flex items-center gap-2 text-slate-500 hover:text-slate-800 mb-8 transition-colors group"
       >
         <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-        Back to Activities
+        Voltar às Atividades
       </button>
 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
@@ -91,7 +91,7 @@ export default function ActivityDetails() {
         <div className="flex flex-col lg:flex-row">
           {/* Details */}
           <div className="p-8 flex-grow">
-            <h3 className="text-lg font-bold text-slate-800 mb-3">About this activity</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-3">Sobre esta atividade</h3>
             <p className="text-slate-600 leading-relaxed mb-6">{activity.description}</p>
 
             {activity.resources && (
@@ -122,9 +122,9 @@ export default function ActivityDetails() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { icon: Calendar, label: 'Date', value: activity.date },
-                { icon: MapPin,   label: 'Location', value: activity.location },
-                { icon: Users,    label: 'Participants', value: `${activity.participants_count || 0} joined` },
+                { icon: Calendar, label: 'Data', value: activity.date },
+                { icon: MapPin,   label: 'Local', value: activity.location },
+                { icon: Users,    label: 'Participantes', value: `${activity.participants_count || 0} inscritos` },
               ].map(({ icon: InfoIcon, label, value }) => (
                 <div key={label}
                   className="flex gap-4 items-start p-4 rounded-2xl bg-slate-50 border border-slate-100
@@ -149,16 +149,16 @@ export default function ActivityDetails() {
                 <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-5 animate-pulse-ring">
                   <CheckCircle size={40} className="text-emerald-500" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">You're in! 🎉</h3>
-                <p className="text-slate-500 text-sm mb-6">Your participation has been confirmed.</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Inscrição efetuada! 🎉</h3>
+                <p className="text-slate-500 text-sm mb-6">A sua participação foi confirmada.</p>
                 <Link to="/" className="text-emerald-600 hover:underline text-sm font-medium">
-                  Browse more activities →
+                  Ver mais atividades →
                 </Link>
               </div>
             ) : (
               <div className="animate-fade-up">
-                <h3 className="font-bold text-xl text-slate-800 mb-1">Join as Guest</h3>
-                <p className="text-sm text-slate-500 mb-6">No account needed — just enter your details.</p>
+                <h3 className="font-bold text-xl text-slate-800 mb-1">Participar como Convidado</h3>
+                <p className="text-sm text-slate-500 mb-6">Sem necessidade de conta — basta introduzir os seus dados.</p>
 
                 <form onSubmit={handleParticipate} className="space-y-4">
                   {error && (
@@ -167,16 +167,16 @@ export default function ActivityDetails() {
                     </div>
                   )}
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Your Name</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">O Seu Nome</label>
                     <input required type="text" value={name} onChange={e => setName(e.target.value)}
-                      placeholder="John Doe"
+                      placeholder="João Silva"
                       className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500
                         focus:border-emerald-500 outline-none transition-all bg-white hover:border-slate-400" />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email Address</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Endereço de Email</label>
                     <input required type="email" value={email} onChange={e => setEmail(e.target.value)}
-                      placeholder="john@example.com"
+                      placeholder="joao@escola.pt"
                       className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500
                         focus:border-emerald-500 outline-none transition-all bg-white hover:border-slate-400" />
                   </div>
@@ -186,15 +186,15 @@ export default function ActivityDetails() {
                       hover:shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {submitting
-                      ? <><div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Confirming…</>
-                      : <><Send size={18} /> Confirm Participation</>
+                      ? <><div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> A confirmar…</>
+                      : <><Send size={18} /> Confirmar Participação</>
                     }
                   </button>
                 </form>
 
                 {api.currentUser && (
                   <p className="text-xs text-slate-400 mt-4 text-center">
-                    Logged in as <span className="font-medium text-slate-600">{api.currentUser.name}</span>
+                    Sessão iniciada como <span className="font-medium text-slate-600">{api.currentUser.name}</span>
                   </p>
                 )}
               </div>

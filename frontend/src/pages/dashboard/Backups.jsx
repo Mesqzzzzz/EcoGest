@@ -16,17 +16,17 @@ export default function BackupsPage() {
 
   const handleCreate = async (e) => {
     e.preventDefault(); setSaving(true);
-    await api.createBackup(description || 'Manual Backup');
+    await api.createBackup(description || 'Cópia de Segurança Manual');
     setSaving(false); setCreateOpen(false); setDescription('');
     load();
   };
 
   const handleRestore = async (b) => {
-    if (!confirm(`Restore system from backup "${b.description}" (${b.created_at.slice(0,10)})? This cannot be undone.`)) return;
+    if (!confirm(`Deseja restaurar o sistema a partir da cópia de segurança "${b.description}" (${b.created_at.slice(0,10)})? Esta ação não pode ser desfeita.`)) return;
     setRestoring(b.id);
     try {
       await api.restoreBackup(b.id);
-      alert('System restored successfully!');
+      alert('Sistema restaurado com sucesso!');
     } catch(e) { alert(e.message); }
     setRestoring(null);
   };
@@ -36,21 +36,21 @@ export default function BackupsPage() {
   return (
     <div className="max-w-4xl space-y-6">
       <PageHeader
-        title="System Backups"
-        subtitle="Create and restore system snapshots"
-        action={<Btn onClick={() => setCreateOpen(true)}><Plus size={16} /> Create Backup</Btn>}
+        title="Cópias de Segurança"
+        subtitle="Criar e restaurar cópias de segurança do sistema"
+        action={<Btn onClick={() => setCreateOpen(true)}><Plus size={16} /> Criar Cópia de Segurança</Btn>}
       />
 
       {/* Info Banner */}
       <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
         <Database size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-amber-800">
-          Backups are database snapshots. Restoring will overwrite all current data. Always create a fresh backup before restoring.
+          As cópias de segurança são instantâneos da base de dados. Restaurar irá substituir todos os dados atuais. Crie sempre uma nova cópia de segurança antes de restaurar.
         </p>
       </div>
 
       {loading ? <Spinner /> : (
-        <Table headers={['Description', 'Created At', 'Size', 'Actions']}>
+        <Table headers={['Descrição', 'Criada em', 'Tamanho', 'Ações']}>
           {backups.map(b => (
             <tr key={b.id} className="hover:bg-slate-50 transition-colors">
               <td className="px-4 py-4">
@@ -72,7 +72,7 @@ export default function BackupsPage() {
                   onClick={() => handleRestore(b)}
                 >
                   <RotateCcw size={14} className={restoring === b.id ? 'animate-spin' : ''} />
-                  {restoring === b.id ? 'Restoring…' : 'Restore'}
+                  {restoring === b.id ? 'A restaurar…' : 'Restaurar'}
                 </Btn>
               </td>
             </tr>
@@ -81,19 +81,19 @@ export default function BackupsPage() {
       )}
 
       {/* Create Backup Modal */}
-      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="Create New Backup">
+      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="Criar Nova Cópia de Segurança">
         <form onSubmit={handleCreate} className="space-y-4">
-          <p className="text-sm text-slate-500">A full database snapshot will be saved with the timestamp of creation.</p>
-          <FormField label="Description (optional)">
+          <p className="text-sm text-slate-500">Um instantâneo completo da base de dados será guardado com a data/hora de criação.</p>
+          <FormField label="Descrição (opcional)">
             <Input
               value={description}
               onChange={e => setDescription(e.target.value)}
-              placeholder="e.g. Pre-deployment backup"
+              placeholder="ex: Cópia antes da implementação"
             />
           </FormField>
           <div className="flex justify-end gap-3 pt-2">
-            <Btn variant="secondary" onClick={() => setCreateOpen(false)}>Cancel</Btn>
-            <Btn type="submit" disabled={saving}><Database size={15} /> {saving ? 'Creating…' : 'Create Backup'}</Btn>
+            <Btn variant="secondary" onClick={() => setCreateOpen(false)}>Cancelar</Btn>
+            <Btn type="submit" disabled={saving}><Database size={15} /> {saving ? 'A criar…' : 'Criar Cópia de Segurança'}</Btn>
           </div>
         </form>
       </Modal>

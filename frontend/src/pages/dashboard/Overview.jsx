@@ -47,27 +47,27 @@ export default function Overview() {
       {/* Greeting */}
       <div className="animate-fade-down">
         <h1 className="text-2xl font-extrabold text-slate-900">
-          Good day, {api.currentUser?.name?.split(' ')[0]} 👋
+          Olá, {api.currentUser?.name?.split(' ')[0]} 👋
         </h1>
-        <p className="text-slate-500 mt-1 text-sm">Here's your EcoGest project summary.</p>
+        <p className="text-slate-500 mt-1 text-sm">Aqui está o resumo do seu projeto EcoGest.</p>
       </div>
 
       {isPrivileged && !metrics.isUser && (
         <>
           {/* Stat Cards – staggered */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard icon={Leaf}         label="Total Activities"  value={metrics.activities?.total || 0}   color="emerald" sub={`${metrics.activities?.active || 0} active`} delay={0}   />
-            <StatCard icon={Users}        label="Participants"      value={metrics.participants || 0}        color="blue"    delay={100} />
-            <StatCard icon={FileText}     label="Pending Proposals" value={metrics.proposals?.pending || 0}  color="amber"   delay={200} />
-            <StatCard icon={CalendarDays} label="Meetings"          value={metrics.meetings || 0}           color="purple"  delay={300} />
+            <StatCard icon={Leaf}         label="Total de Atividades"  value={metrics.activities?.total || 0}   color="emerald" sub={`${metrics.activities?.active || 0} ativas`} delay={0}   />
+            <StatCard icon={Users}        label="Participantes"      value={metrics.participants || 0}        color="blue"    delay={100} />
+            <StatCard icon={FileText}     label="Propostas Pendentes" value={metrics.proposals?.pending || 0}  color="amber"   delay={200} />
+            <StatCard icon={CalendarDays} label="Reuniões"          value={metrics.meetings || 0}           color="purple"  delay={300} />
           </div>
 
           {/* Activity Lifecycle */}
           <div className="grid grid-cols-3 gap-4">
             {[
-              { label: 'Planned',   value: metrics.activities?.planned || 0,   color: 'bg-blue-500',    ring: 'ring-blue-100'    },
-              { label: 'Active',    value: metrics.activities?.active || 0,    color: 'bg-emerald-500', ring: 'ring-emerald-100' },
-              { label: 'Completed', value: metrics.activities?.completed || 0, color: 'bg-slate-400',   ring: 'ring-slate-100'   },
+              { label: 'Planeadas',   value: metrics.activities?.planned || 0,   color: 'bg-blue-500',    ring: 'ring-blue-100'    },
+              { label: 'Ativas',    value: metrics.activities?.active || 0,    color: 'bg-emerald-500', ring: 'ring-emerald-100' },
+              { label: 'Concluídas', value: metrics.activities?.completed || 0, color: 'bg-slate-400',   ring: 'ring-slate-100'   },
             ].map(({ label, value, color, ring }, i) => (
               <div
                 key={label}
@@ -200,10 +200,10 @@ export default function Overview() {
         {/* Recent Activities */}
         <div className={`${isPrivileged ? 'lg:col-span-3' : ''} bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-fade-up delay-200`}>
           <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-            <h2 className="font-bold text-slate-800">{isPrivileged ? 'Recent Activities' : 'Your Activities'}</h2>
+            <h2 className="font-bold text-slate-800">{isPrivileged ? 'Atividades Recentes' : 'As Suas Atividades'}</h2>
             <Link to="/dashboard/activities"
               className="text-xs text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1 hover:gap-2 transition-all">
-              View all <ArrowRight size={13} />
+              Ver todas <ArrowRight size={13} />
             </Link>
           </div>
           <div className="divide-y divide-slate-50">
@@ -223,8 +223,8 @@ export default function Overview() {
               </div>
             )) : (
               <div className="px-6 py-8 text-center">
-                <p className="text-sm text-slate-500 mb-3">You haven't joined any activities yet.</p>
-                <Link to="/dashboard/activities" className="text-sm font-medium text-emerald-600 hover:text-emerald-700">Explore Available Activities &rarr;</Link>
+                <p className="text-sm text-slate-500 mb-3">Ainda não está a participar em nenhuma atividade.</p>
+                <Link to="/dashboard/activities" className="text-sm font-medium text-emerald-600 hover:text-emerald-700">Explorar Atividades Disponíveis &rarr;</Link>
               </div>
             )}
           </div>
@@ -234,10 +234,10 @@ export default function Overview() {
         {isPrivileged && (
           <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-fade-up delay-300">
             <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-              <h2 className="font-bold text-slate-800">Upcoming Meetings</h2>
+              <h2 className="font-bold text-slate-800">Próximas Reuniões</h2>
               <Link to="/dashboard/meetings"
                 className="text-xs text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1 hover:gap-2 transition-all">
-                View all <ArrowRight size={13} />
+                Ver todas <ArrowRight size={13} />
               </Link>
             </div>
             <div className="divide-y divide-slate-50">
@@ -248,12 +248,12 @@ export default function Overview() {
                 >
                   <p className="font-semibold text-slate-800 text-sm">{m.title}</p>
                   <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
-                    <Calendar size={11} /> {m.date} &bull; {m.participants} participants
+                    <Calendar size={11} /> {m.date} &bull; {m.participants} participantes
                   </p>
                 </div>
               ))}
               {meetings.length === 0 && (
-                <p className="px-6 py-10 text-center text-sm text-slate-400">No upcoming meetings</p>
+                <p className="px-6 py-10 text-center text-sm text-slate-400">Não existem próximas reuniões</p>
               )}
             </div>
           </div>
@@ -265,10 +265,10 @@ export default function Overview() {
         {['admin', 'coordinator', 'council_member'].includes(userRole) && (
           <Link to="/dashboard/proposals" className="bg-white border border-slate-200 rounded-2xl p-5 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300 group hover:border-amber-300 hover:bg-amber-50">
             <span className="text-3xl block mb-2 group-hover:scale-110 transition-transform duration-200">📋</span>
-            <p className="text-sm font-semibold text-slate-700">Review Proposals</p>
+            <p className="text-sm font-semibold text-slate-700">Rever Propostas</p>
             {isPrivileged && !metrics.isUser && metrics.proposals?.pending > 0 && (
               <span className="mt-2 inline-block px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">
-                {metrics.proposals.pending} pending
+                {metrics.proposals.pending} pendentes
               </span>
             )}
           </Link>
@@ -276,20 +276,20 @@ export default function Overview() {
         
         <Link to="/dashboard/activities" className="bg-white border border-slate-200 rounded-2xl p-5 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300 group hover:border-emerald-300 hover:bg-emerald-50">
           <span className="text-3xl block mb-2 group-hover:scale-110 transition-transform duration-200">🌱</span>
-          <p className="text-sm font-semibold text-slate-700">{isPrivileged ? 'Add Activity' : 'View Activities'}</p>
+          <p className="text-sm font-semibold text-slate-700">{isPrivileged ? 'Criar Atividade' : 'Ver Atividades'}</p>
         </Link>
         
         {userRole !== 'user' && (
           <Link to="/dashboard/meetings" className="bg-white border border-slate-200 rounded-2xl p-5 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300 group hover:border-blue-300 hover:bg-blue-50">
             <span className="text-3xl block mb-2 group-hover:scale-110 transition-transform duration-200">📅</span>
-            <p className="text-sm font-semibold text-slate-700">{['admin', 'coordinator', 'secretary'].includes(userRole) ? 'Schedule Meeting' : 'View Meetings'}</p>
+            <p className="text-sm font-semibold text-slate-700">{['admin', 'coordinator', 'secretary'].includes(userRole) ? 'Agendar Reunião' : 'Ver Reuniões'}</p>
           </Link>
         )}
         
         {userRole === 'admin' && (
           <Link to="/dashboard/reports" className="bg-white border border-slate-200 rounded-2xl p-5 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300 group hover:border-purple-300 hover:bg-purple-50">
             <span className="text-3xl block mb-2 group-hover:scale-110 transition-transform duration-200">📊</span>
-            <p className="text-sm font-semibold text-slate-700">View Reports</p>
+            <p className="text-sm font-semibold text-slate-700">Ver Relatórios</p>
           </Link>
         )}
       </div>

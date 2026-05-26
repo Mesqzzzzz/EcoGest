@@ -8,15 +8,15 @@ import { api } from '../services/api';
 
 const getNavItems = (role) => {
   const allItems = [
-    { label: 'Overview',    path: '/dashboard',            icon: LayoutDashboard, roles: ['coordinator', 'council_member', 'secretary', 'user'] },
-    { label: 'Activities',  path: '/dashboard/activities', icon: CalendarDays, roles: ['coordinator', 'council_member', 'secretary', 'user'] },
-    { label: 'Proposals',   path: '/dashboard/proposals',  icon: FileText, roles: ['coordinator', 'council_member'] },
-    { label: 'Audits',      path: '/dashboard/audits',     icon: ClipboardCheck,  roles: ['coordinator', 'council_member', 'secretary'] },
-    { label: 'Meetings',    path: '/dashboard/meetings',   icon: CalendarDays, roles: ['coordinator', 'council_member', 'secretary'] },
-    { label: 'Projects',    path: '/dashboard/projects',   icon: FolderKanban, roles: ['admin', 'coordinator', 'council_member', 'secretary'] },
-    { label: 'Users',       path: '/dashboard/users',      icon: Users, roles: ['admin', 'coordinator'] },
-    { label: 'Reports',     path: '/dashboard/reports',    icon: BarChart3, roles: ['coordinator'] },
-    { label: 'Backups',     path: '/dashboard/backups',    icon: Database, roles: ['admin'] },
+    { label: 'Visão Geral',  path: '/dashboard',            icon: LayoutDashboard, roles: ['coordinator', 'council_member', 'secretary', 'user'] },
+    { label: 'Atividades',   path: '/dashboard/activities', icon: CalendarDays, roles: ['coordinator', 'council_member', 'secretary', 'user'] },
+    { label: 'Propostas',    path: '/dashboard/proposals',  icon: FileText, roles: ['coordinator', 'council_member'] },
+    { label: 'Auditoria',    path: '/dashboard/audits',     icon: ClipboardCheck,  roles: ['coordinator', 'council_member', 'secretary'] },
+    { label: 'Reuniões',     path: '/dashboard/meetings',   icon: CalendarDays, roles: ['coordinator', 'council_member', 'secretary'] },
+    { label: 'Projetos',     path: '/dashboard/projects',   icon: FolderKanban, roles: ['admin', 'coordinator', 'council_member', 'secretary'] },
+    { label: 'Utilizadores', path: '/dashboard/users',      icon: Users, roles: ['admin', 'coordinator'] },
+    { label: 'Relatórios',   path: '/dashboard/reports',    icon: BarChart3, roles: ['coordinator'] },
+    { label: 'Cópia de Segurança', path: '/dashboard/backups', icon: Database, roles: ['admin'] },
   ];
 
   return allItems.filter(item => item.roles.includes(role));
@@ -57,6 +57,14 @@ export default function DashboardLayout() {
     secretary: 'bg-purple-100 text-purple-700',
     council_member: 'bg-amber-100 text-amber-700',
     user: 'bg-slate-100 text-slate-700',
+  };
+
+  const roleLabels = {
+    admin: 'Administrador',
+    coordinator: 'Coordenador',
+    secretary: 'Secretário/a',
+    council_member: 'Membro do Conselho',
+    user: 'Utilizador',
   };
 
   const navItems = getNavItems(user.role);
@@ -109,7 +117,7 @@ export default function DashboardLayout() {
             <div className="min-w-0">
               <p className="text-sm font-semibold text-slate-800 truncate">{user.name}</p>
               <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${roleColors[user.role] || 'bg-slate-100 text-slate-600'}`}>
-                {user.role.replace('_', ' ')}
+                {roleLabels[user.role] || user.role}
               </span>
             </div>
           </div>
@@ -142,10 +150,10 @@ export default function DashboardLayout() {
         {/* Footer */}
         <div className="p-3 border-t border-slate-200 space-y-0.5">
           <Link to="/" className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-xl transition-all">
-            <ArrowLeft size={18} /> Back to Site
+            <ArrowLeft size={18} /> Voltar ao Site
           </Link>
           <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-all">
-            <LogOut size={18} /> Sign Out
+            <LogOut size={18} /> Sair
           </button>
         </div>
       </aside>
@@ -175,7 +183,7 @@ export default function DashboardLayout() {
               </div>
               <h2 className="text-2xl font-bold text-slate-800 mb-2">Acesso Restrito</h2>
               <p className="text-slate-500 max-w-md mb-6">
-                A sua conta de {user.role.replace('_', ' ')} não tem permissão para aceder a esta secção.
+                A sua conta de {roleLabels[user.role] || user.role} não tem permissão para aceder a esta secção.
               </p>
               <Link to={navItems[0]?.path || "/"} className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-slate-800 font-semibold transition-all">
                 Ir para {navItems[0]?.label || "Dashboard"}

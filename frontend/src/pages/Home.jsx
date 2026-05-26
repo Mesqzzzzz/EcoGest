@@ -20,6 +20,16 @@ const areaGradients = {
   Transport: 'from-indigo-400 to-blue-500',
 };
 
+const areaLabels = {
+  Environment: 'Ambiente',
+  Biodiversity: 'Biodiversidade',
+  Energy: 'Energia',
+  Waste: 'Resíduos',
+  Water: 'Água',
+  Food: 'Alimentação',
+  Transport: 'Transporte',
+};
+
 function ActivityCard({ activity, index }) {
   const Icon = areaIcons[activity.area] || Leaf;
   const gradient = areaGradients[activity.area] || 'from-emerald-400 to-teal-500';
@@ -43,13 +53,13 @@ function ActivityCard({ activity, index }) {
         </div>
         <div className="absolute bottom-3 left-4">
           <span className="bg-white/90 backdrop-blur-sm text-slate-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-            {activity.area}
+            {areaLabels[activity.area] || activity.area}
           </span>
         </div>
         {activity.status === 'active' && (
           <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-semibold text-emerald-700">Active</span>
+            <span className="text-xs font-semibold text-emerald-700">Ativa</span>
           </div>
         )}
       </div>
@@ -74,12 +84,12 @@ function ActivityCard({ activity, index }) {
           </div>
           <div className="flex items-center text-slate-500 text-sm gap-2">
             <Users size={14} className="text-emerald-500 flex-shrink-0" />
-            <span>{activity.participants_count} participants</span>
+            <span>{activity.participants_count} participantes</span>
           </div>
         </div>
 
         <div className="pt-4 border-t border-slate-100 flex justify-between items-center text-emerald-600 font-semibold text-sm group-hover:text-emerald-700 transition-colors">
-          View Details
+          Ver Detalhes
           <ArrowRight size={16} className="transform group-hover:translate-x-1.5 transition-transform duration-200" />
         </div>
       </div>
@@ -112,21 +122,20 @@ export default function Home() {
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300
               font-semibold text-sm mb-8 border border-emerald-500/30 backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              EcoGest 2026 Season is Active
+              A Época EcoGest 2026 está Ativa
             </span>
           </div>
 
           <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight mb-8 animate-fade-up delay-150">
-            Make the World{' '}
-            <br className="hidden sm:block" />
+            Tornemos o Mundo<br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-              Greener Together
+              Mais Verde Juntos
             </span>
           </h1>
 
           <p className="mt-4 text-xl text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-up delay-300">
-            Join environmental initiatives, participate in local activities, and
-            track our collective impact on the planet.
+            Junte-se a iniciativas ambientais, participe em atividades locais e
+            acompanhe o nosso impacto coletivo no planeta.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-up delay-400">
@@ -136,7 +145,7 @@ export default function Home() {
                 shadow-xl shadow-emerald-500/30 hover:shadow-emerald-400/40 hover:-translate-y-1
                 transition-all duration-300 flex items-center justify-center gap-2 text-lg"
             >
-              Browse Activities <ArrowRight size={20} />
+              Ver Atividades <ArrowRight size={20} />
             </a>
             <Link
               to="/login"
@@ -144,7 +153,7 @@ export default function Home() {
                 border border-white/20 hover:border-white/30 hover:-translate-y-1
                 transition-all duration-300 backdrop-blur-sm text-lg"
             >
-              Sign In
+              Iniciar Sessão
             </Link>
           </div>
         </div>
@@ -161,9 +170,9 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-1 mb-16">
         <div className="grid grid-cols-3 gap-4">
           {[
-            { label: 'Activities Running', value: `${activities.filter(a => a.status === 'active').length}+` },
-            { label: 'Community Members', value: '200+' },
-            { label: 'Eco Impact Score', value: '94/100' },
+            { label: 'Atividades Ativas', value: `${activities.filter(a => a.status === 'active').length}+` },
+            { label: 'Membros da Comunidade', value: '200+' },
+            { label: 'Pontuação de Impacto', value: '94/100' },
           ].map(({ label, value }, i) => (
             <div key={label}
               className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 text-center
@@ -182,8 +191,8 @@ export default function Home() {
       <section id="activities" className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-end mb-10 animate-fade-left">
           <div>
-            <h2 className="text-3xl font-extrabold text-slate-900">Featured Activities</h2>
-            <p className="text-slate-500 mt-2">Discover and join upcoming environmental initiatives.</p>
+            <h2 className="text-3xl font-extrabold text-slate-900">Atividades em Destaque</h2>
+            <p className="text-slate-500 mt-2">Descubra e participe em próximas iniciativas ambientais.</p>
           </div>
         </div>
 

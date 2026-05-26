@@ -58,7 +58,7 @@ export default function Register() {
             <h2 className="text-4xl font-extrabold mb-4 leading-tight animate-fade-up">
               Junte-se à nossa<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-300">
-                Comunidade Ecológica
+                Comunidade Eco-Escolas
               </span>
             </h2>
             <p className="text-slate-300 text-lg leading-relaxed animate-fade-up delay-150">

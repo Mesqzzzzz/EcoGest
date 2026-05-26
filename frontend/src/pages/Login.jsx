@@ -4,11 +4,11 @@ import { Leaf, Lock, Mail, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { api } from '../services/api';
 
 const DEMO_ACCOUNTS = [
-  { label: 'Admin',        email: 'admin@ecogest.pt',        role: 'bg-red-100 text-red-700' },
-  { label: 'Coordinator',  email: 'coordenador@ecogest.pt',  role: 'bg-blue-100 text-blue-700' },
-  { label: 'Council',      email: 'membro1@ecogest.pt',      role: 'bg-amber-100 text-amber-700' },
-  { label: 'Secretary',    email: 'secretaria@ecogest.pt',   role: 'bg-purple-100 text-purple-700' },
-  { label: 'User',         email: 'joao@exemplo.pt',         role: 'bg-slate-100 text-slate-700' },
+  { label: 'Administrador',  email: 'admin@ecogest.pt',        role: 'bg-red-100 text-red-700' },
+  { label: 'Coordenador',   email: 'coordenador@ecogest.pt',  role: 'bg-blue-100 text-blue-700' },
+  { label: 'Conselho',      email: 'membro1@ecogest.pt',      role: 'bg-amber-100 text-amber-700' },
+  { label: 'Secretária',    email: 'secretaria@ecogest.pt',   role: 'bg-purple-100 text-purple-700' },
+  { label: 'Utilizador',    email: 'joao@exemplo.pt',         role: 'bg-slate-100 text-slate-700' },
 ];
 
 export default function Login() {
@@ -27,7 +27,7 @@ export default function Login() {
       await api.login(email, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Login failed');
+      setError(err.message || 'Falha ao iniciar sessão');
     }
     setLoading(false);
   };
@@ -50,18 +50,18 @@ export default function Login() {
 
           <div>
             <h2 className="text-4xl font-extrabold mb-4 leading-tight animate-fade-up">
-              Manage your <br />
+              Gira as suas <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-300">
-                Eco Activities
+                Atividades Eco
               </span>
             </h2>
             <p className="text-slate-300 text-lg leading-relaxed animate-fade-up delay-150">
-              A unified platform for environmental proposals, meetings, participants and yearly project management.
+              Uma plataforma unificada para propostas ambientais, reuniões, participantes e gestão anual de projetos.
             </p>
           </div>
 
           <div className="flex gap-4 animate-fade-up delay-300">
-            {['Activities', 'Proposals', 'Meetings', 'Reports'].map((tag, i) => (
+            {['Atividades', 'Propostas', 'Reuniões', 'Relatórios'].map((tag, i) => (
               <span key={tag}
                 className="px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm font-medium text-slate-200 backdrop-blur-sm">
                 {tag}
@@ -80,12 +80,12 @@ export default function Login() {
             <span className="font-bold text-lg text-slate-800">EcoGest</span>
           </div>
 
-          <h1 className="text-3xl font-extrabold text-slate-900 mb-2">Welcome back</h1>
-          <p className="text-slate-500 mb-8">Sign in to your account to continue.</p>
+          <h1 className="text-3xl font-extrabold text-slate-900 mb-2">Bem-vindo de volta</h1>
+          <p className="text-slate-500 mb-8">Inicie sessão na sua conta para continuar.</p>
 
           {/* Demo account quick-select */}
           <div className="mb-6 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Quick Login (Demo)</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Acesso Rápido (Demo)</p>
             <div className="flex flex-wrap gap-2">
               {DEMO_ACCOUNTS.map(acc => (
                 <button
@@ -109,7 +109,7 @@ export default function Login() {
             )}
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email address</label>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Endereço de Email</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
@@ -122,7 +122,7 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Palavra-passe</label>
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
@@ -136,7 +136,7 @@ export default function Login() {
                   {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              <p className="text-xs text-slate-400 mt-1.5">Demo password is <code className="bg-slate-100 px-1 rounded">123</code></p>
+              <p className="text-xs text-slate-400 mt-1.5">A palavra-passe de demonstração é <code className="bg-slate-100 px-1 rounded">123</code></p>
             </div>
 
             <button
@@ -148,22 +148,22 @@ export default function Login() {
               {loading ? (
                 <>
                   <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                  Signing in…
+                  A iniciar sessão…
                 </>
-              ) : 'Sign In'}
+              ) : 'Iniciar Sessão'}
             </button>
           </form>
 
           <div className="mt-6 text-center space-y-3">
             <p className="text-slate-600 text-sm">
-              New to EcoGest?{' '}
+              Novo no EcoGest?{' '}
               <Link to="/register" className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline">
-                Create an account
+                Criar uma conta
               </Link>
             </p>
             <div>
               <Link to="/" className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-800 transition-colors text-sm font-medium">
-                <ArrowLeft size={14} /> Back to Homepage
+                <ArrowLeft size={14} /> Voltar à Página Inicial
               </Link>
             </div>
           </div>

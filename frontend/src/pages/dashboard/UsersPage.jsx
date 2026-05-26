@@ -5,6 +5,15 @@ import { PageHeader, Badge, Btn, Modal, FormField, Input, Select, Table, Spinner
 
 const ROLES = ['user', 'council_member', 'secretary', 'coordinator', 'admin'];
 
+const ROLE_LABELS = {
+  '': 'Todos',
+  user: 'Utilizador',
+  council_member: 'Membro do Conselho',
+  secretary: 'Secretário/a',
+  coordinator: 'Coordenador',
+  admin: 'Administrador'
+};
+
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,9 +73,9 @@ export default function UsersPage() {
   return (
     <div className="max-w-6xl">
       <PageHeader
-        title="Users"
-        subtitle="Manage member accounts and roles"
-        action={<Btn onClick={openCreate}><Plus size={16} /> New User</Btn>}
+        title="Utilizadores"
+        subtitle="Gerir contas e funções dos membros"
+        action={<Btn onClick={openCreate}><Plus size={16} /> Novo Utilizador</Btn>}
       />
 
       {/* Role filter pills */}
@@ -74,13 +83,13 @@ export default function UsersPage() {
         {['', ...ROLES].map(r => (
           <button key={r} onClick={() => setRoleFilter(r)}
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${roleFilter === r ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}`}>
-            {r || 'All'}
+            {ROLE_LABELS[r] || r}
           </button>
         ))}
       </div>
 
       {loading ? <Spinner /> : (
-        <Table headers={['User', 'Email', 'Role', 'Joined', 'Status', 'Actions']}>
+        <Table headers={['Utilizador', 'Email', 'Função', 'Data de Registo', 'Estado', 'Ações']}>
           {filtered.map(u => (
             <tr key={u.id} className="hover:bg-slate-50 transition-colors">
               <td className="px-4 py-3">
@@ -105,7 +114,7 @@ export default function UsersPage() {
                         size="sm"
                         onClick={() => toggleStatus(u)}
                       >
-                        {u.status === 'active' ? <><UserX size={14} /> Deactivate</> : <><UserCheck size={14} /> Activate</>}
+                        {u.status === 'active' ? <><UserX size={14} /> Desativar</> : <><UserCheck size={14} /> Ativar</>}
                       </Btn>
                     </>
                   ) : (
@@ -119,36 +128,36 @@ export default function UsersPage() {
       )}
 
       {/* Create Modal */}
-      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="New User">
+      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="Novo Utilizador">
         <form onSubmit={handleCreate} className="space-y-4">
-          <FormField label="Full Name"><Input required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Jane Doe" /></FormField>
+          <FormField label="Nome Completo"><Input required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Jane Doe" /></FormField>
           <FormField label="Email"><Input required type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="jane@ecogest.pt" /></FormField>
-          <FormField label="Password"><Input required type="password" value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" /></FormField>
-          <FormField label="Role">
+          <FormField label="Palavra-passe"><Input required type="password" value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" /></FormField>
+          <FormField label="Função">
             <Select value={form.role} onChange={e => set('role', e.target.value)}>
-              {allowedRolesForSelect.map(r => <option key={r} value={r}>{r.replace('_', ' ')}</option>)}
+              {allowedRolesForSelect.map(r => <option key={r} value={r}>{ROLE_LABELS[r] || r}</option>)}
             </Select>
           </FormField>
           <div className="flex justify-end gap-3 pt-2">
-            <Btn variant="secondary" onClick={() => setCreateOpen(false)}>Cancel</Btn>
-            <Btn type="submit" disabled={saving}>{saving ? 'Creating…' : 'Create User'}</Btn>
+            <Btn variant="secondary" onClick={() => setCreateOpen(false)}>Cancelar</Btn>
+            <Btn type="submit" disabled={saving}>{saving ? 'A criar…' : 'Criar Utilizador'}</Btn>
           </div>
         </form>
       </Modal>
 
       {/* Edit Modal */}
-      <Modal open={!!editUser} onClose={() => setEditUser(null)} title={`Edit — ${editUser?.name}`}>
+      <Modal open={!!editUser} onClose={() => setEditUser(null)} title={`Editar — ${editUser?.name}`}>
         <form onSubmit={handleEdit} className="space-y-4">
-          <FormField label="Full Name"><Input required value={form.name} onChange={e => set('name', e.target.value)} /></FormField>
+          <FormField label="Nome Completo"><Input required value={form.name} onChange={e => set('name', e.target.value)} /></FormField>
           <FormField label="Email"><Input required type="email" value={form.email} onChange={e => set('email', e.target.value)} /></FormField>
-          <FormField label="Role">
+          <FormField label="Função">
             <Select value={form.role} onChange={e => set('role', e.target.value)}>
-              {allowedRolesForSelect.map(r => <option key={r} value={r}>{r.replace('_', ' ')}</option>)}
+              {allowedRolesForSelect.map(r => <option key={r} value={r}>{ROLE_LABELS[r] || r}</option>)}
             </Select>
           </FormField>
           <div className="flex justify-end gap-3 pt-2">
-            <Btn variant="secondary" onClick={() => setEditUser(null)}>Cancel</Btn>
-            <Btn type="submit" disabled={saving}>{saving ? 'Saving…' : 'Save Changes'}</Btn>
+            <Btn variant="secondary" onClick={() => setEditUser(null)}>Cancelar</Btn>
+            <Btn type="submit" disabled={saving}>{saving ? 'A guardar…' : 'Guardar Alterações'}</Btn>
           </div>
         </form>
       </Modal>

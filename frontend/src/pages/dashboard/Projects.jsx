@@ -6,6 +6,12 @@ import { PageHeader, Badge, Btn, Modal, FormField, Input, Select, Table, Spinner
 const LEVELS = ['bronze', 'silver', 'gold'];
 const STATUS_TRANSITIONS = { planning: ['active'], active: ['finished'], finished: [] };
 
+const STATUS_LABELS = {
+  planning: 'Planeamento',
+  active: 'Ativo',
+  finished: 'Concluído'
+};
+
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,8 +22,8 @@ export default function ProjectsPage() {
   const userRole = api.currentUser?.role;
   const isAdmin = userRole === 'admin';
   const headers = isAdmin 
-    ? ['Project Name & Scope', 'Year', 'Status', 'Dynamic Level & Progress', 'Coordinator', 'Actions'] 
-    : ['Project Name & Scope', 'Year', 'Status', 'Dynamic Level & Progress', 'Coordinator'];
+    ? ['Nome e Âmbito do Projeto', 'Ano', 'Estado', 'Nível Dinâmico e Progresso', 'Coordenador', 'Ações'] 
+    : ['Nome e Âmbito do Projeto', 'Ano', 'Estado', 'Nível Dinâmico e Progresso', 'Coordenador'];
 
   const load = () => api.getProjects().then(d => { setProjects(d); setLoading(false); });
   useEffect(() => { load(); }, []);
@@ -48,17 +54,17 @@ export default function ProjectsPage() {
   return (
     <div className="max-w-5xl">
       <PageHeader
-        title="Projects"
-        subtitle="Manage yearly eco-school projects and track dynamic level classifications"
-        action={isAdmin ? <Btn onClick={() => setCreateOpen(true)}><Plus size={16} /> New Project</Btn> : null}
+        title="Projetos"
+        subtitle="Gerir projetos anuais de eco-escolas e acompanhar classificações dinâmicas de nível"
+        action={isAdmin ? <Btn onClick={() => setCreateOpen(true)}><Plus size={16} /> Novo Projeto</Btn> : null}
       />
 
       {/* Legend & Level Criteria */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {[
-          { title: '🥇 Gold Level', desc: '>= 8 atividades completas & >= 4 áreas cobertas' },
-          { title: '🥈 Silver Level', desc: '>= 4 atividades completas & >= 2 áreas cobertas' },
-          { title: '🥉 Bronze Level', desc: '>= 1 atividade planeada ou ativa' }
+          { title: '🥇 Nível Ouro', desc: '>= 8 atividades concluídas e >= 4 áreas abrangidas' },
+          { title: '🥈 Nível Prata', desc: '>= 4 atividades concluídas e >= 2 áreas abrangidas' },
+          { title: '🥉 Nível Bronze', desc: '>= 1 atividade planeada ou ativa' }
         ].map((item, idx) => (
           <div key={idx} className="bg-white/60 p-4 rounded-xl border border-slate-200 backdrop-blur-sm shadow-sm flex flex-col justify-center">
             <h4 className="font-semibold text-slate-800 text-sm">{item.title}</h4>
@@ -104,7 +110,7 @@ export default function ProjectsPage() {
                 <td className="px-4 py-3">
                   {STATUS_TRANSITIONS[p.status]?.length > 0 && (
                     <Btn variant="ghost" size="sm" onClick={() => advanceStatus(p)}>
-                      <ArrowRightCircle size={14} /> Advance to {STATUS_TRANSITIONS[p.status][0]}
+                      <ArrowRightCircle size={14} /> Avançar para {STATUS_LABELS[STATUS_TRANSITIONS[p.status][0]]}
                     </Btn>
                   )}
                 </td>
@@ -114,18 +120,18 @@ export default function ProjectsPage() {
         </Table>
       )}
 
-      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="New Project">
+      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="Novo Projeto">
         <form onSubmit={handleCreate} className="space-y-4">
-          <FormField label="Project Name"><Input required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Eco Schools 2027" /></FormField>
-          <FormField label="Year"><Input type="number" required value={form.year} onChange={e => set('year', parseInt(e.target.value))} min={2020} max={2040} /></FormField>
+          <FormField label="Nome do Projeto"><Input required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Eco Escolas 2027" /></FormField>
+          <FormField label="Ano"><Input type="number" required value={form.year} onChange={e => set('year', parseInt(e.target.value))} min={2020} max={2040} /></FormField>
           
           <div className="bg-slate-50 border border-slate-100 rounded-xl p-3.5 text-xs text-slate-500">
             <strong>Nota:</strong> O nível do projeto (Bronze, Prata, Ouro) será calculado e atualizado de forma dinâmica e automatizada à medida que novas atividades forem criadas e áreas diferenciadas forem abrangidas.
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
-            <Btn variant="secondary" onClick={() => setCreateOpen(false)}>Cancel</Btn>
-            <Btn type="submit" disabled={saving}>{saving ? 'Creating…' : 'Create Project'}</Btn>
+            <Btn variant="secondary" onClick={() => setCreateOpen(false)}>Cancelar</Btn>
+            <Btn type="submit" disabled={saving}>{saving ? 'A criar…' : 'Criar Projeto'}</Btn>
           </div>
         </form>
       </Modal>

@@ -180,7 +180,7 @@ class ApiService {
     const { data } = await this._get(`/activities/${activityId}/participants`);
     return (data ?? []).map(p => ({
       id:        pickId(p),
-      name:      p.user?.name ?? p.guestName ?? 'Guest',
+      name:      p.user?.name ?? p.guestName ?? 'Convidado',
       email:     p.user?.email ?? p.guestEmail ?? '',
       joined_at: p.createdAt,
     }));
