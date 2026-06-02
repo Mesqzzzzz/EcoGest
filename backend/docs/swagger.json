@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "EcoGest API Documentation",
-    "description": "Especificação da API REST para a plataforma EcoGest de gestão do projeto Eco-Escolas. Grupo 31.",
+    "description": "Especificação da API REST para a plataforma EcoGest de gestão do projeto Eco-Escolas. Grupo 31: Francisco Mesquita, Sérgio Alves, Gustavo Silva.",
     "version": "1.0.0"
   },
   "servers": [

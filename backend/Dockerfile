@@ -1,19 +1,28 @@
 FROM node:20-alpine
 
-# Definir diretório de trabalho
-WORKDIR /app
+# Definir variável de ambiente para produção
+ENV NODE_ENV=production
 
-# Copiar ficheiros de dependências
+# Definir diretório de trabalho seguro
+WORKDIR /usr/src/app
+
+# Copiar ficheiros de definição de dependências
 COPY package*.json ./
 
-# Instalar dependências
-RUN npm install
+# Instalar apenas dependências de produção para manter a imagem leve e segura
+RUN npm ci --only=production
 
-# Copiar o resto do código da aplicação
+# Copiar o resto do código-fonte da aplicação
 COPY . .
+
+# Garantir que o utilizador 'node' tem permissões sobre o diretório de trabalho
+RUN chown -R node:node /usr/src/app
+
+# Usar utilizador não-root 'node' por motivos de segurança
+USER node
 
 # Expor a porta que o servidor Express utiliza
 EXPOSE 3000
 
-# Comando para iniciar em modo de desenvolvimento (com nodemon)
-CMD ["npm", "run", "dev"]
+# Comando para iniciar o servidor em produção
+CMD ["node", "app.js"]

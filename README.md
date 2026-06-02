@@ -9,24 +9,35 @@ O **EcoGest** é uma plataforma web concebida para gerir iniciativas e projetos 
 
 ---
 
-## 🐳 Execução Rápida com Docker Compose (Recomendado)
+## 🐳 Execução do Backend com Docker (Standalone)
 
-O projeto está totalmente dockerizado para facilitar a inicialização. Segue as instruções abaixo para correr a aplicação:
+O backend possui um **Dockerfile** altamente otimizado para ser executado de forma totalmente independente e isolada, sem necessidade de utilizar o Docker Compose.
 
 ### **Requisitos**
 *   [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e ativo.
+*   Ficheiro `backend/.env` configurado com a sua `MONGODB_URI` (por padrão, liga-se ao MongoDB Atlas).
 
-### **Como Correr**
-Na raiz do projeto, executa o seguinte comando no teu terminal:
-```bash
-docker compose up --build
-```
+### **Como Correr o Backend com Docker**
 
-*   **Frontend**: Acede a **[http://localhost:5173](http://localhost:5173)** no teu browser.
-*   **Backend & Swagger API Docs**: Acede a **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**.
+1. **Construir a imagem Docker do Backend:**
+   Navega até à pasta do backend (ou executa da raiz referenciando a pasta) e constrói a imagem:
+   ```bash
+   docker build -t ecogest-backend ./backend
+   ```
 
-> [!NOTE]
-> Por padrão, a aplicação liga-se ao **MongoDB Atlas** configurado em `backend/.env` para manter todos os teus dados de teste atuais. Se preferires utilizar uma base de dados MongoDB local em container, descomenta a linha `MONGODB_URI` no ficheiro `docker-compose.yml`.
+2. **Iniciar o Container:**
+   Executa o container expondo a porta `3000` e injetando o teu ficheiro `.env` local para as configurações de ambiente e base de dados:
+   ```bash
+   docker run -d \
+     --name ecogest-backend \
+     -p 3000:3000 \
+     --env-file ./backend/.env \
+     ecogest-backend
+   ```
+
+3. **Verificar o Funcionamento:**
+   *   **API & Documentação Swagger**: Acede a **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** no teu browser.
+   *   **Health Check**: Verifica a saúde da API em **[http://localhost:3000/api/health](http://localhost:3000/api/health)**.
 
 ---
 
