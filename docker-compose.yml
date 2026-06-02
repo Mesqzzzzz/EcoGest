@@ -1,0 +1,57 @@
+services:
+  # 1. Serviço de Base de Dados (MongoDB local)
+  db:
+    image: mongo:latest
+    container_name: ecogest-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - ecogest-network
+
+  # 2. Serviço do Backend (Express + Node.js)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ecogest-backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    # environment:
+    #   # Descomenta a linha abaixo se quiseres usar a base de dados MongoDB local (container 'db') em vez do MongoDB Atlas
+    #   - MONGODB_URI=mongodb://db:27017/ecogest
+    volumes:
+      - ./backend:/app
+      - /app/node_modules # Impede que o node_modules local (macOS) sobrescreva o do container (Linux)
+    depends_on:
+      - db
+    networks:
+      - ecogest-network
+
+  # 3. Serviço do Frontend (React + Vite)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ecogest-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Impede que o node_modules local sobrescreva o do container
+    depends_on:
+      - backend
+    networks:
+      - ecogest-network
+
+# Volumes persistentes
+volumes:
+  mongo_data:
+
+# Redes do Docker
+networks:
+  ecogest-network:
+    driver: bridge

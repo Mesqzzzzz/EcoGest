@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/open-dyslexic');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -106,3 +108,76 @@
     animation: fadeUp 0.45s ease both;
   }
 }
+
+/* ==========================================================================
+   Accessibility Utilities
+   ========================================================================== */
+
+/* Dyslexic Font Mode */
+.accessibility-dyslexic,
+.accessibility-dyslexic * {
+  font-family: 'Open-Dyslexic', 'Comic Sans MS', 'Comic Neue', sans-serif !important;
+}
+
+/* Increased Text Spacing */
+.accessibility-spacing,
+.accessibility-spacing * {
+  word-spacing: 0.18em !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.65 !important;
+}
+
+/* High Contrast Highlight for Links */
+.accessibility-underline-links a {
+  text-decoration: underline !important;
+  font-weight: bold !important;
+  color: #2563eb !important;
+}
+
+/* Large Cursor Mode */
+.accessibility-large-cursor,
+.accessibility-large-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='%23000000' stroke='%23ffffff' stroke-width='1.5'%3E%3Cpath d='M3 3l7.07 16.97 2.51-6.13 6.13-2.51L3 3z'/%3E%3C/svg%3E"), auto !important;
+}
+
+/* Stop Animations (Vestibular disorders / reduced motion) */
+.accessibility-no-animations,
+.accessibility-no-animations * {
+  animation-duration: 0.001s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+/* High Contrast Mode Overlay */
+.accessibility-high-contrast {
+  filter: contrast(180%) saturate(140%) !important;
+}
+
+/* Color Inversion Mode */
+.accessibility-invert-colors {
+  filter: invert(100%) hue-rotate(180deg) !important;
+  background-color: #000000 !important;
+}
+.accessibility-invert-colors img,
+.accessibility-invert-colors video,
+.accessibility-invert-colors iframe,
+.accessibility-invert-colors svg:not(.acc-icon) {
+  filter: invert(100%) hue-rotate(180deg) !important; /* Re-invert media back to original */
+}
+
+/* Colorblind Simulation Filters */
+.accessibility-protanopia {
+  filter: url('#protanopia-filter') !important;
+}
+.accessibility-deuteranopia {
+  filter: url('#deuteranopia-filter') !important;
+}
+.accessibility-tritanopia {
+  filter: url('#tritanopia-filter') !important;
+}
+.accessibility-achromatopsia {
+  filter: grayscale(100%) !important;
+}
+

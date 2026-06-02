@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import RootLayout from './layouts/RootLayout';
 import DashboardLayout from './layouts/DashboardLayout';
+import AccessibilityWidget from './components/AccessibilityWidget';
+
 
 import Home from './pages/Home';
 import ActivityDetails from './pages/ActivityDetails';
@@ -41,6 +43,7 @@ export default function App() {
           <Route path="audits" element={<DashboardAudits />} />
         </Route>
       </Routes>
+      <AccessibilityWidget />
     </BrowserRouter>
   );
 }
