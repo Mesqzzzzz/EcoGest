@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "894be86d-110d-4d1f-bdd8-129256e7b133",
-    "name": "EcoGest API - Coleção de Testes",
+    "name": "EcoGest API",
     "description": "Coleção de testes do Postman para todas as rotas da API REST da plataforma EcoGest (Gestão do Projeto Eco-Escolas). Inclui scripts de automação que extraem o token JWT de acesso e de renovação (Refresh Token) no Login/Refresh e os armazenam em variáveis da coleção para simplificar a autenticação nas restantes rotas.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "24697936"
