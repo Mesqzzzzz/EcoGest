@@ -32,10 +32,6 @@ npm install
     ```bash
     npm run dev
     ```
-*   **Modo de Produção**:
-    ```bash
-    npm start
-    ```
 
 ---
 
