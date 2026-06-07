@@ -1,10 +1,11 @@
 {
   "info": {
-    "_postman_id": "894be86d-110d-4d1f-bdd8-129256e7b133",
+    "_postman_id": "f8c893cc-c22a-469a-9b96-72c0d1aa7925",
     "name": "EcoGest API - Coleção de Testes (Grupo 31)",
-    "description": "### EcoGest — Grupo 31\n*   **Francisco Mesquita** - 40220298\n*   **Sérgio Alves** - 40220400\n*   **Gustavo Silva** - 40200337\n\n---\n\nColeção de testes do Postman para todas as rotas da API REST da plataforma EcoGest (Gestão do Projeto Eco-Escolas). Inclui scripts de automação que extraem o token JWT de acesso e de renovação (Refresh Token) no Login/Refresh e os armazenam em variáveis da coleção para simplificar a autenticação nas restantes rotas.",
+    "description": "### 🌿 EcoGest — Grupo 31\n*   **Francisco Mesquita** - 40220298\n*   **Sérgio Alves** - 40220400\n*   **Gustavo Silva** - 40200337\n\n---\n\nColeção de testes do Postman para todas as rotas da API REST da plataforma EcoGest (Gestão do Projeto Eco-Escolas). Inclui scripts de automação que extraem o token JWT de acesso e de renovação (Refresh Token) no Login/Refresh e os armazenam em variáveis da coleção para simplificar a autenticação nas restantes rotas.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "24697936"
+    "_exporter_id": "24697936",
+    "_collection_link": "https://go.postman.co/collection/24697936-f8c893cc-c22a-469a-9b96-72c0d1aa7925?source=collection_link"
   },
   "item": [
     {
@@ -20,7 +21,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Utilizador Teste\",\n  \"email\": \"user@escola.com\",\n  \"password\": \"123456\"\n}",
+              "raw": "{\n  \"name\": \"admin Teste\",\n  \"email\": \"admin@escolas.com\",\n  \"password\": \"123456\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
