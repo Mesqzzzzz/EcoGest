@@ -52,9 +52,7 @@ Pode construir e executar este backend de forma independente no Docker. Como o f
    docker run -d --name ecogest-backend -p 3000:3000 ecogest-backend
    ```
 
----
+## 🔍 Documentação e Testes
 
-## 🔍 Documentação e Engenharia
-
-*   **API Interactive Playground (Swagger)**: Com o servidor a correr, aceda a **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** para ver todos os endpoints documentados, parâmetros exigidos e respostas JSON.
-*   **Guia de Engenharia Detalhado**: Se precisar de compreender a fundo o que faz cada secção, cada ficheiro e cada função de lógica de negócio do backend, consulte o documento específico **[EXPLICACAO_DETALHADA_BACKEND.md](EXPLICACAO_DETALHADA_BACKEND.md)**.
+*   **API Interactive Playground (Swagger)**: Com o servidor a correr, aceda a **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** para ver a especificação técnica de todos os endpoints da API, parâmetros exigidos e respostas JSON em tempo real.
+*   **Testes da API (Postman)**: Pode importar a coleção do Postman localizada na raiz do projeto: **[EcoGest_API.postman_collection.json](../EcoGest_API.postman_collection.json)**. Ela contém todos os pedidos configurados (Login, Registo, Atividades, Reuniões, Auditorias, etc.) com salvamento automático do token JWT após o login.
