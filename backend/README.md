@@ -17,16 +17,8 @@ Este diretório contém a **API REST** do **EcoGest**, construída em **Node.js*
 
 ## ⚙️ Configuração Local e Execução
 
-### **1. Configurar as Variáveis de Ambiente**
-Crie um ficheiro chamado `.env` no diretório `/backend` (pode usar o `.env.example` como base):
-```bash
-cp .env.example .env
-```
-Abra o `.env` e preencha as variáveis de configuração:
-*   `PORT`: Porta onde a API vai escutar (padrão: `3000`).
-*   `MONGODB_URI`: Link de ligação ao seu banco MongoDB (ex: link do MongoDB Atlas ou local).
-*   `JWT_SECRET`: Chave secreta de criptografia para assinar os tokens JWT.
-*   `LOGIN_RATE_LIMIT`: Tentativas máximas de login por IP por minuto (padrão: `5`).
+### **1. Variáveis de Ambiente**
+O ficheiro `.env` com as configurações da API (incluindo a ligação ao MongoDB Atlas `MONGODB_URI` e o `JWT_SECRET`) já se encontra incluído e versionado no repositório. Não necessita de criar ou copiar ficheiros de exemplo — a aplicação está pronta para ser executada.
 
 ### **2. Instalar Dependências**
 Instale os pacotes npm necessários:
@@ -49,7 +41,7 @@ npm install
 
 ## 🐳 Execução com Docker (Standalone)
 
-Pode construir e executar este backend de forma independente no Docker:
+Pode construir e executar este backend de forma independente no Docker. Como o ficheiro `.env` está incluído na pasta, ele é copiado automaticamente para dentro do container durante a construção da imagem (build):
 
 1. **Construir a Imagem:**
    ```bash
@@ -57,7 +49,7 @@ Pode construir e executar este backend de forma independente no Docker:
    ```
 2. **Iniciar o Container:**
    ```bash
-   docker run -d --name ecogest-backend -p 3000:3000 --env-file .env ecogest-backend
+   docker run -d --name ecogest-backend -p 3000:3000 ecogest-backend
    ```
 
 ---

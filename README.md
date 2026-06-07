@@ -15,7 +15,6 @@ O backend possui um **Dockerfile** altamente otimizado para ser executado de for
 
 ### **Requisitos**
 *   [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e ativo.
-*   Ficheiro `backend/.env` configurado com a sua `MONGODB_URI` (por padrão, liga-se ao MongoDB Atlas).
 
 ### **Como Correr o Backend com Docker**
 
@@ -26,12 +25,11 @@ O backend possui um **Dockerfile** altamente otimizado para ser executado de for
    ```
 
 2. **Iniciar o Container:**
-   Executa o container expondo a porta `3000` e injetando o teu ficheiro `.env` local para as configurações de ambiente e base de dados:
+   Executa o container expondo a porta `3000`. Como o ficheiro `.env` já está no repositório, ele é copiado para dentro do container automaticamente no build:
    ```bash
    docker run -d \
      --name ecogest-backend \
      -p 3000:3000 \
-     --env-file ./backend/.env \
      ecogest-backend
    ```
 
