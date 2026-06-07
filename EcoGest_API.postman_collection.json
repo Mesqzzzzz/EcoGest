@@ -1,25 +1,14 @@
 {
   "info": {
-    "_postman_id": "d748f3b6-20bf-4f2e-a51c-0c1a96cf9559",
-    "name": "🌿 EcoGest API - Coleção de Testes",
+    "_postman_id": "894be86d-110d-4d1f-bdd8-129256e7b133",
+    "name": "EcoGest API - Coleção de Testes",
     "description": "Coleção de testes do Postman para todas as rotas da API REST da plataforma EcoGest (Gestão do Projeto Eco-Escolas). Inclui scripts de automação que extraem o token JWT de acesso e de renovação (Refresh Token) no Login/Refresh e os armazenam em variáveis da coleção para simplificar a autenticação nas restantes rotas.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "24697936"
   },
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{authToken}}",
-        "type": "string"
-      }
-    ]
-  },
-  "event": [],
   "item": [
     {
-      "name": "🔑 1. Autenticação & Sessão",
-      "description": "Endpoints públicos e privados relacionados com a gestão de utilizadores ligados, sessão, e rotação silenciosa de Refresh Tokens.",
+      "name": "1. Autenticação & Sessão",
       "item": [
         {
           "name": "Registar Novo Utilizador",
@@ -277,11 +266,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Endpoints públicos e privados relacionados com a gestão de utilizadores ligados, sessão, e rotação silenciosa de Refresh Tokens."
     },
     {
-      "name": "📅 2. Projetos Anuais",
-      "description": "Gestão de Projetos anuais das Eco-Escolas, incluindo atribuição de coordenadores (Exclusivo Admin).",
+      "name": "2. Projetos Anuais",
       "item": [
         {
           "name": "Listar Projetos Anuais",
@@ -448,11 +437,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Gestão de Projetos anuais das Eco-Escolas, incluindo atribuição de coordenadores (Exclusivo Admin)."
     },
     {
-      "name": "👥 3. Gestão de Utilizadores (Admin / Coordenador)",
-      "description": "Operações de administração reservadas para criar, modificar e gerir o estado de outros utilizadores na plataforma.",
+      "name": "3. Gestão de Utilizadores (Admin / Coordenador)",
       "item": [
         {
           "name": "Listar Todos os Utilizadores",
@@ -575,11 +564,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Operações de administração reservadas para criar, modificar e gerir o estado de outros utilizadores na plataforma."
     },
     {
-      "name": "🌱 4. Atividades Ambientais",
-      "description": "Visualização, planeamento, modificação de atividades, upload de fotografias de comprovação e registo de execuções reais.",
+      "name": "4. Atividades Ambientais",
       "item": [
         {
           "name": "Listar Atividades Públicas (Opcional Auth)",
@@ -792,7 +781,7 @@
                   "key": "photo",
                   "description": "Ficheiro de imagem da atividade real (JPG/PNG)",
                   "type": "file",
-                  "src": []
+                  "value": null
                 }
               ]
             },
@@ -811,11 +800,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Visualização, planeamento, modificação de atividades, upload de fotografias de comprovação e registo de execuções reais."
     },
     {
-      "name": "🙋 5. Inscrições & Participações",
-      "description": "Endpoints para gestão de inscritos e visitantes nas atividades ambientais da escola.",
+      "name": "5. Inscrições & Participações",
       "item": [
         {
           "name": "Inscrever-se em Atividade",
@@ -934,11 +923,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Endpoints para gestão de inscritos e visitantes nas atividades ambientais da escola."
     },
     {
-      "name": "💡 6. Propostas Ambientais",
-      "description": "Gestão de ideias e propostas de atividades ambientais submetidas por membros do conselho.",
+      "name": "6. Propostas Ambientais",
       "item": [
         {
           "name": "Listar Propostas",
@@ -1049,11 +1038,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Gestão de ideias e propostas de atividades ambientais submetidas por membros do conselho."
     },
     {
-      "name": "📝 7. Reuniões de Conselho",
-      "description": "Gestão de convocatórias, atas, envio automático de alertas a membros e anexação de documentos comprovativos das reuniões do conselho.",
+      "name": "7. Reuniões de Conselho",
       "item": [
         {
           "name": "Listar Reuniões",
@@ -1229,7 +1218,7 @@
                   "key": "document",
                   "description": "Ficheiro PDF/Word da ata assinada ou fotografia",
                   "type": "file",
-                  "src": []
+                  "value": null
                 },
                 {
                   "key": "type",
@@ -1292,11 +1281,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Gestão de convocatórias, atas, envio automático de alertas a membros e anexação de documentos comprovativos das reuniões do conselho."
     },
     {
-      "name": "📋 8. Auditorias Ambientais",
-      "description": "Formulários de diagnóstico ambiental por categoria (Água, Energia, Resíduos), envio de respostas e visualização de rácios e relatórios estatísticos.",
+      "name": "8. Auditorias Ambientais",
       "item": [
         {
           "name": "Obter Questionário da Auditoria",
@@ -1385,11 +1374,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Formulários de diagnóstico ambiental por categoria (Água, Energia, Resíduos), envio de respostas e visualização de rácios e relatórios estatísticos."
     },
     {
-      "name": "💾 9. Métricas, Relatórios & Backups (Admin)",
-      "description": "Painel de administração geral, relatórios consolidados e cópias de segurança (backups) do MongoDB.",
+      "name": "9. Métricas, Relatórios & Backups (Admin)",
       "item": [
         {
           "name": "Obter Métricas do Painel (Dashboard)",
@@ -1531,69 +1520,68 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Painel de administração geral, relatórios consolidados e cópias de segurança (backups) do MongoDB."
     }
   ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:3000/api",
-      "type": "string"
+      "value": "http://localhost:3000/api"
     },
     {
       "key": "authToken",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "refreshToken",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "projectId",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "coordinatorId",
-      "value": "664c39e2467d3b2b1a89c9d5",
-      "type": "string"
+      "value": "664c39e2467d3b2b1a89c9d5"
     },
     {
       "key": "tempUserId",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "activityId",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "tempParticipationId",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "proposalId",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "meetingId",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "documentId",
-      "value": "",
-      "type": "string"
+      "value": ""
     },
     {
       "key": "tempBackupId",
-      "value": "",
-      "type": "string"
+      "value": ""
     }
   ]
 }
