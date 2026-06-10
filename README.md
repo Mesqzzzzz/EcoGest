@@ -77,3 +77,45 @@ Se preferires correr os serviços manualmente:
 *   **Rate Limiting**: Limite de 5 tentativas de login por IP/minuto persistido no MongoDB (`AuthLog`) (retorna HTTP 429).
 *   **Hashing**: Passwords encriptadas via `bcryptjs` (10 salt rounds).
 *   **RBAC**: Controlo de acesso baseado em funções (`admin`, `coordinator`, `secretary`, `council_member`, `user`).
+
+---
+
+## 🧪 Suite de Testes Automatizados
+
+O projeto inclui uma suite completa de testes automatizados abrangendo testes unitários, testes de API, testes de interface UI (Selenium) e testes de performance (k6).
+
+### **Como Executar os Testes**
+
+Siga estes passos para executar os testes exatamente como foram executados na validação:
+
+#### **1. Instalar as Dependências da Raiz**
+Na pasta raiz do projeto, instale as dependências necessárias para a suite de testes:
+```bash
+npm install
+```
+
+#### **2. Iniciar os Serviços (Local)**
+Certifique-se de que o backend local está a correr em `http://localhost:3000` e o frontend em `http://localhost:5173`.
+> [!IMPORTANT]
+> Se o contentor Docker estiver ativo na porta `3000`, pare-o com `docker stop ecogest-backend` para poder executar o backend localmente com as configurações de teste.
+
+#### **3. Configurar Limites de Pedidos (Rate Limit)**
+Para evitar que os testes de login automatizados sejam bloqueados pelo mecanismo de Rate Limit do backend (gerando erros HTTP 429), adicione a seguinte linha no seu ficheiro `backend/.env`:
+```env
+LOGIN_RATE_LIMIT=1000
+```
+Inicie/reinicie o backend local com `npm run dev` na pasta `backend` para aplicar esta configuração.
+
+#### **4. Executar os Testes Funcionais (Jest + Selenium)**
+Corra a suite completa de testes unitários, de API e de UI sequencialmente de forma invisível (modo headless) com o comando na raiz:
+```bash
+SELENIUM_HEADLESS=true npm test
+```
+
+#### **5. Executar os Testes de Performance (k6)**
+Corra o teste de carga e concorrência sobre a API (requer o `k6` instalado):
+```bash
+npm run test:perf
+```
+
+Para mais detalhes sobre a estrutura de pastas e integração com relatórios Allure ou Jira Xray, consulte o **[README específico de testes](file:///Users/mesquita/ESMAD/webp2/EcoGest/tests/README.md)**.
