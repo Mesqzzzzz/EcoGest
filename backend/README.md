@@ -32,10 +32,6 @@ npm install
     ```bash
     npm run dev
     ```
-*   **Modo de Produção**:
-    ```bash
-    npm start
-    ```
 
 ---
 
@@ -55,4 +51,4 @@ Pode construir e executar este backend de forma independente no Docker. Como o f
 ## 🔍 Documentação e Testes
 
 *   **API Interactive Playground (Swagger)**: Com o servidor a correr, aceda a **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** para ver a especificação técnica de todos os endpoints da API, parâmetros exigidos e respostas JSON em tempo real.
-*   **Testes da API (Postman)**: Pode importar a coleção do Postman localizada na raiz do projeto: **[EcoGest_API.postman_collection.json](../EcoGest_API.postman_collection.json)**. Ela contém todos os pedidos configurados (Login, Registo, Atividades, Reuniões, Auditorias, etc.) com salvamento automático do token JWT após o login.
+*   **Testes da API (Postman)**: Pode importar a coleção do Postman localizada na raiz do projeto: **[EcoGest_API.postman_collection.json](../EcoGest_API_Grupo31.postman_collection)**. Ela contém todos os pedidos configurados (Login, Registo, Atividades, Reuniões, Auditorias, etc.) com salvamento automático do token JWT após o login.
