@@ -82,7 +82,7 @@ Se preferires correr os serviços manualmente:
 
 ## 🧪 Suite de Testes Automatizados
 
-O projeto inclui uma suite completa de testes automatizados abrangendo testes unitários, testes de API, testes de interface UI (Selenium) e testes de performance (k6).
+O projeto inclui uma suite completa de testes automatizados abrangendo testes unitários, testes de API, testes de interface UI (Selenium) e testes de performance (Apache JMeter).
 
 ### **Como Executar os Testes**
 
@@ -112,8 +112,8 @@ Corra a suite completa de testes unitários, de API e de UI sequencialmente de f
 SELENIUM_HEADLESS=true npm test
 ```
 
-#### **5. Executar os Testes de Performance (k6)**
-Corra o teste de carga e concorrência sobre a API (requer o `k6` instalado):
+#### **5. Executar os Testes de Performance (Apache JMeter)**
+Corra o teste de carga e concorrência sobre a API (requer o `jmeter` instalado no sistema):
 ```bash
 npm run test:perf
 ```

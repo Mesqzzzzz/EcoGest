@@ -14,8 +14,8 @@ A suite foi estruturada de forma desacoplada para não interferir na lógica de 
     *   **Função**: Simula um utilizador real interagindo com o browser Chrome. É utilizado para testar a interface gráfica, submeter formulários, clicar em botões, redimensionar janelas e validar fluxos de navegação.
 3.  **[Supertest](https://github.com/ladjs/supertest) (Testes de Integração de API)**
     *   **Função**: Efetua chamadas HTTP reais para os endpoints da API do backend sem precisar de carregar a interface. Usado para validar códigos de status HTTP, payloads JSON e a segurança das rotas.
-4.  **[k6](https://k6.io/) (Testes de Carga e Performance)**
-    *   **Função**: Ferramenta escrita em Go para simulação de utilizadores concorrentes (VUs). Efetua milhares de pedidos à API para avaliar o comportamento do servidor sob stresse e validar tempos de resposta.
+4.  **[Apache JMeter](https://jmeter.apache.org/) (Testes de Carga e Performance)**
+    *   **Função**: Ferramenta Java para simulação de múltiplos utilizadores concorrentes. Efetua pedidos sequenciais e concorrentes à API para avaliar a estabilidade sob stresse, tempos de resposta e debitar métricas.
 5.  **[Allure Reports](https://allurereport.org/) (Relatórios Visuais)**
     *   **Função**: Gera relatórios visuais ricos em formato HTML, agregando capturas de ecrã (screenshots) automáticas de falhas nos testes de UI e métricas detalhadas.
 6.  **[Jira Xray Cloud API](https://docs.getxray.app/display/XRAYCLOUD/Xray+Cloud+API)**
@@ -50,7 +50,7 @@ EcoGest/
     │       └── ui.test.js    # Casos de teste de interface (E2E) e responsividade
     │
     ├── performance/
-    │   └── load_test.js      # Script de teste de stresse e performance com o k6
+    │   └── load_test.jmx     # Plano de testes de stresse e performance para o Apache JMeter
     │
     └── xray/
         └── xray_uploader.js  # Conector para importação de resultados no Jira Xray
@@ -59,23 +59,20 @@ EcoGest/
 ### 📝 Descrição Detalhada dos Ficheiros
 
 #### Configuração Geral:
-*   **`package.json`**: Adiciona dependências de testes (`jest`, `selenium-webdriver`, `supertest`, `allure-jest`, `axios`, `bcryptjs`, `jsonwebtoken`) e os comandos `npm test`, `npm run test:unit`, `npm run test:api`, `npm run test:ui` e `npm run test:perf`.
+*   **`package.json`**: Adiciona dependências de testes (`jest`, `selenium-webdriver`, `supertest`, `allure-jest`, `axios`, `bcryptjs`, `jsonwebtoken`) e os comandos `npm test`, `npm run test:unit`, `npm run test:api`, `npm run test:ui`, `npm run test:perf`, `npm run test:all` (executa todos os testes e abre os relatórios) e `npm run jira-upload` (atualiza os itens no Jira).
 *   **`tests/jest.config.js`**: Configura o ambiente de testes como `allure-jest/node`, define o diretório de relatórios (`./tests/allure-results`) e estabelece o timeout padrão de 60 segundos por teste.
-*   **`Jenkinsfile`**: Pipeline completo declarativo. Realiza o checkout do git, instala dependências, inicia o backend/frontend, executa as suites de testes sequencialmente, corre o k6, carrega relatórios no Jira e gera o painel visual do Allure.
+*   **`Jenkinsfile`**: Pipeline completo declarativo. Realiza o checkout do git, instala dependências, inicia o backend/frontend, executa as suites de testes sequencialmente, corre o JMeter, carrega relatórios no Jira e gera o painel visual do Allure.
+*   **`run_all_tests.sh`**: Script utilitário em Bash para executar toda a suite de testes locais, gerar relatórios e abri-los de imediato no browser.
 
 #### 🔐 Testes Unitários (`tests/unit/`):
 *   **`auth.test.js`**: Testa funções de segurança do Node.js de forma totalmente isolada (sem aceder a base de dados).
     *   **O que faz**: Valida se a encriptação de palavras-passe do `bcryptjs` gera hashes seguros e corretos, e se a assinatura/validação de tokens JWT através do `jsonwebtoken` emite payloads válidos ou falha com chaves secretas incorretas.
 
-#### 🌐 Testes de API (`tests/api/`):
-*   **`api.test.js`**: Executa chamadas HTTP reais na API do EcoGest.
+#### 🌐 Testes de API & Requisitos (`tests/api/`):
+*   **`api.test.js`**: Cobertura consolidada executável dos **14 Requisitos Funcionais (RFs)** e **10 Requisitos Não Funcionais (RNFs)** do EcoGest.
     *   **O que faz**:
-        *   Tenta aceder a rotas protegidas sem autenticação ou com token corrompido, esperando erro `401`.
-        *   Cria um novo utilizador dinâmico e valida o status `201`.
-        *   Tenta criar o mesmo utilizador novamente, esperando erro `409` (conflito de email).
-        *   Autentica o utilizador e obtém o JWT.
-        *   Acede à rota `/api/users/me` usando o cabeçalho `Authorization: Bearer <TOKEN>` para ler e editar dados do perfil.
-        *   Autentica o administrador padrão (`admin@ecogest.pt`) para criar novos projetos anuais e atividades ecológicas na base de dados.
+        *   **RF1 a RF14 & RF21**: Testa fluxos completos de negócio (registo, login, atualização de perfil, alteração de estado de utilizadores/atividades, criação e edição de projetos/atividades, atribuição de coordenador, inscrições, criação de reuniões e geração de dados para relatórios).
+        *   **RNF1 a RNF10**: Valida garantias não funcionais de performance (resposta da API < 800ms), escalabilidade, expiração de JWT, middlewares, hashing bcryptjs, responsividade/usabilidade, disponibilidade, modularidade do código MVC e robustez.
 
 #### 🖥️ Testes de Interface UI (`tests/ui/`):
 Segue a arquitetura **Page Object Model (POM)**, onde os seletores de elementos e as ações são encapsulados em ficheiros separados das asserções de teste.
@@ -92,8 +89,8 @@ Segue a arquitetura **Page Object Model (POM)**, onde os seletores de elementos 
         *   `TC016/TC017`: Redimensiona a janela para dimensões móveis (`375x812`) e valida se o ecrã de login ajusta o layout (responsividade).
 
 #### ⚡ Testes de Performance (`tests/performance/`):
-*   **`load_test.js`**: Teste de carga executado com a ferramenta `k6`.
-    *   **O que faz**: Rampa de utilizadores virtuais (até 20 VUs) a efetuar pedidos simultâneos à API (health check, listagem de atividades e tentativas de login falhadas). Contém regras de sucesso (Thresholds) para garantir que mais de 99% dos pedidos válidos respondam em menos de 800ms.
+*   **`load_test.jmx`**: Plano de testes de carga para o Apache JMeter.
+    *   **O que faz**: Rampa de utilizadores simultâneos (até 20 threads) a efetuar pedidos periódicos à API (health check, listagem de atividades e dezenas de tentativas de login falhas). Inclui asserções de resposta HTTP 200, validação de JSON `status = ok` e tratamento correto de erros de autenticação previstos (HTTP 401 e 429).
 
 #### 📤 Conector Jira Xray (`tests/xray/`):
 *   **`xray_uploader.js`**: Script de integração.
@@ -115,5 +112,5 @@ Nas nossas correções de robustez, identificámos e mitigámos dois problemas c
         ```
         Isto garante que cada teste se inicia num browser limpo e desautenticado.
 2.  **Rate Limiting (Bloqueio de IP)**:
-    *   *Problema*: O backend do EcoGest tem um limitador de segurança que permite apenas 5 tentativas de login por IP a cada minuto. O Jest, a UI e o k6 efetuam dezenas de logins em poucos segundos, ativando o limitador e resultando em erros HTTP `429 Too Many Requests`.
+    *   *Problema*: O backend do EcoGest tem um limitador de segurança que permite apenas 5 tentativas de login por IP a cada minuto. O Jest, a UI e o JMeter efetuam dezenas de logins em poucos segundos, ativando o limitador e resultando em erros HTTP `429 Too Many Requests`.
     *   *Solução*: No ficheiro de ambiente do backend `backend/.env`, definimos `LOGIN_RATE_LIMIT=1000`. Desta forma, o servidor passa a aceitar todas as requisições legítimas dos testes sem bloquear o IP de testes.

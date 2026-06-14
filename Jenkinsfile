@@ -67,7 +67,7 @@ pipeline {
 
         stage('Performance Testing') {
             steps {
-                echo 'Running Performance Load Tests using k6...'
+                echo 'Running Performance Load Tests using Apache JMeter...'
                 // Run load test and capture results
                 sh 'npm run test:perf'
             }
@@ -88,8 +88,8 @@ pipeline {
             sh "lsof -t -i:3000 | xargs kill -9 || true"
             sh "lsof -t -i:5173 | xargs kill -9 || true"
             
-            echo 'Archiving test results & screenshots...'
-            archiveArtifacts artifacts: '**/allure-results/*, **/screenshots/*.png', allowEmptyArchive: true
+            echo 'Archiving test results, screenshots & JMeter reports...'
+            archiveArtifacts artifacts: '**/allure-results/*, **/screenshots/*.png, **/tests/performance/results.jtl, **/tests/performance/report/**', allowEmptyArchive: true
             
             echo 'Publishing Allure Report...'
             allure includeProperties: false, jdk: '', results: [[path: 'tests/allure-results']]

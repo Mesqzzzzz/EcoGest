@@ -1,15 +1,17 @@
 {
   "name": "ecogest-test-suite",
   "version": "1.0.0",
-  "description": "EcoGest Automated Testing Suite - Unit, API, UI (Selenium), Performance (k6), Jenkins and Xray integration",
+  "description": "EcoGest Automated Testing Suite - Unit, API, UI (Selenium), Performance (JMeter), Jenkins and Xray integration",
   "main": "index.js",
   "scripts": {
     "test": "jest -c tests/jest.config.js --runInBand",
     "test:unit": "jest -c tests/jest.config.js tests/unit",
     "test:api": "jest -c tests/jest.config.js tests/api --runInBand",
     "test:ui": "jest -c tests/jest.config.js tests/ui/specs --runInBand",
-    "test:perf": "k6 run tests/performance/load_test.js",
-    "xray-upload": "node tests/xray/xray_uploader.js"
+    "test:perf": "jmeter -f -n -t tests/performance/load_test.jmx -l tests/performance/results.jtl -e -o tests/performance/report",
+    "xray-upload": "node tests/xray/xray_uploader.js",
+    "jira-upload": "node tests/xray/jira_update_existing.js",
+    "test:all": "./run_all_tests.sh"
   },
   "dependencies": {
     "axios": "^1.7.9",
