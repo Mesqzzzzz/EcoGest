@@ -19,7 +19,7 @@ async function inspectIssue(key) {
     console.log(`Summary: ${res.data.fields.summary}`);
     console.log(`Type: ${res.data.fields.issuetype.name}`);
   } catch (err) {
-    console.error(`❌ Erro ao inspecionar ${key}:`, err.response?.data || err.message);
+    console.error(`❌ Error inspecting ${key}:`, err.response?.data || err.message);
   }
 }
 

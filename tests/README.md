@@ -1,116 +1,117 @@
-# 📖 Guia da Suite de Testes Automatizados — EcoGest
+# 📖 Automated Test Suite Guide — EcoGest
 
-Este documento fornece uma explicação detalhada sobre a arquitetura, as ferramentas utilizadas, a finalidade de cada ficheiro e o funcionamento interno da suite de testes automatizados do projeto **EcoGest**.
+This document provides a detailed overview of the architecture, testing tools, file structures, and internal mechanics of the automated test suite designed for the **EcoGest** platform.
 
 ---
 
-## 🛠️ 1. Tecnologias & Ferramentas Utilizadas
+## 🛠️ 1. Technologies & Tools
 
-A suite foi estruturada de forma desacoplada para não interferir na lógica de negócio do sistema principal, recorrendo às seguintes tecnologias de referência na indústria:
+The test suite is structured to remain decoupled from the main business logic of the system, utilizing industry-standard technologies:
 
 1.  **[Jest](https://jestjs.io/) (Test Runner & Assertions)**
-    *   **Função**: É o motor de execução principal para os testes funcionais (Unitários, API e UI). Gere o ciclo de vida dos testes (`beforeAll`, `beforeEach`, `afterAll`, etc.) e valida os resultados através de asserções (`expect`).
-2.  **[Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/) (Automação de Interface/UI)**
-    *   **Função**: Simula um utilizador real interagindo com o browser Chrome. É utilizado para testar a interface gráfica, submeter formulários, clicar em botões, redimensionar janelas e validar fluxos de navegação.
-3.  **[Supertest](https://github.com/ladjs/supertest) (Testes de Integração de API)**
-    *   **Função**: Efetua chamadas HTTP reais para os endpoints da API do backend sem precisar de carregar a interface. Usado para validar códigos de status HTTP, payloads JSON e a segurança das rotas.
-4.  **[Apache JMeter](https://jmeter.apache.org/) (Testes de Carga e Performance)**
-    *   **Função**: Ferramenta Java para simulação de múltiplos utilizadores concorrentes. Efetua pedidos sequenciais e concorrentes à API para avaliar a estabilidade sob stresse, tempos de resposta e debitar métricas.
-5.  **[Allure Reports](https://allurereport.org/) (Relatórios Visuais)**
-    *   **Função**: Gera relatórios visuais ricos em formato HTML, agregando capturas de ecrã (screenshots) automáticas de falhas nos testes de UI e métricas detalhadas.
+    *   **Role**: The primary engine for running functional tests (Unit, API, and UI). Manages the test lifecycle (`beforeAll`, `beforeEach`, `afterAll`, etc.) and performs assertions using `expect`.
+2.  **[Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/) (UI Automation)**
+    *   **Role**: Simulates a real user interacting with the Chrome browser. It is used to test the graphical user interface, submit forms, click elements, resize viewports, and validate end-to-end user flows.
+3.  **[Supertest](https://github.com/ladjs/supertest) (API Integration Testing)**
+    *   **Role**: Executes real HTTP requests to the backend API endpoints without opening the frontend interface. Used to validate HTTP status codes, JSON response payloads, and route security.
+4.  **[Apache JMeter](https://jmeter.apache.org/) (Load & Performance Testing)**
+    *   **Role**: A Java-based tool used to simulate multiple concurrent users. Performs sequential and parallel API requests to evaluate stability, response times, and throughput under stress.
+5.  **[Allure Reports](https://allurereport.org/) (Visual Reports)**
+    *   **Role**: Generates interactive HTML reports, embedding automatic failure screenshots for UI tests and detailed test run metrics.
 6.  **[Jira Xray Cloud API](https://docs.getxray.app/display/XRAYCLOUD/Xray+Cloud+API)**
-    *   **Função**: Permite a integração CI/CD enviando os resultados dos testes automatizados diretamente para as chaves de teste mapeadas no Jira (ex: `PE-1` a `TC020`).
+    *   **Role**: Facilitates CI/CD integration by sending automated test execution results directly to their mapped test keys in Jira (e.g., `PE-1` to `TC020`).
 
 ---
 
-## 📁 2. Estrutura de Pastas e Finalidade de Cada Ficheiro
+## 📁 2. Folder Structure & File Purpose
 
-Abaixo encontra-se o mapeamento completo dos ficheiros criados no diretório `/tests` e na raiz do projeto:
+Below is the layout of files within the `/tests` directory and at the project root:
 
 ```bash
 EcoGest/
-├── package.json              # Dependências da suite de testes e scripts de atalho
-├── Jenkinsfile               # Pipeline CI/CD para automação total no Jenkins
+├── package.json              # Test suite dependencies and script shortcuts
+├── Jenkinsfile               # CI/CD pipeline for Jenkins automation
 └── tests/
-    ├── README.md             # Este guia completo explicativo da suite de testes
-    ├── jest.config.js        # Configurações globais do Jest e Allure Reports
+    ├── README.md             # This comprehensive test guide
+    ├── jest.config.js        # Global Jest and Allure Reports settings
     │
     ├── unit/
-    │   └── auth.test.js      # Testes unitários de lógica isolada (encriptação e JWT)
+    │   └── auth.test.js      # Unit tests for isolated security logic (encryption and JWT)
     │
     ├── api/
-    │   └── api.test.js       # Testes integrados de rotas e segurança HTTP da API
+    │   └── api.test.js       # Integrated tests for API routes and HTTP security
     │
     ├── ui/
-    │   ├── pages/            # Implementação do Padrão Page Object Model (POM)
-    │   │   ├── base.page.js  # Classe base com métodos Selenium reutilizáveis
-    │   │   ├── login.page.js # Ações e seletores da página de Login
-    │   │   └── register.page.js # Ações e seletores da página de Registo
+    │   ├── pages/            # Page Object Model (POM) implementation
+    │   │   ├── base.page.js  # Base class with reusable Selenium utility methods
+    │   │   ├── login.page.js # Selectors and actions for the Login page
+    │   │   └── register.page.js # Selectors and actions for the Register page
     │   └── specs/
-    │       └── ui.test.js    # Casos de teste de interface (E2E) e responsividade
+    │       └── ui.test.js    # End-to-End (E2E) interface and responsiveness tests
     │
     ├── performance/
-    │   └── load_test.jmx     # Plano de testes de stresse e performance para o Apache JMeter
+    │   └── load_test.jmx     # Apache JMeter load and performance test plan
     │
     └── xray/
-        └── xray_uploader.js  # Conector para importação de resultados no Jira Xray
+        └── xray_uploader.js  # Connector for importing execution results into Jira Xray
 ```
 
-### 📝 Descrição Detalhada dos Ficheiros
+### 📝 Detailed Description of Files
 
-#### Configuração Geral:
-*   **`package.json`**: Adiciona dependências de testes (`jest`, `selenium-webdriver`, `supertest`, `allure-jest`, `axios`, `bcryptjs`, `jsonwebtoken`) e os comandos `npm test`, `npm run test:unit`, `npm run test:api`, `npm run test:ui`, `npm run test:perf`, `npm run test:all` (executa todos os testes e abre os relatórios) e `npm run jira-upload` (atualiza os itens no Jira).
-*   **`tests/jest.config.js`**: Configura o ambiente de testes como `allure-jest/node`, define o diretório de relatórios (`./tests/allure-results`) e estabelece o timeout padrão de 60 segundos por teste.
-*   **`Jenkinsfile`**: Pipeline completo declarativo. Realiza o checkout do git, instala dependências, inicia o backend/frontend, executa as suites de testes sequencialmente, corre o JMeter, carrega relatórios no Jira e gera o painel visual do Allure.
-*   **`run_all_tests.sh`**: Script utilitário em Bash para executar toda a suite de testes locais, gerar relatórios e abri-los de imediato no browser.
+#### Configuration & General files:
+*   **`package.json`**: Definese test dependencies (`jest`, `selenium-webdriver`, `supertest`, `allure-jest`, `axios`, `bcryptjs`, `jsonwebtoken`) and scripts: `npm test`, `npm run test:unit`, `npm run test:api`, `npm run test:ui`, `npm run test:perf`, `npm run test:all` (runs everything and opens reports) and `npm run jira-upload` / `npm run xray-upload`.
+*   **`tests/jest.config.js`**: Sets up the test environment using `allure-jest/node`, configures the output report directory (`./tests/allure-results`), and establishes a default timeout of 60 seconds per test.
+*   **`Jenkinsfile`**: Declarative pipeline which pulls from git, installs dependencies, spins up backend and frontend, executes test suites sequentially, runs JMeter, uploads results to Jira, and generates the Allure dashboard.
+*   **`run_all_tests.sh`**: A Bash utility script that executes all local tests, collects reports, and opens them in the browser.
 
-#### 🔐 Testes Unitários (`tests/unit/`):
-*   **`auth.test.js`**: Testa funções de segurança do Node.js de forma totalmente isolada (sem aceder a base de dados).
-    *   **O que faz**: Valida se a encriptação de palavras-passe do `bcryptjs` gera hashes seguros e corretos, e se a assinatura/validação de tokens JWT através do `jsonwebtoken` emite payloads válidos ou falha com chaves secretas incorretas.
+#### 🔐 Unit Tests (`tests/unit/`):
+*   **`auth.test.js`**: Validates isolated Node.js security utilities (database-free).
+    *   **Scope**: Confirms that `bcryptjs` password hashing works correctly, and verifies that `jsonwebtoken` signatures and validation logic handle valid payloads and reject invalid secret keys.
 
-#### 🌐 Testes de API & Requisitos (`tests/api/`):
-*   **`api.test.js`**: Cobertura consolidada executável dos **14 Requisitos Funcionais (RFs)** e **10 Requisitos Não Funcionais (RNFs)** do EcoGest.
-    *   **O que faz**:
-        *   **RF1 a RF14 & RF21**: Testa fluxos completos de negócio (registo, login, atualização de perfil, alteração de estado de utilizadores/atividades, criação e edição de projetos/atividades, atribuição de coordenador, inscrições, criação de reuniões e geração de dados para relatórios).
-        *   **RNF1 a RNF10**: Valida garantias não funcionais de performance (resposta da API < 800ms), escalabilidade, expiração de JWT, middlewares, hashing bcryptjs, responsividade/usabilidade, disponibilidade, modularidade do código MVC e robustez.
+#### 🌐 API & Requirement Tests (`tests/api/`):
+*   **`api.test.js`**: Executable verification suite covering the **14 Functional Requirements (FRs)** and **10 Non-Functional Requirements (NFRs)** of EcoGest.
+    *   **Scope**:
+        *   **FR1 to FR14 & FR21**: Covers complete user registration, login, profile updates, role/status modifications, project creation, coordinator assignments, activity updates, registrations, meeting scheduling, and report statistics generation.
+        *   **NFR1 to NFR10**: Validates non-functional performance guarantees (API response < 800ms), scalability, JWT expiration, middlewares, bcrypt hashing, responsive layout checks, availability, MVC pattern architecture, and error handling.
 
-#### 🖥️ Testes de Interface UI (`tests/ui/`):
-Segue a arquitetura **Page Object Model (POM)**, onde os seletores de elementos e as ações são encapsulados em ficheiros separados das asserções de teste.
-*   **`pages/base.page.js`**: Inicializa o Chrome (com suporte a modo `--headless` e definições de tamanho de janela). Contém invólucros seguros para métodos Selenium (`find`, `click`, `write`, `getText`) que usam esperas explícitas de até 10 segundos, além da lógica para guardar capturas de ecrã em `tests/screenshots/` quando um teste falha.
-*   **`pages/login.page.js`**: Guarda seletores do formulário de login (`email`, `password`, botão `submit`) e oferece o método `login(email, pass)`.
-*   **`pages/register.page.js`**: Mapeia campos do formulário de registo e oferece o método `register(nome, email, pass, confirmPass)`.
-*   **`specs/ui.test.js`**: Define os fluxos reais de teste de UI:
-    *   **Isolamento**: Um gancho `beforeEach` limpa o `localStorage` e cookies a cada execução para evitar persistência de sessão de testes passados.
-    *   **Casos**:
-        *   `TC001`: Regista um utilizador aleatório e garante que é redirecionado para `/dashboard`.
-        *   `TC002`: Efetua login do coordenador e garante o redirecionamento.
-        *   `TC003`: Inicia sessão e clica na navegação para a página de perfil para validar inputs.
-        *   `TC004`: Autentica o administrador para validar a interface de criação de projetos.
-        *   `TC016/TC017`: Redimensiona a janela para dimensões móveis (`375x812`) e valida se o ecrã de login ajusta o layout (responsividade).
+#### 🖥️ UI Tests (`tests/ui/`):
+Built on the **Page Object Model (POM)** pattern, keeping element selectors and page actions separate from test assertions.
+*   **`pages/base.page.js`**: Initializes Chrome (supporting `--headless` execution and window dimensions). Contains helper methods (`find`, `click`, `write`, `getText`) with explicit waits of up to 10 seconds, and includes logic to take a screenshot and save it to `tests/screenshots/` if a test fails.
+*   **`pages/login.page.js`**: Houses login selectors (`email`, `password`, `submit` button) and provides the `login(email, pass)` helper.
+*   **`pages/register.page.js`**: Maps the registration form and provides the `register(name, email, pass, confirmPass)` helper.
+*   **`specs/ui.test.js`**: Implements the actual UI test cases:
+    *   **Isolation**: A `beforeEach` hook clears the `localStorage` and cookies to ensure sessions do not pollute subsequent tests.
+    *   **Cases**:
+        *   `TC001`: Registers a random user and ensures redirection to `/dashboard`.
+        *   `TC002`: Authenticates as a coordinator and verifies access.
+        *   `TC003`: Navigates to the user profile and validates update inputs.
+        *   `TC004`: Logs in as an administrator to check project creation elements.
+        *   `TC016/TC017`: Resizes the window to mobile dimensions (`375x812`) to verify the responsive login layout.
 
-#### ⚡ Testes de Performance (`tests/performance/`):
-*   **`load_test.jmx`**: Plano de testes de carga para o Apache JMeter.
-    *   **O que faz**: Rampa de utilizadores simultâneos (até 20 threads) a efetuar pedidos periódicos à API (health check, listagem de atividades e dezenas de tentativas de login falhas). Inclui asserções de resposta HTTP 200, validação de JSON `status = ok` e tratamento correto de erros de autenticação previstos (HTTP 401 e 429).
+#### ⚡ Performance Tests (`tests/performance/`):
+*   **`load_test.jmx`**: JMeter plan to run concurrency tests.
+    *   **Scope**: Gradually ramps up concurrent threads (up to 20 users) performing periodic requests to the health check, activity list, and failed login routes. Validates HTTP 200/201 status codes, JSON responses, and verifies expected rate limit (HTTP 429) / unauthorized (HTTP 401) responses.
 
-#### 📤 Conector Jira Xray (`tests/xray/`):
-*   **`xray_uploader.js`**: Script de integração.
-    *   **O que faz**: Procura as credenciais Xray no ficheiro `.env` e constrói um payload JSON formatado. Caso as credenciais não estejam definidas no sistema, executa em **modo simulação (dry-run)**, exibindo o payload exato que seria transmitido à API Cloud do Jira Xray.
+#### 📤 Jira Xray Connector (`tests/xray/`):
+*   **`xray_uploader.js`**: Connects to the Xray Cloud API.
+    *   **Scope**: Pulls API credentials from the system `.env` file to build a formatted JSON upload payload. If no credentials are found, it runs in **dry-run** simulation mode, printing the exact payload to the console.
 
 ---
 
-## ⚙️ 3. Como os Testes Funcionam em Lote (Sem conflitos)
+## ⚙️ 3. Safe Sequential Executions
 
-Nas nossas correções de robustez, identificámos e mitigámos dois problemas comuns em suites de testes integradas:
+Our testing suite is configured to prevent two common conflicts during local bulk test runs:
 
-1.  **Poluição de Sessão**:
-    *   *Problema*: O Selenium reutiliza a mesma janela/instância do browser por questões de desempenho. Se o teste A fizer login e o teste B visitar a página de login, o React redirecionará o browser imediatamente para `/dashboard`, quebrando o teste B que esperava ver o formulário de login.
-    *   *Solução*: No ficheiro `ui.test.js`, o `beforeEach` executa:
+1.  **Session Pollution**:
+    *   *Issue*: Selenium reuses the same browser instance to optimize execution speed. If Test A finishes in a logged-in state, Test B visiting the login page will immediately trigger a redirect to `/dashboard`, causing Test B to fail because it cannot find the login inputs.
+    *   *Resolution*: In `ui.test.js`, the `beforeEach` hook resets browser state:
         ```javascript
         await driver.get(baseUrl);
         await driver.executeScript('window.localStorage.clear();');
         await driver.manage().deleteAllCookies();
         ```
-        Isto garante que cada teste se inicia num browser limpo e desautenticado.
-2.  **Rate Limiting (Bloqueio de IP)**:
-    *   *Problema*: O backend do EcoGest tem um limitador de segurança que permite apenas 5 tentativas de login por IP a cada minuto. O Jest, a UI e o JMeter efetuam dezenas de logins em poucos segundos, ativando o limitador e resultando em erros HTTP `429 Too Many Requests`.
-    *   *Solução*: No ficheiro de ambiente do backend `backend/.env`, definimos `LOGIN_RATE_LIMIT=1000`. Desta forma, o servidor passa a aceitar todas as requisições legítimas dos testes sem bloquear o IP de testes.
+        This ensures each test begins with a clean, unauthenticated session.
+
+2.  **Rate Limiting (IP Block)**:
+    *   *Issue*: The backend rate limiter allows a maximum of 5 login attempts per IP per minute. Jest UI and JMeter tests run dozens of requests in seconds, resulting in immediate HTTP `429 Too Many Requests` failures.
+    *   *Resolution*: By configuring `LOGIN_RATE_LIMIT=1000` in the backend's `.env` file, the server allows testing scripts to execute multiple requests without triggering security blocks.

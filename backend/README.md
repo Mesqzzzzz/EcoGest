@@ -1,54 +1,60 @@
 # 🌿 EcoGest Backend — REST API
 
-Este diretório contém a **API REST** do **EcoGest**, construída em **Node.js** com a framework **Express** e persistência em **MongoDB** utilizando a biblioteca **Mongoose**.
+This directory contains the **REST API** for **EcoGest**, built using **Node.js** with the **Express** framework, and **MongoDB** database persistence through the **Mongoose** library.
 
 ---
 
-## 🛠️ Tecnologias Principais
+## 🛠️ Main Tech Stack
 
-*   **Runtime**: Node.js (v20+ recomendado)
+*   **Runtime**: Node.js (v20+ recommended)
 *   **Framework**: Express
-*   **Base de Dados**: MongoDB (Atlas ou Local) via Mongoose ODM
-*   **Segurança e Criptografia**: JSON Web Tokens (JWT), bcryptjs (Hashing) e crypto (Refresh Token)
-*   **Uploads**: Multer (gestão física de ficheiros no disco)
-*   **Documentação**: Swagger UI (`swagger-ui-express`)
+*   **Database**: MongoDB (Atlas or Local) via Mongoose ODM
+*   **Security & Cryptography**: JSON Web Tokens (JWT), bcryptjs (hashing) and crypto (refresh token rotation)
+*   **File Uploads**: Multer (managing physical file storage on disk)
+*   **API Documentation**: Swagger UI (`swagger-ui-express`)
 
 ---
 
-## ⚙️ Configuração Local e Execução
+## ⚙️ Local Setup and Execution
 
-### **1. Variáveis de Ambiente**
-O ficheiro `.env` com as configurações da API (incluindo a ligação ao MongoDB Atlas `MONGODB_URI` e o `JWT_SECRET`) já se encontra incluído e versionado no repositório. Não necessita de criar ou copiar ficheiros de exemplo — a aplicação está pronta para ser executada.
+### **1. Environment Variables**
+The `.env` file containing the default API settings (including the MongoDB connection URI `MONGODB_URI` and `JWT_SECRET`) is already included and versioned in the repository. You do not need to create or copy any example configurations — the application is ready to run immediately.
 
-### **2. Instalar Dependências**
-Instale os pacotes npm necessários:
+### **2. Install Dependencies**
+Install the required npm packages:
 ```bash
 npm install
 ```
 
-### **3. Iniciar o Servidor**
+### **3. Start the Server**
 
-*   **Modo de Desenvolvimento** (com auto-reload usando `nodemon`):
+*   **Development Mode** (with auto-reload using `nodemon`):
     ```bash
     npm run dev
+    ```
+*   **Production Mode**:
+    ```bash
+    npm start
     ```
 
 ---
 
-## 🐳 Execução com Docker (Standalone)
+## 🐳 Running with Docker (Standalone)
 
-Pode construir e executar este backend de forma independente no Docker. Como o ficheiro `.env` está incluído na pasta, ele é copiado automaticamente para dentro do container durante a construção da imagem (build):
+You can build and run this backend independently inside a Docker container. The `.env` file is automatically copied into the container during the build process:
 
-1. **Construir a Imagem:**
+1. **Build the Image:**
    ```bash
    docker build -t ecogest-backend .
    ```
-2. **Iniciar o Container:**
+2. **Run the Container:**
    ```bash
    docker run -d --name ecogest-backend -p 3000:3000 ecogest-backend
    ```
 
-## 🔍 Documentação e Testes
+---
 
-*   **API Interactive Playground (Swagger)**: Com o servidor a correr, aceda a **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** para ver a especificação técnica de todos os endpoints da API, parâmetros exigidos e respostas JSON em tempo real.
-*   **Testes da API (Postman)**: Pode importar a coleção do Postman localizada na raiz do projeto: **[EcoGest_API.postman_collection.json](../EcoGest_API_Grupo31.postman_collection)**. Ela contém todos os pedidos configurados (Login, Registo, Atividades, Reuniões, Auditorias, etc.) com salvamento automático do token JWT após o login.
+## 🔍 API Documentation & Testing
+
+*   **API Interactive Playground (Swagger)**: With the server running, navigate to **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** in your browser to view the technical specification of all API endpoints, parameters, and live JSON responses.
+*   **Postman Collection**: You can import the Postman test collection located at the root of the project: **[EcoGest_API.postman_collection](../EcoGest_API.postman_collection)**. It contains pre-configured requests (Login, Register, Activities, Meetings, Audits, etc.) with automatic session token extraction.

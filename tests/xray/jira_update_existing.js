@@ -8,20 +8,20 @@ const API_TOKEN = process.env.JIRA_API_TOKEN;
 const authHeader = 'Basic ' + Buffer.from(`${EMAIL}:${API_TOKEN}`).toString('base64');
 
 async function deleteIssue(key) {
-  console.log(`🗑️ A remover a issue temporária extra ${key}...`);
+  console.log(`🗑️ Removing extra temporary issue ${key}...`);
   try {
     await axios.delete(`${JIRA_URL}/rest/api/2/issue/${key}`, {
       headers: { 'Authorization': authHeader }
     });
-    console.log(`✅ Issue ${key} removida com sucesso.`);
+    console.log(`✅ Issue ${key} deleted successfully.`);
   } catch (err) {
-    // Se falhar ou já não existir, ignora silenciosamente
-    console.log(`ℹ️ Nota: Não foi possível remover a issue ${key} (ou já foi removida).`);
+    // If it fails or does not exist, ignore silently
+    console.log(`ℹ️ Note: Could not remove issue ${key} (or it was already deleted).`);
   }
 }
 
 async function updateIssueDescription(key, descriptionText) {
-  console.log(`📝 A atualizar a descrição de ${key}...`);
+  console.log(`📝 Updating description of ${key}...`);
   try {
     await axios.put(`${JIRA_URL}/rest/api/2/issue/${key}`, {
       fields: {
@@ -33,18 +33,18 @@ async function updateIssueDescription(key, descriptionText) {
         'Content-Type': 'application/json'
       }
     });
-    console.log(`✅ Descrição de ${key} atualizada com sucesso.`);
+    console.log(`✅ Description of ${key} updated successfully.`);
   } catch (err) {
-    console.error(`❌ Erro ao atualizar descrição de ${key}:`, err.response?.data || err.message);
+    console.error(`❌ Error updating description of ${key}:`, err.response?.data || err.message);
   }
 }
 
 async function transitionIssueToDone(key) {
-  console.log(`🔄 A transitar a issue ${key} para o estado "Concluído" (ID: 31)...`);
+  console.log(`🔄 Transitioning issue ${key} to "Done" status (ID: 31)...`);
   try {
     await axios.post(`${JIRA_URL}/rest/api/2/issue/${key}/transitions`, {
       transition: {
-        id: '31' // Concluído
+        id: '31' // Done
       }
     }, {
       headers: {
@@ -52,59 +52,59 @@ async function transitionIssueToDone(key) {
         'Content-Type': 'application/json'
       }
     });
-    console.log(`✅ Estado de ${key} atualizado para "Concluído".`);
+    console.log(`✅ Status of ${key} updated to "Done".`);
   } catch (err) {
-    console.error(`❌ Erro ao transitar estado de ${key}:`, err.response?.data || err.message);
+    console.error(`❌ Error transitioning status of ${key}:`, err.response?.data || err.message);
   }
 }
 
-const unitTestsDescription = `h1. Execução de Testes Unitários - EcoGest
-*Data da Execução:* ${new Date().toLocaleString('pt-PT')}
-*Status Geral:* {color:green}*PASSED* (5/5 testes passados - 100% sucesso){color}
+const unitTestsDescription = `h1. Unit Test Execution - EcoGest
+*Execution Date:* ${new Date().toLocaleString('en-US')}
+*General Status:* {color:green}*PASSED* (5/5 tests passed - 100% success){color}
 
-h3. Detalhes dos Casos de Teste Unitários:
-* *[PE-20 / TC015]* - status: *PASSED* - _Deve encriptar passwords de forma segura usando bcryptjs_
-* *[PE-20 / TC015]* - status: *PASSED* - _Deve verificar passwords encriptadas com sucesso_
-* *[PE-18 / TC013]* - status: *PASSED* - _Deve assinar payload do token JWT de forma modular_
-* *[PE-18 / TC013]* - status: *PASSED* - _Deve descodificar e validar token JWT assinado_
-* *[PE-25 / TC020]* - status: *PASSED* - _Deve falhar ao validar token com chave secreta errada_
+h3. Unit Test Case Details:
+* *[PE-20 / TC015]* - status: *PASSED* - _Should encrypt passwords securely using bcryptjs_
+* *[PE-20 / TC015]* - status: *PASSED* - _Should verify encrypted passwords successfully_
+* *[PE-18 / TC013]* - status: *PASSED* - _Should sign JWT token payload in a modular way_
+* *[PE-18 / TC013]* - status: *PASSED* - _Should decode and validate signed JWT token_
+* *[PE-25 / TC020]* - status: *PASSED* - _Should fail to validate token with incorrect secret key_
 
-_Relatório de testes unitários carregado via script de automação_`;
+_Unit test report uploaded via automation script_`;
 
-const uatTestsDescription = `h1. Execução de Testes de Aceitação (UAT) & API - EcoGest
-*Data da Execução:* ${new Date().toLocaleString('pt-PT')}
-*Status Geral:* {color:green}*PASSED* (15/15 testes passados - 100% sucesso){color}
+const uatTestsDescription = `h1. Acceptance (UAT) & API Test Execution - EcoGest
+*Execution Date:* ${new Date().toLocaleString('en-US')}
+*General Status:* {color:green}*PASSED* (15/15 tests passed - 100% success){color}
 
-h3. Resumo das Categorias:
-* Testes de API & Segurança: 7/7 Passados
-* Testes E2E de Interface (UI): 5/5 Passados
-* Testes de Performance & Usabilidade: 3/3 Passados
+h3. Category Summary:
+* API & Security Tests: 7/7 Passed
+* UI E2E Tests: 5/5 Passed
+* Performance & Usability Tests: 3/3 Passed
 
-h3. Detalhes dos Casos de Teste (UAT/API):
-* *[PE-4 / TC001]* - status: *PASSED* - _Registo de utilizador verificado via API e interface do browser._
-* *[PE-5 / TC002]* - status: *PASSED* - _Login autenticado, emissão de tokens e redirecionamento._
-* *[PE-8 / TC003]* - status: *PASSED* - _Gestão de perfil de utilizador e persistência de dados no dashboard._
-* *[PE-9 / TC004]* - status: *PASSED* - _Administração: Criação de novos projetos anuais._
-* *[PE-11 / TC006]* - status: *PASSED* - _Administração: Criação de novas atividades ecológicas._
-* *[PE-19 / TC014]* - status: *PASSED* - _Segurança: Roteamento protegido de endpoints contra acessos anónimos._
-* *[PE-21 / TC016]* - status: *PASSED* - _Responsividade: Ajuste do layout de ecrãs para dispositivos móveis (375x812)._
-* *[PE-22 / TC017]* - status: *PASSED* - _Usabilidade: Navegação limpa e tratamento correto de erros._
+h3. Test Case Details (UAT/API):
+* *[PE-4 / TC001]* - status: *PASSED* - _User registration verified via API and browser interface._
+* *[PE-5 / TC002]* - status: *PASSED* - _Authenticated login, token issuance and redirection._
+* *[PE-8 / TC003]* - status: *PASSED* - _User profile management and data persistence in the dashboard._
+* *[PE-9 / TC004]* - status: *PASSED* - _Administration: Creation of new annual projects._
+* *[PE-11 / TC006]* - status: *PASSED* - _Administration: Creation of new eco-activities._
+* *[PE-19 / TC014]* - status: *PASSED* - _Security: Protected route endpoints against anonymous access._
+* *[PE-21 / TC016]* - status: *PASSED* - _Responsiveness: Adjusting screen layout for mobile viewports (375x812)._
+* *[PE-22 / TC017]* - status: *PASSED* - _Usability: Clean navigation and correct error handling._
 
-_Relatório de testes E2E e API carregado via script de automação_`;
+_E2E and API test report uploaded via automation script_`;
 
 async function main() {
-  // 1. Eliminar a issue extra criada anteriormente
+  // 1. Delete extra temporary issue
   await deleteIssue('PE-26');
   
-  // 2. Atualizar e transitar a issue PE-2 (Unit Tests)
+  // 2. Update and transition issue PE-2 (Unit Tests)
   await updateIssueDescription('PE-2', unitTestsDescription);
   await transitionIssueToDone('PE-2');
 
-  // 3. Atualizar e transitar a issue PE-3 (UAT - Testes de aceitação)
+  // 3. Update and transition issue PE-3 (UAT - Acceptance Tests)
   await updateIssueDescription('PE-3', uatTestsDescription);
   await transitionIssueToDone('PE-3');
   
-  console.log('\n🏁 Processo de atualização concluído.');
+  console.log('\n🏁 Update process completed.');
 }
 
 main();

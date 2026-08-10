@@ -1,4 +1,4 @@
-// Mock Data based on the API Plan - Grupo 31 EcoGest
+// Mock Data based on the API Plan - EcoGest
 
 export const mockUsers = [
   { id: 1, name: "Ana Silva", email: "admin@ecogest.pt", password: "123", role: "admin", status: "active", joined: "2025-09-01" },

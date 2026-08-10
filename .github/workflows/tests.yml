@@ -1,6 +1,6 @@
 name: Run Tests (EcoGest CI)
 
-# Quando é que o pipeline corre
+# Define when the pipeline runs
 on:
   push:
     branches: [ main, develop ]
@@ -9,57 +9,57 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # máquina virtual Linux
+    runs-on: ubuntu-latest  # Linux virtual machine
 
     steps:
-      # Vai buscar o código do repositório
+      # Checkout repository code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Instalar Node.js
+      # Install Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Instalar dependências da raiz
+      # Install root dependencies
       - name: Install root dependencies
         run: npm install
 
-      # Instalar dependências backend
+      # Install backend dependencies
       - name: Install backend dependencies
         run: |
           cd backend
           npm install
 
-      # Instalar dependências frontend
+      # Install frontend dependencies
       - name: Install frontend dependencies
         run: |
           cd frontend
           npm install
 
-      # Criar variável de ambiente para testes
+      # Create environment variable for tests
       - name: Set environment variables
         run: echo "LOGIN_RATE_LIMIT=1000" >> backend/.env
 
-      # Arrancar backend em background
+      # Start backend in the background
       - name: Start backend
         run: |
           cd backend
           npm run dev &
       
-      # Arrancar frontend em background
+      # Start frontend in the background
       - name: Start frontend
         run: |
           cd frontend
           npm run dev &
 
-      # Esperar que serviços estejam disponíveis
+      # Wait for services to be available
       - name: Wait for services
         run: |
           sleep 10
 
-      # Correr testes
+      # Run test suites
       - name: Run tests
         run: npm test
         env:

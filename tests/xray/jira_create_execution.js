@@ -6,65 +6,65 @@ const EMAIL = process.env.JIRA_EMAIL || '40220298@esmad.ipp.pt';
 const API_TOKEN = process.env.JIRA_API_TOKEN;
 
 if (!API_TOKEN) {
-  console.error('❌ Erro: JIRA_API_TOKEN não está definido no .env!');
+  console.error('❌ Error: JIRA_API_TOKEN is not defined in the .env file!');
   process.exit(1);
 }
 
 const authHeader = 'Basic ' + Buffer.from(`${EMAIL}:${API_TOKEN}`).toString('base64');
 
 const testsResults = [
-  { testKey: 'PE-1', status: 'PASSED', comment: 'Validações gerais e estrutura do projeto integradas.' },
-  { testKey: 'PE-2', status: 'PASSED', comment: 'Testes unitários executados com sucesso no Jest.' },
-  { testKey: 'PE-3', status: 'PASSED', comment: 'Testes de aceitação (UAT) de fluxos em modo headless.' },
-  { testKey: 'TC001', status: 'PASSED', comment: 'RF1 - Registo de utilizador validado via API/UI.' },
-  { testKey: 'TC002', status: 'PASSED', comment: 'RF2 - Login autenticado e tokens emitidos.' },
-  { testKey: 'TC003', status: 'PASSED', comment: 'RF3 - Gestão de perfil e input no dashboard verificada.' },
-  { testKey: 'TC004', status: 'PASSED', comment: 'RF5 - Criar projeto com perfil admin testado.' },
-  { testKey: 'TC005', status: 'PASSED', comment: 'RF7 - Atribuição de coordenador e validações de hierarquia validadas.' },
-  { testKey: 'TC006', status: 'PASSED', comment: 'RF8 - Criação de novas atividades verificado.' },
-  { testKey: 'TC007', status: 'PASSED', comment: 'RF9 - Modificação e edição de atividades validadas.' },
-  { testKey: 'TC008', status: 'PASSED', comment: 'RF11 - Registo de execução da atividade concluído.' },
-  { testKey: 'TC009', status: 'PASSED', comment: 'RF14 - Criar reunião e upload de PDFs associados.' },
-  { testKey: 'TC010', status: 'PASSED', comment: 'RF21 - Geração de relatório ambiental com PDF via jsPDF.' },
-  { testKey: 'TC011', status: 'PASSED', comment: 'RNF1 - Performance com tempos de resposta p(95) < 800ms (JMeter).' },
-  { testKey: 'TC012', status: 'PASSED', comment: 'RNF2 - Simulação com múltiplos utilizadores concorrentes (JMeter).' },
-  { testKey: 'TC013', status: 'PASSED', comment: 'RNF3 - Rotação e expiração de tokens JWT verificados.' },
-  { testKey: 'TC014', status: 'PASSED', comment: 'RNF4 - Middlewares de proteção de endpoints verificados.' },
-  { testKey: 'TC015', status: 'PASSED', comment: 'RNF5 - Cifragem de passwords com bcryptjs (10 salts).' },
-  { testKey: 'TC016', status: 'PASSED', comment: 'RNF6 - Responsividade testada para ecrãs mobile (Selenium).' },
-  { testKey: 'TC017', status: 'PASSED', comment: 'RNF7 - Navegação limpa e regras de usabilidade verificadas.' },
-  { testKey: 'TC018', status: 'PASSED', comment: 'RNF8 - Escalabilidade: capacidade de resposta sobre carga.' },
-  { testKey: 'TC019', status: 'PASSED', comment: 'RNF9 - Disponibilidade verificada através de healthcheck da API.' },
-  { testKey: 'TC020', status: 'PASSED', comment: 'RNF10 - Divisão modular de ficheiros no MVC.' }
+  { testKey: 'PE-1', status: 'PASSED', comment: 'General validations and integrated project structure.' },
+  { testKey: 'PE-2', status: 'PASSED', comment: 'Unit tests executed successfully in Jest.' },
+  { testKey: 'PE-3', status: 'PASSED', comment: 'Acceptance tests (UAT) of flows in headless mode.' },
+  { testKey: 'TC001', status: 'PASSED', comment: 'FR1 - User registration validated via API/UI.' },
+  { testKey: 'TC002', status: 'PASSED', comment: 'FR2 - Login authenticated and tokens issued.' },
+  { testKey: 'TC003', status: 'PASSED', comment: 'FR3 - Profile management and input in dashboard verified.' },
+  { testKey: 'TC004', status: 'PASSED', comment: 'FR5 - Creating project with admin profile tested.' },
+  { testKey: 'TC005', status: 'PASSED', comment: 'FR7 - Coordinator assignment and hierarchy validations verified.' },
+  { testKey: 'TC006', status: 'PASSED', comment: 'FR8 - Creating new activities verified.' },
+  { testKey: 'TC007', status: 'PASSED', comment: 'FR9 - Modification and editing of activities validated.' },
+  { testKey: 'TC008', status: 'PASSED', comment: 'FR11 - Activity execution registration completed.' },
+  { testKey: 'TC009', status: 'PASSED', comment: 'FR14 - Create meeting and upload of associated PDFs.' },
+  { testKey: 'TC010', status: 'PASSED', comment: 'FR21 - Environmental report generation with PDF via jsPDF.' },
+  { testKey: 'TC011', status: 'PASSED', comment: 'NFR1 - Performance with response times p(95) < 800ms (JMeter).' },
+  { testKey: 'TC012', status: 'PASSED', comment: 'NFR2 - Simulation with multiple concurrent users (JMeter).' },
+  { testKey: 'TC013', status: 'PASSED', comment: 'NFR3 - JWT token rotation and expiration verified.' },
+  { testKey: 'TC014', status: 'PASSED', comment: 'NFR4 - Endpoint protection middlewares verified.' },
+  { testKey: 'TC015', status: 'PASSED', comment: 'NFR5 - Password hashing with bcryptjs (10 salts).' },
+  { testKey: 'TC016', status: 'PASSED', comment: 'NFR6 - Responsiveness tested for mobile viewports (Selenium).' },
+  { testKey: 'TC017', status: 'PASSED', comment: 'NFR7 - Clean navigation and usability rules verified.' },
+  { testKey: 'TC018', status: 'PASSED', comment: 'NFR8 - Scalability: responsiveness capacity under load.' },
+  { testKey: 'TC019', status: 'PASSED', comment: 'NFR9 - Availability verified via API health check.' },
+  { testKey: 'TC020', status: 'PASSED', comment: 'NFR10 - Modular file division in MVC.' }
 ];
 
 function buildDescriptionText() {
-  let text = 'h1. Execução de Testes Automatizados - EcoGest\n\n';
-  text += `*Data da Execução:* ${new Date().toLocaleString('pt-PT')}\n`;
-  text += '*Resultado Geral:* 20 / 20 Testes Passados (100% Sucesso)\n\n';
-  text += 'h3. Resumo das Suites:\n';
-  text += '* Testes Unitários: 5/5 Passados\n';
-  text += '* Testes de API: 10/10 Passados\n';
-  text += '* Testes de UI: 5/5 Passados\n\n';
-  text += 'h3. Detalhes das Chaves de Teste:\n';
+  let text = 'h1. Automated Test Execution - EcoGest\n\n';
+  text += `*Execution Date:* ${new Date().toLocaleString('en-US')}\n`;
+  text += '*General Result:* 20 / 20 Tests Passed (100% Success)\n\n';
+  text += 'h3. Suite Summary:\n';
+  text += '* Unit Tests: 5/5 Passed\n';
+  text += '* API Tests: 10/10 Passed\n';
+  text += '* UI Tests: 5/5 Passed\n\n';
+  text += 'h3. Test Key Details:\n';
   
   testsResults.forEach(t => {
     text += `* *[${t.testKey}]* - status: *${t.status}* - _${t.comment}_\n`;
   });
   
-  text += '\n_Relatório gerado automaticamente através da Suite de Automação EcoGest_';
+  text += '\n_Report automatically generated by the EcoGest Automation Suite_';
   return text;
 }
 
 async function createJiraIssue() {
-  console.log('📤 A criar Test Execution no Jira...');
+  console.log('📤 Creating Test Execution in Jira...');
   
   const payload = {
     fields: {
       project: {
         key: 'PE'
       },
-      summary: `Execução de Testes Automatizados - EcoGest - ${new Date().toLocaleDateString('pt-PT')}`,
+      summary: `Automated Test Execution - EcoGest - ${new Date().toLocaleDateString('en-US')}`,
       description: buildDescriptionText(),
       issuetype: {
         id: '10058' // Test Execution
@@ -80,10 +80,10 @@ async function createJiraIssue() {
         'Accept': 'application/json'
       }
     });
-    console.log(`✅ Sucesso! Item de Execução criado no Jira com a chave: ${res.data.key}`);
+    console.log(`✅ Success! Test Execution item created in Jira with key: ${res.data.key}`);
     console.log(`🔗 Link: ${JIRA_URL}/browse/${res.data.key}`);
   } catch (err) {
-    console.error('❌ Falha ao criar item no Jira:', err.response?.data || err.message);
+    console.error('❌ Failed to create item in Jira:', err.response?.data || err.message);
   }
 }
 

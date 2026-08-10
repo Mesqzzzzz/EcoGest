@@ -1,22 +1,18 @@
 {
   "info": {
-<<<<<<< HEAD:EcoGest_API.postman_collection.json
-    "_postman_id": "894be86d-110d-4d1f-bdd8-129256e7b133",
-=======
     "_postman_id": "f8c893cc-c22a-469a-9b96-72c0d1aa7925",
->>>>>>> 7f549f69f6be3c612439a49800633b27d5888c44:EcoGest_API_Grupo31.postman_collection
-    "name": "EcoGest API - Coleção de Testes (Grupo 31)",
-    "description": "### 🌿 EcoGest — Grupo 31\n*   **Francisco Mesquita** - 40220298\n*   **Sérgio Alves** - 40220400\n*   **Gustavo Silva** - 40200337\n\n---\n\nColeção de testes do Postman para todas as rotas da API REST da plataforma EcoGest (Gestão do Projeto Eco-Escolas). Inclui scripts de automação que extraem o token JWT de acesso e de renovação (Refresh Token) no Login/Refresh e os armazenam em variáveis da coleção para simplificar a autenticação nas restantes rotas.",
+    "name": "EcoGest API - Test Collection",
+    "description": "### 🌿 EcoGest\n*   **Francisco Mesquita** (Developer)\n\n---\n\nPostman test collection for all REST API routes of the EcoGest platform (Eco-Schools Project Management). Includes automation scripts that extract the JWT access and refresh tokens on Login/Refresh and store them in collection variables to simplify authentication for the remaining routes.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "24697936",
     "_collection_link": "https://go.postman.co/collection/24697936-f8c893cc-c22a-469a-9b96-72c0d1aa7925?source=collection_link"
   },
   "item": [
     {
-      "name": "1. Autenticação & Sessão",
+      "name": "1. Authentication & Session",
       "item": [
         {
-          "name": "Registar Novo Utilizador",
+          "name": "Register New User",
           "request": {
             "auth": {
               "type": "noauth"
@@ -41,12 +37,12 @@
                 "users"
               ]
             },
-            "description": "Permite o auto-registo de novos utilizadores na plataforma como membros regulares."
+            "description": "Allows self-registration of new users on the platform as regular members."
           },
           "response": []
         },
         {
-          "name": "Iniciar Sessão (Login)",
+          "name": "Login",
           "event": [
             {
               "listen": "test",
@@ -93,12 +89,12 @@
                 "login"
               ]
             },
-            "description": "Autentica um utilizador com email e palavra-passe. O script de testes no Postman atualiza automaticamente as variáveis {{authToken}} e {{refreshToken}} da coleção."
+            "description": "Authenticates a user with email and password. The Postman test script automatically updates the {{authToken}} and {{refreshToken}} collection variables."
           },
           "response": []
         },
         {
-          "name": "Renovar Token de Acesso (Refresh Token)",
+          "name": "Renew Access Token (Refresh Token)",
           "event": [
             {
               "listen": "test",
@@ -145,12 +141,12 @@
                 "refresh"
               ]
             },
-            "description": "Utiliza o Refresh Token atual para obter um novo token de acesso e rotacionar o refresh token. Atualiza as variáveis da coleção instantaneamente."
+            "description": "Uses the current Refresh Token to obtain a new access token and rotate the refresh token. Updates collection variables instantly."
           },
           "response": []
         },
         {
-          "name": "Terminar Sessão (Logout Session)",
+          "name": "Terminate Session (Logout)",
           "event": [
             {
               "listen": "test",
@@ -191,12 +187,12 @@
                 "logout-session"
               ]
             },
-            "description": "Revoga o Refresh Token no servidor e limpa as variáveis de autenticação locais no Postman."
+            "description": "Revokes the Refresh Token on the server and clears local authentication variables in Postman."
           },
           "response": []
         },
         {
-          "name": "Obter Meu Perfil Atual",
+          "name": "Get Current Profile (Me)",
           "request": {
             "method": "GET",
             "header": [],
@@ -210,12 +206,12 @@
                 "me"
               ]
             },
-            "description": "Retorna os detalhes do utilizador autenticado pelo Token JWT."
+            "description": "Returns the details of the authenticated user via the JWT Token."
           },
           "response": []
         },
         {
-          "name": "Atualizar Meu Perfil",
+          "name": "Update Profile",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -238,12 +234,12 @@
                 "me"
               ]
             },
-            "description": "Permite ao utilizador ligado atualizar o seu nome e password."
+            "description": "Allows the logged-in user to update their name and password."
           },
           "response": []
         },
         {
-          "name": "Atualizar Meu Estado (Ativo/Inativo)",
+          "name": "Update Status (Active/Inactive)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -267,7 +263,7 @@
                 "status"
               ]
             },
-            "description": "Permite alterar o estado do utilizador logado."
+            "description": "Allows updating the logged-in user's status."
           },
           "response": []
         }
@@ -275,10 +271,10 @@
       "description": "Endpoints públicos e privados relacionados com a gestão de utilizadores ligados, sessão, e rotação silenciosa de Refresh Tokens."
     },
     {
-      "name": "2. Projetos Anuais",
+      "name": "2. Projects (Annual)",
       "item": [
         {
-          "name": "Listar Projetos Anuais",
+          "name": "List Annual Projects",
           "request": {
             "method": "GET",
             "header": [],
@@ -291,12 +287,12 @@
                 "projects"
               ]
             },
-            "description": "Retorna todos os projetos anuais estruturados no sistema."
+            "description": "Returns all annual projects structured in the system."
           },
           "response": []
         },
         {
-          "name": "Obter Detalhes do Projeto",
+          "name": "Get Project Details",
           "request": {
             "method": "GET",
             "header": [],
@@ -310,12 +306,12 @@
                 "{{projectId}}"
               ]
             },
-            "description": "Obtém informação detalhada de um projeto específico a partir do seu ID."
+            "description": "Gets detailed information for a specific project from its ID."
           },
           "response": []
         },
         {
-          "name": "Criar Projeto Anual (Exclusivo Admin)",
+          "name": "Create Annual Project (Admin Only)",
           "event": [
             {
               "listen": "test",
@@ -352,12 +348,12 @@
                 "projects"
               ]
             },
-            "description": "Cria um novo projeto anual para a escola. O ID do novo projeto é guardado na variável {{projectId}} da coleção."
+            "description": "Creates a new annual project for the school. The new project's ID is stored in the {{projectId}} collection variable."
           },
           "response": []
         },
         {
-          "name": "Atualizar Projeto Anual (Exclusivo Admin)",
+          "name": "Update Annual Project (Admin Only)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -380,12 +376,12 @@
                 "{{projectId}}"
               ]
             },
-            "description": "Modifica os dados de identificação do projeto anual."
+            "description": "Modifies the identification data of the annual project."
           },
           "response": []
         },
         {
-          "name": "Atualizar Estado do Projeto (Exclusivo Admin)",
+          "name": "Update Project Status (Admin Only)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -409,12 +405,12 @@
                 "status"
               ]
             },
-            "description": "Muda o estado do projeto anual (ex: planning, active, finished)."
+            "description": "Changes the status of the annual project (e.g., planning, active, finished)."
           },
           "response": []
         },
         {
-          "name": "Atribuir Coordenador do Projeto (Exclusivo Admin)",
+          "name": "Assign Project Coordinator (Admin Only)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -438,7 +434,7 @@
                 "coordinator"
               ]
             },
-            "description": "Associa um utilizador com o papel de 'coordenador' ao projeto anual ativo."
+            "description": "Associates a user with the 'coordinator' role to the active annual project."
           },
           "response": []
         }
@@ -446,10 +442,10 @@
       "description": "Gestão de Projetos anuais das Eco-Escolas, incluindo atribuição de coordenadores (Exclusivo Admin)."
     },
     {
-      "name": "3. Gestão de Utilizadores (Admin / Coordenador)",
+      "name": "3. User Management (Admin / Coordinator)",
       "item": [
         {
-          "name": "Listar Todos os Utilizadores",
+          "name": "List All Users",
           "request": {
             "method": "GET",
             "header": [],
@@ -463,12 +459,12 @@
                 "users"
               ]
             },
-            "description": "Obtém uma listagem de todos os utilizadores da plataforma com o respetivo role."
+            "description": "Gets a list of all platform users with their respective roles."
           },
           "response": []
         },
         {
-          "name": "Criar Novo Utilizador Admin/Coordenador/Outros",
+          "name": "Create New User (Admin/Coordinator/Other)",
           "event": [
             {
               "listen": "test",
@@ -506,12 +502,12 @@
                 "users"
               ]
             },
-            "description": "Cria um novo utilizador diretamente pelo painel administrativo, podendo logo definir um papel específico. O ID é salvo na variável {{tempUserId}}."
+            "description": "Creates a new user directly from the admin panel, allowing to define a specific role. The ID is saved in the {{tempUserId}} variable."
           },
           "response": []
         },
         {
-          "name": "Atualizar Utilizador Admin/Coordenador",
+          "name": "Update User (Admin/Coordinator)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -535,12 +531,12 @@
                 "{{tempUserId}}"
               ]
             },
-            "description": "Edita os parâmetros do utilizador especificado pelo ID."
+            "description": "Edits parameters for the user specified by ID."
           },
           "response": []
         },
         {
-          "name": "Atualizar Estado do Utilizador Admin/Coordenador",
+          "name": "Update User Status (Admin/Coordinator)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -565,7 +561,7 @@
                 "status"
               ]
             },
-            "description": "Ativa ou desativa a conta do utilizador fornecido."
+            "description": "Activates or deactivates the specified user's account."
           },
           "response": []
         }
@@ -573,10 +569,10 @@
       "description": "Operações de administração reservadas para criar, modificar e gerir o estado de outros utilizadores na plataforma."
     },
     {
-      "name": "4. Atividades Ambientais",
+      "name": "4. Environmental Activities",
       "item": [
         {
-          "name": "Listar Atividades Públicas (Opcional Auth)",
+          "name": "List Public Activities (Optional Auth)",
           "request": {
             "auth": {
               "type": "noauth"
@@ -598,12 +594,12 @@
                 }
               ]
             },
-            "description": "Recupera a lista de atividades ativas ou gerais abertas ao público."
+            "description": "Retrieves the list of active or general public activities."
           },
           "response": []
         },
         {
-          "name": "Obter Detalhes da Atividade",
+          "name": "Get Activity Details",
           "request": {
             "auth": {
               "type": "noauth"
@@ -620,12 +616,12 @@
                 "{{activityId}}"
               ]
             },
-            "description": "Obtém detalhes visuais e técnicos de uma atividade."
+            "description": "Gets visual and technical details of an activity."
           },
           "response": []
         },
         {
-          "name": "Listar Atividades Admin",
+          "name": "List Activities (Admin)",
           "request": {
             "method": "GET",
             "header": [],
@@ -639,12 +635,12 @@
                 "activities"
               ]
             },
-            "description": "Lista todas as atividades para administração com campos estendidos de controlo interno."
+            "description": "Lists all activities for administration with extended internal control fields."
           },
           "response": []
         },
         {
-          "name": "Criar Nova Atividade Admin",
+          "name": "Create New Activity (Admin)",
           "event": [
             {
               "listen": "test",
@@ -682,12 +678,12 @@
                 "activities"
               ]
             },
-            "description": "Publica uma nova atividade planeada. O ID é armazenado na variável {{activityId}}."
+            "description": "Publishes a new planned activity. The ID is stored in the {{activityId}} variable."
           },
           "response": []
         },
         {
-          "name": "Atualizar Atividade Admin",
+          "name": "Update Activity (Admin)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -711,12 +707,12 @@
                 "{{activityId}}"
               ]
             },
-            "description": "Atualiza os metadados da atividade criada anteriormente."
+            "description": "Updates metadata of the previously created activity."
           },
           "response": []
         },
         {
-          "name": "Modificar Estado da Atividade Admin",
+          "name": "Modify Activity Status (Admin)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -741,12 +737,12 @@
                 "status"
               ]
             },
-            "description": "Permite ativar, planear ou concluir de forma ágil o estado de uma atividade."
+            "description": "Allows quick activation, planning, or completion of an activity's status."
           },
           "response": []
         },
         {
-          "name": "Registar Execução da Atividade",
+          "name": "Register Activity Execution",
           "request": {
             "method": "POST",
             "header": [],
@@ -770,12 +766,12 @@
                 "executions"
               ]
             },
-            "description": "Guarda o relatório descritivo e real de execução da atividade, mudando o estado para 'completed' no sistema."
+            "description": "Saves the descriptive and real execution report of the activity, changing the status to 'completed' in the system."
           },
           "response": []
         },
         {
-          "name": "Upload de Foto da Atividade (Multipart Form)",
+          "name": "Upload Activity Photo (Multipart Form)",
           "request": {
             "method": "POST",
             "header": [],
@@ -801,7 +797,7 @@
                 "photos"
               ]
             },
-            "description": "Envia uma fotografia para comprovação de presença/realização da atividade."
+            "description": "Uploads a photo for proof of attendance/completion of the activity."
           },
           "response": []
         }
@@ -809,10 +805,10 @@
       "description": "Visualização, planeamento, modificação de atividades, upload de fotografias de comprovação e registo de execuções reais."
     },
     {
-      "name": "5. Inscrições & Participações",
+      "name": "5. Registrations & Participations",
       "item": [
         {
-          "name": "Inscrever-se em Atividade",
+          "name": "Register for Activity",
           "event": [
             {
               "listen": "test",
@@ -854,12 +850,12 @@
                 "participations"
               ]
             },
-            "description": "Efetua a inscrição de um utilizador ligado ou de um visitante externo não registado na atividade. O ID de participação é guardado em {{tempParticipationId}}."
+            "description": "Registers a logged-in user or an unregistered external visitor in the activity. The participation ID is saved in {{tempParticipationId}}."
           },
           "response": []
         },
         {
-          "name": "Cancelar Inscrição de Atividade",
+          "name": "Cancel Activity Registration",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -875,12 +871,12 @@
                 "{{tempParticipationId}}"
               ]
             },
-            "description": "Cancela e remove a participação especificada."
+            "description": "Cancels and removes the specified participation."
           },
           "response": []
         },
         {
-          "name": "Listar Participantes da Atividade",
+          "name": "List Activity Participants",
           "request": {
             "method": "GET",
             "header": [],
@@ -895,12 +891,12 @@
                 "participants"
               ]
             },
-            "description": "Retorna a listagem de todos os participantes/visitantes inscritos."
+            "description": "Returns a list of all registered participants/visitors."
           },
           "response": []
         },
         {
-          "name": "Adicionar Participante Manualmente (Coordenador/Conselho)",
+          "name": "Add Participant Manually (Coordinator/Council)",
           "request": {
             "method": "POST",
             "header": [],
@@ -924,7 +920,7 @@
                 "participants"
               ]
             },
-            "description": "Associa de forma forçada um utilizador do conselho como participante da atividade."
+            "description": "Forcefully associates a council user as a participant of the activity."
           },
           "response": []
         }
@@ -932,10 +928,10 @@
       "description": "Endpoints para gestão de inscritos e visitantes nas atividades ambientais da escola."
     },
     {
-      "name": "6. Propostas Ambientais",
+      "name": "6. Environmental Proposals",
       "item": [
         {
-          "name": "Listar Propostas",
+          "name": "List Proposals",
           "request": {
             "method": "GET",
             "header": [],
@@ -948,12 +944,12 @@
                 "proposals"
               ]
             },
-            "description": "Obtém todas as propostas submetidas no projeto anual."
+            "description": "Gets all proposals submitted in the annual project."
           },
           "response": []
         },
         {
-          "name": "Obter Detalhes da Proposta",
+          "name": "Get Proposal Details",
           "request": {
             "method": "GET",
             "header": [],
@@ -967,12 +963,12 @@
                 "{{proposalId}}"
               ]
             },
-            "description": "Obtém detalhes estruturados da proposta de atividade."
+            "description": "Gets structured details of the activity proposal."
           },
           "response": []
         },
         {
-          "name": "Criar Proposta de Atividade (Membro do Conselho)",
+          "name": "Create Activity Proposal (Council Member)",
           "event": [
             {
               "listen": "test",
@@ -1009,12 +1005,12 @@
                 "proposals"
               ]
             },
-            "description": "Permite a um membro do conselho sugerir uma nova iniciativa. O ID é salvo em {{proposalId}}."
+            "description": "Allows a council member to suggest a new initiative. The ID is saved in {{proposalId}}."
           },
           "response": []
         },
         {
-          "name": "Aprovar / Rejeitar Proposta (Coordenador/Admin)",
+          "name": "Approve / Reject Proposal (Coordinator/Admin)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -1039,7 +1035,7 @@
                 "status"
               ]
             },
-            "description": "Aprova ou rejeita uma proposta, de modo a integrá-la ou não no plano oficial."
+            "description": "Approves or rejects a proposal to integrate it or not into the official plan."
           },
           "response": []
         }
@@ -1047,10 +1043,10 @@
       "description": "Gestão de ideias e propostas de atividades ambientais submetidas por membros do conselho."
     },
     {
-      "name": "7. Reuniões de Conselho",
+      "name": "7. Council Meetings",
       "item": [
         {
-          "name": "Listar Reuniões",
+          "name": "List Meetings",
           "request": {
             "method": "GET",
             "header": [],
@@ -1063,12 +1059,12 @@
                 "meetings"
               ]
             },
-            "description": "Retorna a listagem cronológica de reuniões agendadas ou realizadas."
+            "description": "Returns the chronological list of scheduled or completed meetings."
           },
           "response": []
         },
         {
-          "name": "Obter Detalhes da Reunião",
+          "name": "Get Meeting Details",
           "request": {
             "method": "GET",
             "header": [],
@@ -1082,12 +1078,12 @@
                 "{{meetingId}}"
               ]
             },
-            "description": "Obtém detalhes do agendamento de uma reunião por ID."
+            "description": "Gets details of a meeting schedule by ID."
           },
           "response": []
         },
         {
-          "name": "Criar Reunião (Secretário/Admin)",
+          "name": "Create Meeting (Secretary/Admin)",
           "event": [
             {
               "listen": "test",
@@ -1124,12 +1120,12 @@
                 "meetings"
               ]
             },
-            "description": "Agenda uma nova reunião de conselho vinculada ao projeto anual. O ID é guardado na variável {{meetingId}}."
+            "description": "Schedules a new council meeting linked to the annual project. The ID is saved in the {{meetingId}} variable."
           },
           "response": []
         },
         {
-          "name": "Atualizar Reunião (Secretário/Admin)",
+          "name": "Update Meeting (Secretary/Admin)",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -1152,12 +1148,12 @@
                 "{{meetingId}}"
               ]
             },
-            "description": "Edita as notas ou horário da reunião planeada."
+            "description": "Edits the notes or time of the planned meeting."
           },
           "response": []
         },
         {
-          "name": "Enviar Convocatórias Automáticas",
+          "name": "Send Automatic Convocations",
           "request": {
             "method": "POST",
             "header": [],
@@ -1172,12 +1168,12 @@
                 "convocations"
               ]
             },
-            "description": "Despoleta o envio automático de e-mails/alertas para todos os membros do conselho convocando-os."
+            "description": "Triggers automatic sending of emails/alerts to all council members convocating them."
           },
           "response": []
         },
         {
-          "name": "Listar Documentos e Atas da Reunião",
+          "name": "List Meeting Documents and Minutes",
           "request": {
             "method": "GET",
             "header": [],
@@ -1192,12 +1188,12 @@
                 "documents"
               ]
             },
-            "description": "Retorna atas, fotos ou ficheiros anexados a esta reunião específica."
+            "description": "Returns minutes, photos, or files attached to this specific meeting."
           },
           "response": []
         },
         {
-          "name": "Upload de Ata/Documento da Reunião (Multipart Form)",
+          "name": "Upload Meeting Minute/Document (Multipart Form)",
           "event": [
             {
               "listen": "test",
@@ -1243,12 +1239,12 @@
                 "documents"
               ]
             },
-            "description": "Permite fazer upload da ata formal assinada da reunião. O ID é salvo em {{documentId}}."
+            "description": "Allows uploading the formal signed minute of the meeting. The ID is saved in {{documentId}}."
           },
           "response": []
         },
         {
-          "name": "Remover Documento/Ata de Reunião",
+          "name": "Remove Meeting Document/Minute",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -1263,12 +1259,12 @@
                 "{{documentId}}"
               ]
             },
-            "description": "Exclui um anexo documental de reunião."
+            "description": "Excludes a meeting document attachment."
           },
           "response": []
         },
         {
-          "name": "Eliminar Reunião",
+          "name": "Delete Meeting",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -1282,7 +1278,7 @@
                 "{{meetingId}}"
               ]
             },
-            "description": "Elimina permanentemente a reunião especificada do calendário escolar."
+            "description": "Permanently deletes the specified meeting from the school calendar."
           },
           "response": []
         }
@@ -1290,10 +1286,10 @@
       "description": "Gestão de convocatórias, atas, envio automático de alertas a membros e anexação de documentos comprovativos das reuniões do conselho."
     },
     {
-      "name": "8. Auditorias Ambientais",
+      "name": "8. Environmental Audits",
       "item": [
         {
-          "name": "Obter Questionário da Auditoria",
+          "name": "Get Audit Questionnaire",
           "request": {
             "method": "GET",
             "header": [],
@@ -1307,12 +1303,12 @@
                 "questions"
               ]
             },
-            "description": "Retorna o questionário estruturado com as perguntas ecológicas por área temática."
+            "description": "Returns the structured questionnaire with environmental questions by thematic area."
           },
           "response": []
         },
         {
-          "name": "Listar Respostas Submetidas do Projeto",
+          "name": "List Submitted Project Answers",
           "request": {
             "method": "GET",
             "header": [],
@@ -1327,12 +1323,12 @@
                 "{{projectId}}"
               ]
             },
-            "description": "Obtém as respostas guardadas na auditoria para o projeto anual selecionado."
+            "description": "Gets the responses saved in the audit for the selected annual project."
           },
           "response": []
         },
         {
-          "name": "Submeter Respostas da Auditoria (Coordenador/Conselho)",
+          "name": "Submit Audit Responses (Coordinator/Council)",
           "request": {
             "method": "POST",
             "header": [],
@@ -1355,12 +1351,12 @@
                 "responses"
               ]
             },
-            "description": "Submete ou atualiza o preenchimento de itens de auditoria ecológica para um projeto."
+            "description": "Submits or updates the fulfillment of ecological audit items for a project."
           },
           "response": []
         },
         {
-          "name": "Obter Relatório Estatístico da Auditoria",
+          "name": "Get Audit Statistical Report",
           "request": {
             "method": "GET",
             "header": [],
@@ -1383,10 +1379,10 @@
       "description": "Formulários de diagnóstico ambiental por categoria (Água, Energia, Resíduos), envio de respostas e visualização de rácios e relatórios estatísticos."
     },
     {
-      "name": "9. Métricas, Relatórios & Backups (Admin)",
+      "name": "9. Metrics, Reports & Backups (Admin)",
       "item": [
         {
-          "name": "Obter Métricas do Painel (Dashboard)",
+          "name": "Get Dashboard Metrics",
           "request": {
             "method": "GET",
             "header": [],
@@ -1400,12 +1396,12 @@
                 "dashboard"
               ]
             },
-            "description": "Dashboard completo com agregadores de atividades, participações, propostas e percentagens MoM para o conselho."
+            "description": "Complete dashboard with activity aggregates, participations, proposals, and MoM percentages for the council."
           },
           "response": []
         },
         {
-          "name": "Consultar Relatório Consolidado",
+          "name": "Get Consolidated Report",
           "request": {
             "method": "GET",
             "header": [],
@@ -1419,12 +1415,12 @@
                 "report"
               ]
             },
-            "description": "Retorna estatísticas detalhadas consolidadas prontas a exportar."
+            "description": "Returns consolidated detailed statistics ready for export."
           },
           "response": []
         },
         {
-          "name": "Gerar / Regenerar Relatório",
+          "name": "Generate / Regenerate Report",
           "request": {
             "method": "POST",
             "header": [],
@@ -1438,12 +1434,12 @@
                 "report"
               ]
             },
-            "description": "Força a geração do relatório ecológico mais recente."
+            "description": "Forces the generation of the latest ecological report."
           },
           "response": []
         },
         {
-          "name": "Listar Backups (Exclusivo Admin)",
+          "name": "List Backups (Admin Only)",
           "request": {
             "method": "GET",
             "header": [],
@@ -1457,12 +1453,12 @@
                 "backups"
               ]
             },
-            "description": "Exibe o nome, tamanho e data de criação de todas as cópias de segurança existentes no servidor."
+            "description": "Displays the name, size, and creation date of all existing backups on the server."
           },
           "response": []
         },
         {
-          "name": "Criar Cópia de Segurança Manual (Backup)",
+          "name": "Create Manual Backup",
           "event": [
             {
               "listen": "test",
@@ -1500,12 +1496,12 @@
                 "backups"
               ]
             },
-            "description": "Cria um instantâneo manual dos dados do MongoDB e comprime num arquivo. O ID é salvo em {{tempBackupId}}."
+            "description": "Creates a manual snapshot of the MongoDB data and compresses it into an archive. The ID is saved in the {{tempBackupId}} variable."
           },
           "response": []
         },
         {
-          "name": "Restaurar Cópia de Segurança (Restore Backup)",
+          "name": "Restore Backup",
           "request": {
             "method": "POST",
             "header": [],
@@ -1521,7 +1517,7 @@
                 "restore"
               ]
             },
-            "description": "Apaga o estado atual da base de dados e repõe integralmente a informação guardada no backup especificado."
+            "description": "Erases the current state of the database and fully restores the information stored in the specified backup."
           },
           "response": []
         }

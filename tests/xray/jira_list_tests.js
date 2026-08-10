@@ -8,7 +8,7 @@ const API_TOKEN = process.env.JIRA_API_TOKEN;
 const authHeader = 'Basic ' + Buffer.from(`${EMAIL}:${API_TOKEN}`).toString('base64');
 
 async function listAllIssues() {
-  console.log('🔍 A procurar TODOS os itens no projeto PE usando /search/jql...');
+  console.log('🔍 Searching all issues in the PE project using /search/jql...');
   const jql = 'project = PE ORDER BY key ASC';
   try {
     const res = await axios.post(`${JIRA_URL}/rest/api/3/search/jql`, {
@@ -22,7 +22,7 @@ async function listAllIssues() {
       }
     });
     const issues = res.data.issues || [];
-    console.log(`Encontrados ${issues.length} itens. A carregar detalhes de cada um...`);
+    console.log(`Found ${issues.length} issues. Loading details for each one...`);
     
     for (const item of issues) {
       try {
@@ -32,13 +32,13 @@ async function listAllIssues() {
             'Accept': 'application/json'
           }
         });
-        console.log(`- [${detailRes.data.key}] ${detailRes.data.fields.summary} (Tipo: ${detailRes.data.fields.issuetype.name})`);
+        console.log(`- [${detailRes.data.key}] ${detailRes.data.fields.summary} (Type: ${detailRes.data.fields.issuetype.name})`);
       } catch (e) {
-        console.error(`❌ Falha ao obter detalhes para ID ${item.id}:`, e.message);
+        console.error(`❌ Failed to get details for ID ${item.id}:`, e.message);
       }
     }
   } catch (err) {
-    console.error('❌ Erro na pesquisa JQL:', err.response?.data || err.message);
+    console.error('❌ JQL query error:', err.response?.data || err.message);
   }
 }
 

@@ -2,13 +2,13 @@
   "openapi": "3.0.0",
   "info": {
     "title": "EcoGest API Documentation",
-    "description": "Especificação da API REST para a plataforma EcoGest de gestão do projeto Eco-Escolas. Grupo 31: Francisco Mesquita, Sérgio Alves, Gustavo Silva.",
+    "description": "REST API specification for the EcoGest Eco-Schools project management platform. Author: Francisco Mesquita.",
     "version": "1.0.0"
   },
   "servers": [
     {
       "url": "http://localhost:3000/api",
-      "description": "Servidor de Desenvolvimento Local"
+      "description": "Local Development Server"
     }
   ],
   "components": {
@@ -17,67 +17,179 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT",
-        "description": "Insira o token JWT retornado no Login no formato: `Bearer <token>`"
+        "description": "Enter the JWT token returned during Login in the format: `Bearer <token>`"
       }
     },
     "schemas": {
       "User": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "email": { "type": "string" },
-          "role": { "type": "string", "enum": ["admin", "coordinator", "secretary", "council_member", "user"] },
-          "status": { "type": "string", "enum": ["active", "inactive"] }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "coordinator",
+              "secretary",
+              "council_member",
+              "user"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ]
+          }
         }
       },
       "Activity": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "description": { "type": "string" },
-          "location": { "type": "string" },
-          "startDate": { "type": "string", "format": "date-time" },
-          "endDate": { "type": "string", "format": "date-time" },
-          "status": { "type": "string", "enum": ["planned", "active", "completed"] },
-          "areas": { "type": "array", "items": { "type": "string" } },
-          "resources": { "type": "string" },
-          "executionLocation": { "type": "string" },
-          "executionNotes": { "type": "string" },
-          "visibility": { "type": "string", "enum": ["public", "private"] }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "active",
+              "completed"
+            ]
+          },
+          "areas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resources": {
+            "type": "string"
+          },
+          "executionLocation": {
+            "type": "string"
+          },
+          "executionNotes": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "public",
+              "private"
+            ]
+          }
         }
       },
       "Proposal": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "title": { "type": "string" },
-          "description": { "type": "string" },
-          "area": { "type": "string" },
-          "startDate": { "type": "string", "format": "date-time" },
-          "endDate": { "type": "string", "format": "date-time" },
-          "resources": { "type": "string" },
-          "status": { "type": "string", "enum": ["pending", "approved", "rejected"] }
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "resources": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "rejected"
+            ]
+          }
         }
       },
       "Meeting": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "date": { "type": "string", "format": "date-time" },
-          "description": { "type": "string" }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          }
         }
       },
       "Project": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "year": { "type": "integer" },
-          "status": { "type": "string", "enum": ["planning", "active", "finished"] },
-          "level": { "type": "string", "enum": ["bronze", "silver", "gold", null] }
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planning",
+              "active",
+              "finished"
+            ]
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "bronze",
+              "silver",
+              "gold",
+              null
+            ]
+          }
         }
       }
     }
@@ -90,8 +202,8 @@
   "paths": {
     "/users/login": {
       "post": {
-        "summary": "Iniciar Sessão (Login)",
-        "description": "Autentica um utilizador com email e palavra-passe, retornando o token JWT.",
+        "summary": "Login",
+        "description": "Authenticates a user with email and password, returning the JWT token.",
         "security": [],
         "requestBody": {
           "required": true,
@@ -99,10 +211,19 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["email", "password"],
+                "required": [
+                  "email",
+                  "password"
+                ],
                 "properties": {
-                  "email": { "type": "string", "example": "admin@escolas.com" },
-                  "password": { "type": "string", "example": "123456" }
+                  "email": {
+                    "type": "string",
+                    "example": "admin@escolas.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456"
+                  }
                 }
               }
             }
@@ -110,29 +231,39 @@
         },
         "responses": {
           "200": {
-            "description": "Login efetuado com sucesso",
+            "description": "Login successful",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "token": { "type": "string" },
-                    "refreshToken": { "type": "string" },
-                    "user": { "$ref": "#/components/schemas/User" }
+                    "token": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
                   }
                 }
               }
             }
           },
-          "401": { "description": "Credenciais incorretas" },
-          "429": { "description": "Muitas tentativas de login. Limite de tentativas excedido." }
+          "401": {
+            "description": "Incorrect credentials"
+          },
+          "429": {
+            "description": "Too many login attempts. Attempt limit exceeded."
+          }
         }
       }
     },
     "/users/refresh": {
       "post": {
-        "summary": "Renovar Token de Acesso (Refresh Token)",
-        "description": "Utiliza um refresh token válido para obter um novo token de acesso e um novo refresh token (rotação).",
+        "summary": "Renew Access Token (Refresh Token)",
+        "description": "Uses a valid refresh token to obtain a new access token and a new refresh token (rotation).",
         "security": [],
         "requestBody": {
           "required": true,
@@ -140,9 +271,14 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["refreshToken"],
+                "required": [
+                  "refreshToken"
+                ],
                 "properties": {
-                  "refreshToken": { "type": "string", "example": "7c9f8d..." }
+                  "refreshToken": {
+                    "type": "string",
+                    "example": "7c9f8d..."
+                  }
                 }
               }
             }
@@ -150,29 +286,39 @@
         },
         "responses": {
           "200": {
-            "description": "Token renovado com sucesso",
+            "description": "Token renewed successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "token": { "type": "string" },
-                    "refreshToken": { "type": "string" },
-                    "user": { "$ref": "#/components/schemas/User" }
+                    "token": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
                   }
                 }
               }
             }
           },
-          "400": { "description": "Token de renovação em falta no pedido" },
-          "401": { "description": "Refresh token inválido, expirado ou utilizador inativo" }
+          "400": {
+            "description": "Renewal token missing from request"
+          },
+          "401": {
+            "description": "Invalid/expired refresh token or inactive user"
+          }
         }
       }
     },
     "/users/logout-session": {
       "post": {
-        "summary": "Terminar Sessão pelo Refresh Token (Logout)",
-        "description": "Revoga o refresh token fornecido, terminando de forma segura a sessão persistente associada.",
+        "summary": "Logout via Refresh Token",
+        "description": "Revokes the provided refresh token, securely terminating the associated persistent session.",
         "security": [],
         "requestBody": {
           "required": true,
@@ -180,9 +326,14 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["refreshToken"],
+                "required": [
+                  "refreshToken"
+                ],
                 "properties": {
-                  "refreshToken": { "type": "string", "example": "7c9f8d..." }
+                  "refreshToken": {
+                    "type": "string",
+                    "example": "7c9f8d..."
+                  }
                 }
               }
             }
@@ -190,13 +341,16 @@
         },
         "responses": {
           "200": {
-            "description": "Sessão terminada com sucesso",
+            "description": "Session terminated successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": { "type": "string", "example": "Session logged out successfully" }
+                    "message": {
+                      "type": "string",
+                      "example": "Session logged out successfully"
+                    }
                   }
                 }
               }
@@ -207,8 +361,8 @@
     },
     "/users": {
       "post": {
-        "summary": "Registar Novo Utilizador (Register)",
-        "description": "Cria uma conta de utilizador básica por auto-registo público.",
+        "summary": "Register New User",
+        "description": "Creates a basic user account via public self-registration.",
         "security": [],
         "requestBody": {
           "required": true,
@@ -216,40 +370,59 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["name", "email", "password"],
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ],
                 "properties": {
-                  "name": { "type": "string", "example": "João Silva" },
-                  "email": { "type": "string", "example": "joaosilva@escola.com" },
-                  "password": { "type": "string", "example": "123456" }
+                  "name": {
+                    "type": "string",
+                    "example": "João Silva"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "joaosilva@escola.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456"
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Utilizador registado com sucesso" },
-          "409": { "description": "Email já está a ser utilizado" }
+          "201": {
+            "description": "User registered successfully"
+          },
+          "409": {
+            "description": "Email already in use"
+          }
         }
       }
     },
     "/users/me": {
       "get": {
-        "summary": "Obter perfil atual",
-        "description": "Retorna o objeto do utilizador autenticado pelo token JWT.",
+        "summary": "Get current profile",
+        "description": "Returns the authenticated user object via the JWT token.",
         "responses": {
           "200": {
-            "description": "Perfil retornado",
+            "description": "Profile returned",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/User" }
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
               }
             }
           }
         }
       },
       "patch": {
-        "summary": "Atualizar perfil atual",
-        "description": "Atualiza campos do perfil do utilizador ligado.",
+        "summary": "Update current profile",
+        "description": "Updates fields of the logged-in user's profile.",
         "requestBody": {
           "required": true,
           "content": {
@@ -257,38 +430,48 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "password": { "type": "string" }
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Perfil modificado com sucesso" }
+          "200": {
+            "description": "Profile updated successfully"
+          }
         }
       }
     },
     "/activities": {
       "get": {
-        "summary": "Listar atividades públicas",
-        "description": "Obtém atividades filtradas por estado (ex: planned, active, completed).",
+        "summary": "List public activities",
+        "description": "Obtains activities filtered by status (e.g., planned, active, completed).",
         "parameters": [
           {
             "name": "status",
             "in": "query",
             "required": false,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Lista de atividades",
+            "description": "List of activities",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/Activity" }
+                  "items": {
+                    "$ref": "#/components/schemas/Activity"
+                  }
                 }
               }
             }
@@ -298,14 +481,25 @@
     },
     "/activities/{id}": {
       "get": {
-        "summary": "Detalhes de uma atividade",
+        "summary": "Get activity details",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/Activity" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Activity"
+                }
+              }
             }
           }
         }
@@ -313,10 +507,17 @@
     },
     "/activities/{id}/participations": {
       "post": {
-        "summary": "Inscrever na atividade",
-        "description": "Inscreve o próprio utilizador ou um guest externo se fornecidos detalhes.",
+        "summary": "Register for activity",
+        "description": "Registers the user or an external guest in the activity.",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "requestBody": {
           "required": false,
@@ -325,24 +526,39 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string", "example": "Visitante 1" },
-                  "email": { "type": "string", "example": "visitante@escola.com" }
+                  "name": {
+                    "type": "string",
+                    "example": "Visitante 1"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "visitante@escola.com"
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Inscrição confirmada" }
+          "201": {
+            "description": "Registration confirmed"
+          }
         }
       }
     },
     "/activities/{id}/executions": {
       "post": {
-        "summary": "Registar Execução da Atividade (Conselho)",
-        "description": "Completa e arquiva os detalhes reais da atividade.",
+        "summary": "Register Activity Execution (Council)",
+        "description": "Completes and archives the actual details of the activity.",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -350,31 +566,44 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["executionLocation", "executionNotes"],
+                "required": [
+                  "executionLocation",
+                  "executionNotes"
+                ],
                 "properties": {
-                  "executionLocation": { "type": "string", "example": "Jardim da Escola" },
-                  "executionNotes": { "type": "string", "example": "Foram plantadas 20 sementes com 15 participantes." }
+                  "executionLocation": {
+                    "type": "string",
+                    "example": "Jardim da Escola"
+                  },
+                  "executionNotes": {
+                    "type": "string",
+                    "example": "Foram plantadas 20 sementes com 15 participantes."
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Execução registada e estado definido como concluído" }
+          "200": {
+            "description": "Execution registered and status set to completed"
+          }
         }
       }
     },
     "/proposals": {
       "get": {
-        "summary": "Listar propostas",
-        "description": "Retorna as propostas do projeto atual.",
+        "summary": "List proposals",
+        "description": "Returns the proposals of the current project.",
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/Proposal" }
+                  "items": {
+                    "$ref": "#/components/schemas/Proposal"
+                  }
                 }
               }
             }
@@ -382,40 +611,64 @@
         }
       },
       "post": {
-        "summary": "Criar proposta de atividade (Membro do Conselho)",
+        "summary": "Create activity proposal (Council Member)",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["title", "description", "area", "startDate"],
+                "required": [
+                  "title",
+                  "description",
+                  "area",
+                  "startDate"
+                ],
                 "properties": {
-                  "title": { "type": "string", "example": "Campanha Resíduos Zero" },
-                  "description": { "type": "string", "example": "Colocação de novos ecopontos coloridos" },
-                  "area": { "type": "string", "example": "Waste" },
-                  "startDate": { "type": "string", "format": "date" },
-                  "resources": { "type": "string", "example": "Ecopontos, folhetos" }
+                  "title": {
+                    "type": "string",
+                    "example": "Campanha Resíduos Zero"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Colocação de novos ecopontos coloridos"
+                  },
+                  "area": {
+                    "type": "string",
+                    "example": "Waste"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "resources": {
+                    "type": "string",
+                    "example": "Ecopontos, folhetos"
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Proposta enviada" }
+          "201": {
+            "description": "Proposal sent"
+          }
         }
       }
     },
     "/meetings": {
       "get": {
-        "summary": "Listar Reuniões",
+        "summary": "List Meetings",
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/Meeting" }
+                  "items": {
+                    "$ref": "#/components/schemas/Meeting"
+                  }
                 }
               }
             }
@@ -423,43 +676,76 @@
         }
       },
       "post": {
-        "summary": "Criar Reunião (Secretário/Admin)",
+        "summary": "Create Meeting (Secretary/Admin)",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["name", "date", "project_id"],
+                "required": [
+                  "name",
+                  "date",
+                  "project_id"
+                ],
                 "properties": {
-                  "name": { "type": "string", "example": "Reunião Geral Conselho de Eco-Escolas" },
-                  "date": { "type": "string", "format": "date-time" },
-                  "description": { "type": "string", "example": "Discussão e aprovação do Plano de Atividades" },
-                  "project_id": { "type": "string" }
+                  "name": {
+                    "type": "string",
+                    "example": "Reunião Geral Conselho de Eco-Escolas"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Discussão e aprovação do Plano de Atividades"
+                  },
+                  "project_id": {
+                    "type": "string"
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Reunião criada" }
+          "201": {
+            "description": "Meeting created"
+          }
         }
       }
     },
     "/meetings/{id}/documents": {
       "get": {
-        "summary": "Obter atas e fotografias anexadas à reunião",
+        "summary": "Get minutes and photos attached to the meeting",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
-          "200": { "description": "Lista de atas e fotos anexadas" }
+          "200": {
+            "description": "List of minutes and photos attached"
+          }
         }
       },
       "post": {
-        "summary": "Anexar documento/ata/foto (Secretário/Admin)",
+        "summary": "Attach document/minute/photo (Secretary/Admin)",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -467,30 +753,47 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["document", "type"],
+                "required": [
+                  "document",
+                  "type"
+                ],
                 "properties": {
-                  "document": { "type": "string", "format": "binary" },
-                  "type": { "type": "string", "enum": ["ata", "foto", "other"] }
+                  "document": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "ata",
+                      "foto",
+                      "other"
+                    ]
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Documento anexado" }
+          "201": {
+            "description": "Document attached"
+          }
         }
       }
     },
     "/projects": {
       "get": {
-        "summary": "Listar Projetos Anuais",
+        "summary": "List Annual Projects",
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/Project" }
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
                 }
               }
             }
@@ -498,32 +801,50 @@
         }
       },
       "post": {
-        "summary": "Criar Projeto Anual (Exclusivo Admin)",
+        "summary": "Create Annual Project (Admin Only)",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["name", "year"],
+                "required": [
+                  "name",
+                  "year"
+                ],
                 "properties": {
-                  "name": { "type": "string", "example": "Projeto Eco-Escolas 2026/2027" },
-                  "year": { "type": "integer", "example": 2027 }
+                  "name": {
+                    "type": "string",
+                    "example": "Projeto Eco-Escolas 2026/2027"
+                  },
+                  "year": {
+                    "type": "integer",
+                    "example": 2027
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Projeto criado" }
+          "201": {
+            "description": "Project created"
+          }
         }
       }
     },
     "/projects/{id}/coordinator": {
       "patch": {
-        "summary": "Atribuir Coordenador (Exclusivo Admin)",
+        "summary": "Assign Coordinator (Admin Only)",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -531,50 +852,78 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["user_id"],
+                "required": [
+                  "user_id"
+                ],
                 "properties": {
-                  "user_id": { "type": "string", "example": "664c39..." }
+                  "user_id": {
+                    "type": "string",
+                    "example": "664c39..."
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Coordenador atribuído com sucesso" }
+          "200": {
+            "description": "Coordinator successfully assigned"
+          }
         }
       }
     },
     "/audits/questions": {
       "get": {
-        "summary": "Listar questões da Auditoria Ambiental",
-        "description": "Retorna o questionário de auditoria estruturado por categorias (Água, Energia, Resíduos).",
+        "summary": "List Environmental Audit questions",
+        "description": "Returns the audit questionnaire structured by categories (Water, Energy, Waste).",
         "responses": {
-          "200": { "description": "Lista de perguntas" }
+          "200": {
+            "description": "List of questions"
+          }
         }
       }
     },
     "/audits/responses": {
       "post": {
-        "summary": "Submeter respostas de auditoria",
-        "description": "Cria ou atualiza respostas a perguntas para o projeto anual ativo.",
+        "summary": "Submit audit responses",
+        "description": "Creates or updates answers to questions for the active annual project.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["projectId", "responses"],
+                "required": [
+                  "projectId",
+                  "responses"
+                ],
                 "properties": {
-                  "projectId": { "type": "string" },
+                  "projectId": {
+                    "type": "string"
+                  },
                   "responses": {
                     "type": "array",
                     "items": {
                       "type": "object",
-                      "required": ["questionId", "value"],
+                      "required": [
+                        "questionId",
+                        "value"
+                      ],
                       "properties": {
-                        "questionId": { "type": "string" },
-                        "value": { "type": "string", "enum": ["Sim", "Parcialmente", "Não"] },
-                        "comments": { "type": "string" }
+                        "questionId": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string",
+                          "enum": [
+                            "Sim",
+                            "Parcialmente",
+                            "Não"
+                          ]
+                        },
+                        "comments": {
+                          "type": "string"
+                        }
                       }
                     }
                   }
@@ -584,56 +933,78 @@
           }
         },
         "responses": {
-          "201": { "description": "Respostas salvas" }
+          "201": {
+            "description": "Responses saved"
+          }
         }
       }
     },
     "/audits/report/{projectId}": {
       "get": {
-        "summary": "Relatório de Auditoria",
-        "description": "Exibe o progresso de respostas e a média de pontuações de forma geral e por categoria.",
+        "summary": "Audit Report",
+        "description": "Displays response progress and average scores globally and by category.",
         "parameters": [
-          { "name": "projectId", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
-          "200": { "description": "Relatório estatístico com pontuações" }
+          "200": {
+            "description": "Statistical report with scores"
+          }
         }
       }
     },
     "/admin/dashboard": {
       "get": {
-        "summary": "Painel de Administração e Incentivos MoM",
-        "description": "Exibe contagens agregadas globais de atividades (totais, ativas, completas), participações, propostas e o array MoM `monthlyStats` de comparação.",
+        "summary": "Admin Dashboard and MoM Incentives",
+        "description": "Displays global aggregated counts of activities (total, active, completed), participations, proposals, and the MoM comparison array `monthlyStats`.",
         "responses": {
-          "200": { "description": "Métricas agregadas" }
+          "200": {
+            "description": "Aggregated metrics"
+          }
         }
       }
     },
     "/admin/backups": {
       "get": {
-        "summary": "Listar backups (Exclusivo Admin)",
+        "summary": "List backups (Admin Only)",
         "responses": {
-          "200": { "description": "Lista de backups disponíveis" }
+          "200": {
+            "description": "List of available backups"
+          }
         }
       },
       "post": {
-        "summary": "Criar Backup Manual (Exclusivo Admin)",
+        "summary": "Create Manual Backup (Admin Only)",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["description"],
+                "required": [
+                  "description"
+                ],
                 "properties": {
-                  "description": { "type": "string", "example": "Backup de Segurança semanal" }
+                  "description": {
+                    "type": "string",
+                    "example": "Backup de Segurança semanal"
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Backup executado" }
+          "201": {
+            "description": "Backup completed"
+          }
         }
       }
     }

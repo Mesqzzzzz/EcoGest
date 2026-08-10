@@ -23,7 +23,7 @@ describe('E2E UI Tests (Selenium) - EcoGest', () => {
       await driver.executeScript('window.localStorage.clear();');
       await driver.executeScript('window.sessionStorage.clear();');
     } catch (e) {
-      // Ignorar erros se executado fora de um contexto válido ou antes de carregar o domínio
+      // Ignore errors if executed outside a valid context or before domain loaded
     }
     await driver.manage().deleteAllCookies();
   });
@@ -32,13 +32,13 @@ describe('E2E UI Tests (Selenium) - EcoGest', () => {
     await basePage.quit();
   });
 
-  test('TC001 - RF1 - Registo de utilizador & PE-3 - UAT', async () => {
+  test('TC001 - FR1 - User registration & PE-3 - UAT', async () => {
     try {
       await registerPage.visit(`${baseUrl}/register`);
       const uniqueEmail = `ui_user_${Date.now()}@escola.pt`;
-      await registerPage.register('Utilizador E2E', uniqueEmail, '123456', '123456');
+      await registerPage.register('E2E User', uniqueEmail, '123456', '123456');
       
-      // Verificação: Navegação bem-sucedida para o dashboard
+      // Verification: Successful navigation to dashboard
       await driver.wait(until.urlContains('/dashboard'), 10000);
       const url = await driver.getCurrentUrl();
       expect(url).toContain('/dashboard');
@@ -48,12 +48,12 @@ describe('E2E UI Tests (Selenium) - EcoGest', () => {
     }
   });
 
-  test('TC002 - RF2 - Login de Utilizador', async () => {
+  test('TC002 - FR2 - User Login', async () => {
     try {
       await loginPage.visit(`${baseUrl}/login`);
       await loginPage.login('coordenador@ecogest.pt', '123');
       
-      // Verificação: Navegação bem-sucedida para o dashboard
+      // Verification: Successful navigation to dashboard
       await driver.wait(until.urlContains('/dashboard'), 10000);
       const url = await driver.getCurrentUrl();
       expect(url).toContain('/dashboard');
@@ -63,66 +63,66 @@ describe('E2E UI Tests (Selenium) - EcoGest', () => {
     }
   });
 
-  test('TC003 - RF3 - Gestão de Perfil', async () => {
+  test('TC003 - FR3 - Profile Management', async () => {
     try {
       await loginPage.visit(`${baseUrl}/login`);
       await loginPage.login('coordenador@ecogest.pt', '123');
       await driver.wait(until.urlContains('/dashboard'), 10000);
       
-      // Clicar no link de Perfil na navegação lateral/header
+      // Click Profile link in sidebar/header
       const profileLink = await driver.wait(
-        until.elementLocated(By.xpath('//a[contains(@href, "profile") or contains(text(), "Perfil") or contains(text(), "me")]')),
+        until.elementLocated(By.xpath('//a[contains(@href, "profile") or contains(text(), "Profile") or contains(text(), "Perfil") or contains(text(), "me")]')),
         5000
       );
       await profileLink.click();
       
-      // Validar presença de input na página de perfil
+      // Validate input presence on profile page
       const nameInput = await driver.wait(until.elementLocated(By.css('input[type="text"]')), 5000);
       expect(nameInput).toBeDefined();
     } catch (error) {
       await basePage.takeScreenshot('TC003_profile');
-      console.log('UI Profile Test: elemento não encontrado (fluxo simulado/concluído).');
+      console.log('UI Profile Test: element not found (simulated/completed flow).');
     }
   });
 
-  test('TC004 - RF5 - Criar projeto (admin)', async () => {
+  test('TC004 - FR5 - Create project (admin)', async () => {
     try {
       await loginPage.visit(`${baseUrl}/login`);
       await loginPage.login('admin@ecogest.pt', '123');
       await driver.wait(until.urlContains('/dashboard'), 10000);
       
-      // Navegar para a página de Projetos
+      // Navigate to Projects page
       const projectsLink = await driver.wait(
-        until.elementLocated(By.xpath('//a[contains(@href, "projects") or contains(text(), "Projetos")]')),
+        until.elementLocated(By.xpath('//a[contains(@href, "projects") or contains(text(), "Projects") or contains(text(), "Projetos")]')),
         5000
       );
       await projectsLink.click();
       
-      // Confirmar existência do botão para Adicionar/Criar projeto
+      // Confirm presence of button to Add/Create project
       const createProjectBtn = await driver.wait(
-        until.elementLocated(By.xpath('//button[contains(text(), "Criar") or contains(text(), "Adicionar") or contains(text(), "Novo")]')),
+        until.elementLocated(By.xpath('//button[contains(text(), "Create") or contains(text(), "Add") or contains(text(), "New") or contains(text(), "Criar") or contains(text(), "Adicionar") or contains(text(), "Novo")]')),
         5000
       );
       expect(createProjectBtn).toBeDefined();
     } catch (error) {
       await basePage.takeScreenshot('TC004_create_project');
-      console.log('UI Projects Test: elemento não encontrado (fluxo simulado/concluído).');
+      console.log('UI Projects Test: element not found (simulated/completed flow).');
     }
   });
 
-  test('TC016 - RNF6 - Responsividade & TC017 - RNF7 - Usabilidade', async () => {
+  test('TC016 - NFR6 - Responsiveness & TC017 - NFR7 - Usability', async () => {
     try {
-      // Teste básico de redimensionamento de janela (Responsividade)
+      // Basic window resizing test (Responsiveness)
       await driver.manage().window().setSize({ width: 375, height: 812 }); // iPhone XS dimensions
       await basePage.visit(`${baseUrl}/login`);
       
-      // Garantir que a logo ou formulário mobile continua visível
+      // Ensure logo or mobile form remains visible
       const emailInput = await basePage.find(By.css('input[type="email"]'));
       await driver.wait(until.elementIsVisible(emailInput), 5000);
       const emailVisible = await emailInput.isDisplayed();
       expect(emailVisible).toBe(true);
       
-      // Restaurar o tamanho padrão
+      // Restore default size
       await driver.manage().window().maximize();
     } catch (error) {
       await basePage.takeScreenshot('TC016_responsividade');

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
-describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
+describe('EcoGest Requirement Test Suite (14 FRs & 10 NFRs)', () => {
   let adminToken = '';
   let coordinatorToken = '';
   let userToken = '';
@@ -16,21 +16,21 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
   let tempMeetingId = '';
 
   beforeAll(async () => {
-    // 1. Obter token de Admin (dados padrão do seed do EcoGest)
+    // 1. Obtain Admin token (default seed data)
     const adminRes = await request.post('/api/users/login')
       .send({ email: 'admin@ecogest.pt', password: '123' });
     if (adminRes.status === 200) {
       adminToken = adminRes.body.token;
     }
 
-    // 2. Obter token de Coordenador (dados padrão)
+    // 2. Obtain Coordinator token (default seed data)
     const coordRes = await request.post('/api/users/login')
       .send({ email: 'coordenador@ecogest.pt', password: '123' });
     if (coordRes.status === 200) {
       coordinatorToken = coordRes.body.token;
     }
 
-    // 3. Obter ID de um coordenador
+    // 3. Get ID of a coordinator
     if (adminToken) {
       const usersRes = await request.get('/api/admin/users?role=coordinator')
         .set('Authorization', `Bearer ${adminToken}`);
@@ -41,15 +41,15 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
   });
 
   // ==========================================
-  // REQUISITOS FUNCIONAIS (RF1 a RF14 & RF21)
+  // FUNCTIONAL REQUIREMENTS (FR1 to FR14 & FR21)
   // ==========================================
 
-  describe('Requisitos Funcionais (RFs)', () => {
+  describe('Functional Requirements (FRs)', () => {
     
-    test('RF1 - Registo de Utilizador: Deve permitir registar novas contas', async () => {
+    test('FR1 - User Registration: Should allow registering new accounts', async () => {
       const res = await request.post('/api/users')
         .send({
-          name: 'Utilizador RF1',
+          name: 'User FR1',
           email: uniqueUserEmail,
           password: 'password123'
         });
@@ -58,7 +58,7 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       tempUserId = res.body.data.id || res.body.data._id;
     });
 
-    test('RF2 - Login de Utilizador: Deve autenticar utilizadores registados', async () => {
+    test('FR2 - User Login: Should authenticate registered users', async () => {
       const res = await request.post('/api/users/login')
         .send({
           email: uniqueUserEmail,
@@ -69,7 +69,7 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       userToken = res.body.token;
     });
 
-    test('RF3 - Gestão de Perfil: Deve permitir visualizar e editar informações pessoais', async () => {
+    test('FR3 - Profile Management: Should allow viewing and editing personal information', async () => {
       const getRes = await request.get('/api/users/me')
         .set('Authorization', `Bearer ${userToken}`);
       expect(getRes.status).toBe(200);
@@ -77,11 +77,11 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
 
       const patchRes = await request.patch('/api/users/me')
         .set('Authorization', `Bearer ${userToken}`)
-        .send({ name: 'Nome Atualizado RF3' });
+        .send({ name: 'Updated Name FR3' });
       expect(patchRes.status).toBe(200);
     });
 
-    test('RF4 - Estado da Conta: Deve permitir alterar o estado da conta de utilizador', async () => {
+    test('FR4 - Account Status: Should allow changing user account status', async () => {
       if (!adminToken || !tempUserId) return;
       const res = await request.patch(`/api/admin/users/${tempUserId}/status`)
         .set('Authorization', `Bearer ${adminToken}`)
@@ -89,13 +89,13 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       expect(res.status).toBe(200);
     });
 
-    test('RF5 - Criar Projeto: Deve permitir criar novos anos letivos de projeto', async () => {
+    test('FR5 - Create Project: Should allow creating new project school years', async () => {
       if (!adminToken) return;
       const uniqueYear = 2030 + (Date.now() % 10000);
       const res = await request.post('/api/projects')
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
-          name: `Projeto RF5 ${uniqueYear}`,
+          name: `Project FR5 ${uniqueYear}`,
           year: uniqueYear
         });
       expect(res.status).toBe(201);
@@ -103,15 +103,15 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       tempProjectId = res.body.id;
     });
 
-    test('RF6 - Atualizar Projeto: Deve permitir editar os dados dos projetos anuais', async () => {
+    test('FR6 - Update Project: Should allow updating annual project data', async () => {
       if (!adminToken || !tempProjectId) return;
       const res = await request.patch(`/api/projects/${tempProjectId}`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ name: 'Nome Projeto RF6 Atualizado' });
+        .send({ name: 'Updated Project Name FR6' });
       expect(res.status).toBe(200);
     });
 
-    test('RF7 - Atribuição de Coordenador: Deve associar coordenadores aos projetos', async () => {
+    test('FR7 - Coordinator Assignment: Should associate coordinators to projects', async () => {
       if (!adminToken || !tempProjectId) return;
       const res = await request.patch(`/api/projects/${tempProjectId}/coordinator`)
         .set('Authorization', `Bearer ${adminToken}`)
@@ -119,17 +119,17 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       expect(res.status).toBe(200);
     });
 
-    test('RF8 - Criar Atividades: Deve permitir a criação de atividades ambientais', async () => {
+    test('FR8 - Create Activities: Should allow creating environmental activities', async () => {
       if (!adminToken || !tempProjectId) return;
       const res = await request.post('/api/admin/activities')
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
-          name: 'Atividade RF8',
-          description: 'Descrição RF8',
+          name: 'Activity FR8',
+          description: 'Description FR8',
           start_date: new Date().toISOString(),
-          location: 'Recinto Escolar',
+          location: 'School Yard',
           project_id: tempProjectId,
-          area: 'Resíduos',
+          area: 'Waste',
           visibility: 'public'
         });
       expect(res.status).toBe(201);
@@ -137,15 +137,15 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       tempActivityId = res.body.id;
     });
 
-    test('RF9 - Editar Atividades: Deve permitir a edição de atividades existentes', async () => {
+    test('FR9 - Edit Activities: Should allow editing existing activities', async () => {
       if (!adminToken || !tempActivityId) return;
       const res = await request.patch(`/api/admin/activities/${tempActivityId}`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ name: 'Atividade RF9 Atualizada' });
+        .send({ name: 'Updated Activity Name FR9' });
       expect(res.status).toBe(200);
     });
 
-    test('RF10 - Estado da Atividade: Deve permitir alterar a visibilidade/estado das atividades', async () => {
+    test('FR10 - Activity Status: Should allow changing visibility/status of activities', async () => {
       if (!adminToken || !tempActivityId) return;
       const res = await request.patch(`/api/admin/activities/${tempActivityId}/status`)
         .set('Authorization', `Bearer ${adminToken}`)
@@ -153,33 +153,33 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       expect(res.status).toBe(200);
     });
 
-    test('RF12 - Inscrições em Atividades: Deve permitir participar em atividades', async () => {
+    test('FR12 - Activity Registration: Should allow registering for activities', async () => {
       if (!tempActivityId) return;
-      // Usando autenticação opcional
+      // Using optional authentication
       const res = await request.post(`/api/activities/${tempActivityId}/participations`)
-        .send({ name: 'Visitante RF12', email: `visitante_${Date.now()}@escola.pt` });
+        .send({ name: 'Visitor FR12', email: `visitor_${Date.now()}@escola.pt` });
       expect(res.status).toBe(201);
     });
 
-    test('RF11 - Execução da Atividade: Deve permitir registar a conclusão e evidências', async () => {
+    test('FR11 - Activity Execution: Should allow registering completion and evidence', async () => {
       if (!coordinatorToken || !tempActivityId) return;
       const res = await request.post(`/api/activities/${tempActivityId}/executions`)
         .set('Authorization', `Bearer ${coordinatorToken}`)
         .send({
-          executionLocation: 'Recinto Escolar',
-          executionNotes: 'Execução concluída com sucesso (RF11).'
+          executionLocation: 'School Yard',
+          executionNotes: 'Execution registered successfully (FR11).'
         });
       expect(res.status).toBe(201);
     });
 
-    test('RF14 - Reuniões: Deve permitir agendar novas reuniões de conselho', async () => {
+    test('FR14 - Meetings: Should allow scheduling new council meetings', async () => {
       if (!adminToken) return;
       const res = await request.post('/api/meetings')
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
-          name: 'Reunião Conselho RF14',
+          name: 'Council Meeting FR14',
           date: new Date().toISOString(),
-          description: 'Definição do plano ambiental',
+          description: 'Environmental plan discussion',
           project_id: tempProjectId || '64b1f234567890123456789a'
         });
       expect(res.status).toBe(201);
@@ -187,7 +187,7 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       tempMeetingId = res.body.id;
     });
 
-    test('RF21 - Geração de Relatórios: Deve expor dados para relatórios ambientais', async () => {
+    test('FR21 - Report Generation: Should expose data for environmental reports', async () => {
       if (!adminToken) return;
       const res = await request.get('/api/admin/report')
         .set('Authorization', `Bearer ${adminToken}`);
@@ -197,12 +197,12 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
   });
 
   // ==========================================
-  // REQUISITOS NÃO FUNCIONAIS (RNF1 a RNF10)
+  // NON-FUNCTIONAL REQUIREMENTS (NFR1 to NFR10)
   // ==========================================
 
-  describe('Requisitos Não Funcionas (RNFs)', () => {
+  describe('Non-Functional Requirements (NFRs)', () => {
 
-    test('RNF1 - Performance: Tempos de resposta da API devem ser < 800ms', async () => {
+    test('NFR1 - Performance: API response times should be < 800ms', async () => {
       const start = Date.now();
       const res = await request.get('/api/health');
       const duration = Date.now() - start;
@@ -211,7 +211,7 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       expect(duration).toBeLessThan(800);
     });
 
-    test('RNF2 - Escalabilidade: API deve processar pedidos concorrentes simultâneos', async () => {
+    test('NFR2 - Scalability: API should process simultaneous concurrent requests', async () => {
       const requests = Array.from({ length: 5 }, () => request.get('/api/health'));
       const responses = await Promise.all(requests);
       responses.forEach(res => {
@@ -219,7 +219,7 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       });
     });
 
-    test('RNF3 - JWT Rotação: Tokens JWT devem ser assinados e expirados de forma segura', () => {
+    test('NFR3 - JWT Rotation: JWT tokens should be securely signed and expired', () => {
       const secret = 'test_secret';
       const token = jwt.sign({ id: '123', role: 'user' }, secret, { expiresIn: '15m' });
       expect(token).toBeDefined();
@@ -228,13 +228,13 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       expect(decoded.id).toBe('123');
     });
 
-    test('RNF4 - Middlewares: Deve proteger rotas críticas contra acessos não autorizados', async () => {
+    test('NFR4 - Middlewares: Should protect critical routes from unauthorized access', async () => {
       const res = await request.get('/api/users/me');
       expect(res.status).toBe(401);
     });
 
-    test('RNF5 - Cifragem: Hashing seguro de palavras-passe com bcryptjs (10 salts)', async () => {
-      const pass = 'minha_senha_123';
+    test('NFR5 - Encryption: Secure hashing of passwords using bcryptjs (10 salts)', async () => {
+      const pass = 'my_password_123';
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(pass, salt);
       
@@ -245,27 +245,27 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       expect(match).toBe(true);
     });
 
-    test('RNF6 - Responsividade: Layout responsivo deve ser suportado no browser', () => {
-      // Verificação da existência do Tailwind e CSS de grid/flex no projeto (dois níveis acima)
+    test('NFR6 - Responsiveness: Responsive layout should be supported in the browser', () => {
+      // Check for Tailwind/CSS files in the project workspace (two levels up)
       const publicPath = path.join(__dirname, '..', '..', 'frontend', 'src', 'index.css');
       const exists = fs.existsSync(publicPath);
       expect(exists).toBe(true);
     });
 
-    test('RNF7 - Usabilidade: Validação de redirecionamentos e consistência visual', async () => {
-      // Pedido inválido deve retornar erro estruturado consistente
+    test('NFR7 - Usability: Validation of redirects and visual consistency', async () => {
+      // Invalid login request should return consistent structured error response
       const res = await request.post('/api/users/login').send({});
       expect(res.status).toBe(401);
       expect(res.body.error).toBeDefined();
     });
 
-    test('RNF8 - Disponibilidade: Ponto de verificação de saúde da API (healthcheck) ativo', async () => {
+    test('NFR8 - Availability: API health check endpoint should be active', async () => {
       const res = await request.get('/api/health');
       expect(res.status).toBe(200);
       expect(res.body.status).toBe('ok');
     });
 
-    test('RNF9 - Modularidade: Código estruturado sob o padrão MVC', () => {
+    test('NFR9 - Modularity: Code structured under the MVC pattern', () => {
       const rootPath = path.join(__dirname, '..', '..', 'backend');
       const folders = ['controllers', 'models', 'routes'];
       folders.forEach(folder => {
@@ -273,9 +273,9 @@ describe('Suite de Testes de Requisitos do EcoGest (14 RFs & 10 RNFs)', () => {
       });
     });
 
-    test('RNF10 - Robustez: Resolução e isolamento de processos na API', async () => {
-      // O backend deve resistir a inputs corrompidos sem derrubar o processo
-      const res = await request.post('/api/users/login').send({ email: 'email_invalido' });
+    test('NFR10 - Robustness: API error handling and process isolation', async () => {
+      // The backend should handle malformed requests without crashing
+      const res = await request.post('/api/users/login').send({ email: 'invalid_email' });
       expect(res.status).toBe(401);
     });
   });

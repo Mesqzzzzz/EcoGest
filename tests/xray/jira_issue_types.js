@@ -15,12 +15,12 @@ async function getIssueTypes() {
         'Accept': 'application/json'
       }
     });
-    console.log('Issue Types disponíveis globalmente:');
+    console.log('Issue Types available globally:');
     res.data.forEach(t => {
-      console.log(`- [${t.name}] (ID: ${t.id}) - Descrição: ${t.description}`);
+      console.log(`- [${t.name}] (ID: ${t.id}) - Description: ${t.description}`);
     });
   } catch (err) {
-    console.error('❌ Erro ao obter issue types:', err.response?.data || err.message);
+    console.error('❌ Error getting issue types:', err.response?.data || err.message);
   }
 }
 
