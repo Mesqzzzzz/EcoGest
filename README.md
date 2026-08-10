@@ -7,9 +7,6 @@
 
 **EcoGest** is a modern web application designed to manage initiatives and projects for the international **Eco-Schools** program. It integrates and unifies environmental proposals, council meetings, ecological audits, visual reports, and progress monitoring into a single web portal.
 
-## 👤 Developer / Author
-*   **Francisco Mesquita** ([@Mesquita04](https://github.com/Mesquita04))
-
 ---
 
 ## 🐳 Backend Standalone Execution (Docker)
